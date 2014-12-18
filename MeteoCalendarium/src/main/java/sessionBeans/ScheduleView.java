@@ -1,5 +1,6 @@
 package sessionBeans;
  
+import entities.Event;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import managerBeans.EventManager;
  
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
@@ -23,11 +25,14 @@ import org.primefaces.model.ScheduleModel;
 @ViewScoped
 public class ScheduleView implements Serializable {
  
-    private ScheduleModel eventModel;
+ //   private ScheduleModel eventModel;
+    private EventManager eventManager;
  
-    private ScheduleEvent event = new DefaultScheduleEvent();
+//    private ScheduleEvent event = new DefaultScheduleEvent();
+    private Event event = new Event();
     
- 
+    
+
    
      
     public Date getRandomDate(Date base) {
@@ -45,8 +50,8 @@ public class ScheduleView implements Serializable {
         return calendar.getTime();
     }
      
-    public ScheduleModel getEventModel() {
-        return eventModel;
+    public EventManager getEventManager() {
+        return eventManager;
     }
  
     private Calendar today() {
@@ -126,30 +131,30 @@ public class ScheduleView implements Serializable {
         return t.getTime();
     }
      
-    public ScheduleEvent getEvent() {
+    public Event getEvent() {
         return event;
     }
  
-    public void setEvent(ScheduleEvent event) {
+    public void setEvent(Event event) {
         this.event = event;
     }
      
     public void addEvent(ActionEvent actionEvent) {
-        if(event.getId() == null)
-            eventModel.addEvent(event);
-        else
-            eventModel.updateEvent(event);
+    //    if(event.getIdEvent() == null)
+            eventManager.addEvent(event);
+    //    else
+    //        eventManager.updateEvent(event);
          
-        event = new DefaultScheduleEvent();
+        event = new Event();
     }
      
     public void onEventSelect(SelectEvent selectEvent) {
-        event = (ScheduleEvent) selectEvent.getObject();
+        event = (Event) selectEvent.getObject();
     }
      
-    public void onDateSelect(SelectEvent selectEvent) {
-        event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
-    }
+//   public void onDateSelect(SelectEvent selectEvent) {
+//        event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
+//    }
      
     public void onEventMove(ScheduleEntryMoveEvent event) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event moved", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());
