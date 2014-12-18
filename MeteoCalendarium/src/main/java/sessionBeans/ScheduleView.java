@@ -1,6 +1,15 @@
 package sessionBeans;
- 
-import entities.Event;
+ /*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author Alessandro
+ */
+
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,8 +19,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import managerBeans.EventManager;
- 
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
@@ -21,19 +28,35 @@ import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
  
-@ManagedBean
-@ViewScoped
+@ManagedBean (name = "scheduleView") 
 public class ScheduleView implements Serializable {
  
- //   private ScheduleModel eventModel;
-    private EventManager eventManager;
+    private ScheduleModel eventModel;
+     
+    private ScheduleModel lazyEventModel;
  
-//    private ScheduleEvent event = new DefaultScheduleEvent();
-    private Event event = new Event();
-    
-    
-
-   
+    private ScheduleEvent event = new DefaultScheduleEvent();
+ 
+    @PostConstruct
+    public void init() {
+        eventModel = new DefaultScheduleModel();
+        eventModel.addEvent(new DefaultScheduleEvent("Champions League Match", previousDay8Pm(), previousDay11Pm()));
+        eventModel.addEvent(new DefaultScheduleEvent("Birthday Party", today1Pm(), today6Pm()));
+        eventModel.addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", nextDay9Am(), nextDay11Am()));
+        eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));
+         
+        lazyEventModel = new LazyScheduleModel() {
+             
+            @Override
+            public void loadEvents(Date start, Date end) {
+                Date random = getRandomDate(start);
+                addEvent(new DefaultScheduleEvent("Lazy Event 1", random, random));
+                 
+                random = getRandomDate(start);
+                addEvent(new DefaultScheduleEvent("Lazy Event 2", random, random));
+            }   
+        };
+    }
      
     public Date getRandomDate(Date base) {
         Calendar date = Calendar.getInstance();
@@ -50,8 +73,12 @@ public class ScheduleView implements Serializable {
         return calendar.getTime();
     }
      
-    public EventManager getEventManager() {
-        return eventManager;
+    public ScheduleModel getEventModel() {
+        return eventModel;
+    }
+     
+    public ScheduleModel getLazyEventModel() {
+        return lazyEventModel;
     }
  
     private Calendar today() {
@@ -131,30 +158,30 @@ public class ScheduleView implements Serializable {
         return t.getTime();
     }
      
-    public Event getEvent() {
+    public ScheduleEvent getEvent() {
         return event;
     }
  
-    public void setEvent(Event event) {
+    public void setEvent(ScheduleEvent event) {
         this.event = event;
     }
      
     public void addEvent(ActionEvent actionEvent) {
-    //    if(event.getIdEvent() == null)
-            eventManager.addEvent(event);
-    //    else
-    //        eventManager.updateEvent(event);
+        if(event.getId() == null)
+            eventModel.addEvent(event);
+        else
+            eventModel.updateEvent(event);
          
-        event = new Event();
+        event = new DefaultScheduleEvent();
     }
      
     public void onEventSelect(SelectEvent selectEvent) {
-        event = (Event) selectEvent.getObject();
+        event = (ScheduleEvent) selectEvent.getObject();
     }
      
-//   public void onDateSelect(SelectEvent selectEvent) {
-//        event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
-//    }
+    public void onDateSelect(SelectEvent selectEvent) {
+        event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
+    }
      
     public void onEventMove(ScheduleEntryMoveEvent event) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event moved", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());
@@ -172,3 +199,4 @@ public class ScheduleView implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 }
+

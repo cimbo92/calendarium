@@ -53,7 +53,7 @@ try {
             context.addMessage(null, new FacesMessage("Login failed."));
             return "index";
         }
-        return "/user/home";
+        return "calendario";
     }
     
     public String logout() {

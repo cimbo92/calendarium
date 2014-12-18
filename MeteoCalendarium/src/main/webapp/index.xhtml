@@ -13,7 +13,7 @@ and open the template in the editor.
         <title>MeteoCal</title>
     </h:head>
     <h:body>
-         <h:form>
+        <h:form>
             <p:panel header="Login Form">
                 <p:panelGrid columns="2">               
                     <p:outputLabel for="usernameInput" value="Username"/>
@@ -35,13 +35,13 @@ and open the template in the editor.
                         <p:ajax update="namemsg"/>
                     </p:inputText>
                     <p:message id="namemsg" for="name" />
-                    
+
                     <h:outputLabel for="email">Email:</h:outputLabel>
                     <p:inputText id="email" value="#{registrationBean.user.email}" >
                         <p:ajax update="emailmsg"/>
                     </p:inputText>
                     <p:message id="emailmsg" for="email" />
-                    
+
                     <h:outputLabel for="password">Password:</h:outputLabel>
                     <p:password id="password" value="#{registrationBean.user.password}"
                                 feedback="true" match="pwd2" label="Password"/>
@@ -55,5 +55,7 @@ and open the template in the editor.
 
             </p:panel>
         </h:form>
+        <br />
+        <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
     </h:body>
 </html>
