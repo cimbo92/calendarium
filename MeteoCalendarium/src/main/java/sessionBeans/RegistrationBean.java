@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package RegistrationAuthentication.gui.security;
+package sessionBeans;
 
-import RegistrationAuthentication.business.security.boundary.UserManager;
-import RegistrationAuthentication.business.security.entity.User;
+import managerBeans.UserManager;
+import entities.User;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;

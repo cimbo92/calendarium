@@ -3,7 +3,7 @@
 * To change this template file, choose Tools | Templates
 * and open the template in the editor.
 */
-package RegistrationAuthentication.gui.security;
+package sessionBeans;
 
 import javax.ejb.Stateless;
 import javax.inject.Named;

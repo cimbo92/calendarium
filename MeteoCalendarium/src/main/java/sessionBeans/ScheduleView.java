@@ -1,4 +1,4 @@
-package org.primefaces.showcase.view.data;
+package sessionBeans;
  
 import java.io.Serializable;
 import java.util.Calendar;

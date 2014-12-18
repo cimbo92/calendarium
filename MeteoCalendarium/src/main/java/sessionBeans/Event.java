@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.primefaces.showcase.view.data;
+package sessionBeans;
 
 import java.util.Date;
 import org.primefaces.model.ScheduleEvent;
