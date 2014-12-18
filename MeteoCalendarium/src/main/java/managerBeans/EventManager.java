@@ -33,7 +33,10 @@ public class EventManager {
     }
 
     public void addEvent(Event event) {
+        try{
         em.persist(event);
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }catch(Exception e){
+            System.out.println("EEEEEEEEEEEEEEEE");
+        }
     }
 }
