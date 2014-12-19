@@ -86,4 +86,23 @@ public class User implements Serializable {
         }
     }
     
+     @Override
+    public boolean equals(Object obj){
+        if(!(obj instanceof User)){
+            return false;
+        }
+        User user = (User) obj;
+        if(user.getEmail() == email){
+            return true;
+        }
+        return false;
+    }
+    
+    //TODO
+//    @Override
+//    public int hashCode() {
+//        return email;
+//    }
+    
+    
 }
