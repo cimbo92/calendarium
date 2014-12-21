@@ -33,10 +33,7 @@ public class EventManager {
     }
 
     public void addEvent(Event event) {
-        try{
+        
         em.persist(event);
-        }catch(Exception e){
-            System.out.println("EEEEEEEEEEEEEEEE");
-        }
     }
 }

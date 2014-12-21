@@ -8,7 +8,9 @@ package entities;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import static javax.ws.rs.client.Entity.entity;
@@ -23,13 +25,16 @@ public class Event implements Serializable {
 
     @Id
     @NotNull
+    @GeneratedValue(generator="increment")
     private int idEvent;
     @NotNull(message = "May not be empty")
     private String title;
-//    @NotNull(message = "May not be empty")
-//    private Date startDate ;
-//    @NotNull(message = "May not be empty")
-//    private Date endDate;
+    @NotNull(message = "May not be empty")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date startDate ;
+    @NotNull(message = "May not be empty")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date endDate;
     @NotNull(message = "May not be empty")
     private String description;
     @NotNull(message = "May not be empty")
@@ -51,21 +56,21 @@ public class Event implements Serializable {
         this.title = Title;
     }
 
-//    public Date getStartDate() {
-//        return startDate;
-//    }
-//
-//    public void setStartDate(Date startDate) {
-//        this.startDate = startDate;
-//    }
-//
-//    public Date getEndDate() {
-//        return endDate;
-//    }
-//
-//    public void setEndDate(Date endDate) {
-//        this.endDate = endDate;
-//    }
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+      this.endDate = endDate;
+    }
 
     public String getDescription() {
         return description;
