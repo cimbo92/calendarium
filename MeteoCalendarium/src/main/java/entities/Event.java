@@ -6,8 +6,13 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
@@ -35,11 +40,29 @@ public class Event implements Serializable {
     @NotNull(message = "May not be empty")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date endDate;
-    @NotNull(message = "May not be empty")
     private String description;
     @NotNull(message = "May not be empty")
     private String place;
+    private String outdoor;
+    @Enumerated(EnumType.STRING)
+    private Preference[] preferences;
+    
+    public Preference[] getPreferences() {
+        return preferences;
+    }
 
+    public void setPreferences(Preference[] preferences) {
+        this.preferences = preferences;
+    }
+    
+    public String getOutdoor() {
+        return outdoor;
+    }
+
+    public void setOutdoor(String outdoor) {
+        this.outdoor = outdoor;
+    }
+    
     public int getIdEvent() {
         return idEvent;
     }
