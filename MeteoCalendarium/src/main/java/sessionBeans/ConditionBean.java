@@ -6,8 +6,11 @@
 package sessionBeans;
 
 import entities.MainCondition;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import managerBeans.MainConditionManager;
 
@@ -17,17 +20,18 @@ import managerBeans.MainConditionManager;
  */
 @Named
 @RequestScoped
-public class MainConditionBean {
+public class ConditionBean {
     
     @EJB
     private MainConditionManager mcm;
+
     
-    private MainCondition main=new MainCondition();
     
-    public void addMainCondition()
+    public void MainCondition()
     {
         for(int i=0;i<MainCondition.getListPref().size();i++)
         {
+            MainCondition main = new MainCondition();
             main.setCondition(MainCondition.getListPref().get(i));
             mcm.addMainCondition(main);
         }

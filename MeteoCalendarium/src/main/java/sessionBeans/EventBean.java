@@ -39,7 +39,6 @@ public class EventBean {
     public Event getEvent(){
          if (event == null) {
             event = new Event();      
-            event.setPreferences(preference);
         }
         return event;
     }
@@ -50,6 +49,7 @@ public class EventBean {
     
     
     public void addEvent() {
+        
         em.addEvent(event);
     }
 }

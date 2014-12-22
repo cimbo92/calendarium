@@ -50,7 +50,7 @@
             </p:selectOneRadio>
             
             <h:outputText value="Preferences:" />
-            <p:selectManyCheckbox id="grid" value="#{preferenceBean.preferenceHelp}" layout="grid" columns="3">
+            <p:selectManyCheckbox id="grid" value="#{preferenceBean.preferenceHelp.selectedPreference}" layout="grid" columns="3">
                     <f:selectItems value="#{preferenceBean.listPref()}" var="preference" itemLabel="#{listPref}" itemValue="#{listPref}" />
             </p:selectManyCheckbox>
            
@@ -84,7 +84,7 @@
     
     <p:dialog header="Values" modal="true" showEffect="clip" widgetVar="dlg" resizable="false">
         <p:outputPanel id="Pref">
-            <p:dataList value="#{preferenceBean.preferenceHelp}" var="preference">
+            <p:dataList value="#{preferenceBean.preferenceHelp.selectedPreference}" var="preference">
                 #{preference}
             </p:dataList>
         </p:outputPanel>

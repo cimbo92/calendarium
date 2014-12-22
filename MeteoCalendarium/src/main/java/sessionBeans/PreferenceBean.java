@@ -45,8 +45,9 @@ public class PreferenceBean {
         this.preferenceHelp = preferenceHelp;
     }
     
-    public void save()
+    public void save(PreferenceHelp help)
     {
+        preferenceHelp=help; 
         for(int i=0;i<preferenceHelp.getSelectedPreference().size();i++)
         {
             pm.addPreference(new Preference(preferenceHelp,i));
