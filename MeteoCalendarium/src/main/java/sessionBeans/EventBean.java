@@ -6,7 +6,11 @@
 package sessionBeans;
 
 import entities.Event;
+import entities.Preference;
 import entities.User;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
@@ -22,17 +26,20 @@ import managerBeans.UserManager;
 
 public class EventBean {
 
+
+    
     @EJB
     private EventManager em;
 
     private Event event;
-    
+    private Preference preference;
     
     public EventBean(){}
     
     public Event getEvent(){
          if (event == null) {
-            event = new Event();
+            event = new Event();      
+            event.setPreferences(preference);
         }
         return event;
     }
@@ -41,8 +48,8 @@ public class EventBean {
         this.event = event;
     }
     
+    
     public void addEvent() {
         em.addEvent(event);
-
     }
 }

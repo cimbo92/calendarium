@@ -5,53 +5,66 @@
  */
 package entities;
 
-import java.util.ArrayList;
+import HelpClasses.PreferenceHelp;
+import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  *
- * @author alessandro
+ * @author Alessandro
  */
-public enum Preference {
-    
-    Sun("Snow"), Cloud("Cloud"), Rain("Rain"), Snow("Snow");
-    private String abbreviation;
+/**
+ *
+ * @author home
+ */@Entity
+   @IdClass(PreferenceId.class)
+public class Preference implements Serializable {
+        
+      private static final long serialVersionUID = 1L;
 
-    
-    private Preference(String abbreviation) {
-        this.abbreviation = abbreviation;
+      @Id
+      @ManyToOne
+      private Event event;
+      @Id
+      @ManyToOne
+      private MainCondition main;
+
+    public Preference() {
     }
 
-    public String getAbbreviation() {
-        return abbreviation;
-    }
-
-    /**
-     * restituisce il tipo di preferenza a partire dalla stringa passata per
-     * parametro il parametro di fatto corrisponde all'abbreviazione del tipo
-     * 
-     * @param abbreviation
-     * @return
-     */
-    public static Preference fromAbbreviation(String abbreviation) {
-        if (abbreviation != null) {
-            for (Preference tipo : Preference.values()) {
-                if (abbreviation.equalsIgnoreCase(tipo.abbreviation)) {
-                    return tipo;
-                }
-            }
-        }
-        return null;
+    public Event getEvent() {
+        return event;
     }
     
-    public List<String> getListPref()
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public MainCondition getMain() {
+        return main;
+    }
+
+    public void setMain(MainCondition main) {
+        this.main = main;
+    }
+      
+    
+    public Preference(PreferenceHelp prefHelp,int i)
     {
-        List pref = new ArrayList<String>();
-        pref.add("Sun");
-        pref.add("Cloud");
-        pref.add("Rain");
-        pref.add("Snow");
-        return pref;
+        setMain(prefHelp.getSelectedPreference().get(i));
     }
     
+     
+     
+     
+     
+     
+     
+     
+     
 }

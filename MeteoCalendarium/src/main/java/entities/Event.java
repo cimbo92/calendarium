@@ -15,6 +15,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -25,6 +26,8 @@ import static javax.ws.rs.client.Entity.entity;
  * @author home
  */@Entity
 public class Event implements Serializable {
+    @OneToMany(mappedBy = "event")
+    private List<Preference> preferences;
     
     private static final long serialVersionUID = 1L;
 
@@ -44,15 +47,16 @@ public class Event implements Serializable {
     @NotNull(message = "May not be empty")
     private String place;
     private String outdoor;
-    @Enumerated(EnumType.STRING)
-    private Preference[] preferences;
+    private Preference preference;
     
-    public Preference[] getPreferences() {
-        return preferences;
+    
+    
+    public Preference getPreferences() {
+        return preference;
     }
 
-    public void setPreferences(Preference[] preferences) {
-        this.preferences = preferences;
+    public void setPreferences(Preference preferences) {
+        this.preference = preferences;
     }
     
     public String getOutdoor() {
