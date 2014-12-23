@@ -7,7 +7,10 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -16,26 +19,32 @@ import javax.validation.constraints.NotNull;
  */
 public class Forecast implements Serializable {
     
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = 1L;  
     
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     
+    @ManyToOne(targetEntity = Place.class, optional = false)
+    private Place place;
     
-    @Id 
+    @ManyToOne(targetEntity = MainCondition.class, optional = false)
+    private MainCondition mainCondition;
+    
     @NotNull(message = "May not be empty")
     private Date date;
-    @Id
-    @NotNull(message = "May not be empty")
-    private Place place;
+    
     @NotNull(message = "May not be empty")
     private Forecast forecast;
 
-    public Date getDate() {
-        return date;
+    
+    
+    public int getId() {
+        return id;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Place getPlace() {
@@ -46,6 +55,22 @@ public class Forecast implements Serializable {
         this.place = place;
     }
 
+    public MainCondition getMainCondition() {
+        return mainCondition;
+    }
+
+    public void setMainCondition(MainCondition mainCondition) {
+        this.mainCondition = mainCondition;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public Forecast getForecast() {
         return forecast;
     }
@@ -54,6 +79,20 @@ public class Forecast implements Serializable {
         this.forecast = forecast;
     }
     
+    @Override
+    public boolean equals(Object obj){
+        if(!(obj instanceof Forecast)){
+            return false;
+        }
+        Forecast forecast = (Forecast) obj;
+        if(id == forecast.getId()){
+            return true;
+        }
+        return false;
+    }
     
-
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }

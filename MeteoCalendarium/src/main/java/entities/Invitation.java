@@ -11,40 +11,42 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import static javax.persistence.TemporalType.DATE;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 
 /**
  *
  * @author home
  */
-
-public class BadWeatherNotification implements Serializable {
+@Entity
+public class Invitation implements Serializable {
     
-    @Id
+     private static final long serialVersionUID = 1L;
+
+   @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     
-    @ManyToOne(targetEntity = User.class, optional = false)
+    @ManyToOne(targetEntity = User.class, optional = true)
     private User owner;
     
-    @OneToOne( targetEntity = Event.class, optional = false)
-    private Event event;    
+    @ManyToOne(targetEntity = Event.class, optional = true)
+    private Event event;
+    
+    @Temporal(DATE)
+    private Date date;
     
     private String description;
     
-    @Temporal(DATE)
-    @NotNull
-    private Date date;
+    private boolean accepted;
+    
+    private boolean seen;
 
-    @NotNull
-    private boolean dontCare;
-
+    
+    
+    
     public int getId() {
         return id;
     }
@@ -52,7 +54,7 @@ public class BadWeatherNotification implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public User getOwner() {
         return owner;
     }
@@ -69,6 +71,14 @@ public class BadWeatherNotification implements Serializable {
         this.event = event;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -77,29 +87,29 @@ public class BadWeatherNotification implements Serializable {
         this.description = description;
     }
 
-    public Date getDate() {
-        return date;
+    public boolean isAccepted() {
+        return accepted;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-    
-      public boolean isDontCare() {
-        return dontCare;
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
     }
 
-    public void setDontCare(boolean dontCare) {
-        this.dontCare = dontCare;
+    public boolean isSeen() {
+        return seen;
+    }
+
+    public void setSeen(boolean seen) {
+        this.seen = seen;
     }
     
     @Override
     public boolean equals(Object obj){
-        if(!(obj instanceof BadWeatherNotification)){
+        if(!(obj instanceof Invitation)){
             return false;
         }
-        BadWeatherNotification badNotification = (BadWeatherNotification) obj;
-        if(id == badNotification.getId()){
+        Invitation invitation = (Invitation) obj;
+        if(id == invitation.getId()){
             return true;
         }
         return false;
@@ -109,4 +119,5 @@ public class BadWeatherNotification implements Serializable {
     public int hashCode() {
         return id;
     }
+    
 }

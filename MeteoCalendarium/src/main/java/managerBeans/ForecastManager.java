@@ -3,20 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entities;
+package managerBeans;
 
 /**
  *
  * @author home
  */
-public class Hour {
-    
-    private int hour;
-    private int minutes;
-    
-    public Hour (String ora)
-    {
-
-    }
+public class ForecastManager {
     
 }

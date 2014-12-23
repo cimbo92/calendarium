@@ -4,58 +4,15 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>MeteoCal</title>
-    </h:head>
-    <h:body>
-        <h:form>
-            <p:panel header="Login Form">
-                <p:panelGrid columns="2">               
-                    <p:outputLabel for="usernameInput" value="Username"/>
-                    <p:inputText id="usernameInput" value="#{loginBean.username}" 
-                                 required="true" />
-                    <p:outputLabel for="passwordInput" value="Password"/>
-                    <p:password id="passwordInput" value="#{loginBean.password}" 
-                                required="true" />
-                    <p:commandButton value="Login" 
-                                     action="#{loginBean.login()}" />
-                </p:panelGrid>
-            </p:panel>
-        </h:form>
-        <h:form>
-            <p:panel header="Registration Form">
-                <h:panelGrid columns="3" id="regGrid">
-                    <h:outputLabel for="name">Name:</h:outputLabel>
-                    <p:inputText id="name" value="#{registrationBean.user.name}">
-                        <p:ajax update="namemsg"/>
-                    </p:inputText>
-                    <p:message id="namemsg" for="name" />
-
-                    <h:outputLabel for="email">Email:</h:outputLabel>
-                    <p:inputText id="email" value="#{registrationBean.user.email}" >
-                        <p:ajax update="emailmsg"/>
-                    </p:inputText>
-                    <p:message id="emailmsg" for="email" />
-
-                    <h:outputLabel for="password">Password:</h:outputLabel>
-                    <p:password id="password" value="#{registrationBean.user.password}"
-                                feedback="true" match="pwd2" label="Password"/>
-                    <p:message for="password" />
-
-                    <h:outputLabel for="pwd2">Confirm Password:</h:outputLabel>
-                    <p:password id="pwd2" label="Confirm Password"/>
-                </h:panelGrid>
-                <p:commandButton value="Register" update="regGrid"
-                                 action="#{registrationBean.register()}" />
-
-            </p:panel>
-        </h:form>
-        <br />
-        <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
-    </h:body>
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <head>
+        <title>Meteocal index</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <h:link outcome="/user/calendario" value="Home"/><br/>
+        <h:link outcome="registrationAuthentication" value="Login"/><br/>
+    </body>
 </html>

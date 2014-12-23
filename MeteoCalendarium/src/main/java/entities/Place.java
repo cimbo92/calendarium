@@ -6,6 +6,8 @@
 package entities;
 
 import java.io.Serializable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
@@ -18,11 +20,56 @@ public class Place implements Serializable {
     private static final long serialVersionUID = 1L;
 
     
-    @Id 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+    
     @NotNull(message = "May not be empty")
     private String postalCode;
     @NotNull(message = "May not be empty")
     private String city;
+    
+    
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+    
+     @Override
+    public boolean equals(Object obj){
+        if(!(obj instanceof Place)){
+            return false;
+        }
+        Place place = (Place) obj;
+        if(id == place.getId()){
+            return true;
+        }
+        return false;
+    }
+    
+    @Override
+    public int hashCode() {
+        return id;
+    }
     
     
 }
