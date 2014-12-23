@@ -27,38 +27,8 @@ import managerBeans.PreferenceManager;
 public class PreferenceBean {
     
 
-     
-    @EJB
-    private PreferenceManager pm;
-    
-    PreferenceHelp preferenceHelp ;
-
-    public PreferenceHelp getPreferenceHelp() {
-        if(preferenceHelp ==null )
-        {
-            preferenceHelp=new PreferenceHelp();
-        }
-        return preferenceHelp;
-    }
-
-    public void setPreferenceHelp(PreferenceHelp preferenceHelp) {
-        this.preferenceHelp = preferenceHelp;
-    }
-    
-    public void save(PreferenceHelp help)
-    {
-        preferenceHelp=help; 
-        for(int i=0;i<preferenceHelp.getSelectedPreference().size();i++)
-        {
-            pm.addPreference(new Preference(preferenceHelp,i));
-        }
-    }
-    
-    
-    public List<String> listPref ()
-    {
-        return MainCondition.getListPref();
-    }
+   
+   
     
     
 }

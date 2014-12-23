@@ -49,13 +49,14 @@
             </p:selectOneRadio>
             
             <h:outputText value="Preferences:" />
-            <p:selectManyCheckbox id="grid" value="#{preferenceBean.preferenceHelp.selectedPreference}" layout="grid" columns="3">
-                    <f:selectItems value="#{preferenceBean.listPref()}" var="preference" itemLabel="#{listPref}" itemValue="#{listPref}" />
+            <p:selectManyCheckbox id="grid" value="#{eventBean.selectedPref}" layout="grid" columns="3">
+                    <f:selectItems value="#{eventBean.listPref()}" var="preference" itemLabel="#{listPref}" itemValue="#{listPref}" />
             </p:selectManyCheckbox>
            
  
             <p:commandButton type="reset" value="Reset" />
-            <p:commandButton id="addButton" value="Save" action="#{eventBean.addEvent()}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+            <p:commandButton id="addButton" value="Save" action="#{eventBean.create()}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+        
         </h:panelGrid>
     </p:dialog>    
     
@@ -83,7 +84,7 @@
     
     <p:dialog header="Values" modal="true" showEffect="clip" widgetVar="dlg" resizable="false">
         <p:outputPanel id="Pref">
-            <p:dataList value="#{preferenceBean.preferenceHelp.selectedPreference}" var="preference">
+            <p:dataList value="#{eventBean.selectedPref}" var="preference">
                 #{preference}
             </p:dataList>
         </p:outputPanel>

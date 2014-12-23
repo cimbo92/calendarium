@@ -29,10 +29,10 @@ public class Preference implements Serializable {
 
       @Id
       @ManyToOne
-      private Event event;
+      private Event event= new Event();
       @Id
       @ManyToOne
-      private MainCondition main;
+      private MainCondition main= new MainCondition();
 
     public Preference() {
     }
@@ -54,9 +54,10 @@ public class Preference implements Serializable {
     }
       
     
-    public Preference(PreferenceHelp prefHelp,int i)
+    public Preference(Event ev,String pref)
     {
-        setMain(prefHelp.getSelectedPreference().get(i));
+        main.setCondition(pref);
+        setEvent(ev);
     }
     
      
