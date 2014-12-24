@@ -5,8 +5,8 @@
  */
 package entities;
 
+import HelpClasses.Date;
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,8 +35,7 @@ public class Invitation implements Serializable {
     @ManyToOne(targetEntity = Event.class, optional = true)
     private Event event;
     
-    @Temporal(DATE)
-    private Date date;
+    private String date;
     
     private String description;
     
@@ -44,9 +43,6 @@ public class Invitation implements Serializable {
     
     private boolean seen;
 
-    
-    
-    
     public int getId() {
         return id;
     }
@@ -71,11 +67,11 @@ public class Invitation implements Serializable {
         this.event = event;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

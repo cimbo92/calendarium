@@ -30,11 +30,14 @@
             <h:outputLabel for="title" value="Title:" />
             <p:inputText id="title" value="#{eventBean.event.title}" required="true" />
  
-            <p:outputLabel for="from" value="From:" />
-            <p:calendar id="from" value="#{eventBean.event.startDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+            <p:outputLabel for="date" value="Date:" />
+            <p:calendar id="date" value="#{eventBean.event.date}" showOn="button" />
  
-            <p:outputLabel for="to" value="Datetime:" />
-            <p:calendar id="to" value="#{eventBean.event.endDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+            <p:outputLabel for="from" value="From:" />
+            <p:calendar id="from" value="#{eventBean.event.startHour}" pattern="HH:mm a" timeOnly="true" />
+            
+            <p:outputLabel for="to" value="To:" />
+            <p:calendar id="to" value="#{eventBean.event.endHour}" pattern="HH:mm a" timeOnly="true" />
       
             <h:outputLabel for="place" value="Place:" />
             <p:inputText id="place" value="#{eventBean.event.place}" required="true" />
