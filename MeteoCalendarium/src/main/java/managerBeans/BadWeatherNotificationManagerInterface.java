@@ -5,9 +5,9 @@
  */
 package managerBeans;
 
+import HelpClasses.Date;
 import entities.BadWeatherNotification;
 import entities.User;
-import java.util.Date;
 import java.util.List;
 
 /**

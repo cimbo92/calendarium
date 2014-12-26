@@ -5,10 +5,10 @@
  */
 package managerBeans;
 
+import HelpClasses.Date;
 import entities.BadWeatherNotification;
 import entities.User;
 import java.security.Principal;
-import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
