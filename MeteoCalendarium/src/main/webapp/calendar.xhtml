@@ -17,7 +17,8 @@
                                 <f:facet name="header">
                                     <h:graphicImage value="/resources/images/demo.jpg" width="350" />
                                 </f:facet>
-                                <h:outputText value="Benvenuto: #{loginBean.username}" />
+                                <h:outputText value="Name:" />
+                                <h:outputText value="Alessandro Cianferotti" />
                             </p:panelGrid>
                         </div>
                         <div class="west-panel-calendar" style ="position : absolute ; bottom : 50px; ">     
@@ -95,14 +96,11 @@
                             <h:outputLabel for="title" value="Title:" />
                             <p:inputText id="title" value="#{eventBean.event.title}" required="true" />
 
-                            <p:outputLabel for="date" value="Date:" />
-                            <p:calendar id="date" value="#{eventBean.event.date}" mode="inline" />
-
                             <p:outputLabel for="from" value="From:" />
-                            <p:calendar id="from" value="#{eventBean.event.startHour}" pattern="HH:mm a" timeOnly="true" />
-                            
-                            <p:outputLabel for="to" value="To:" />
-                            <p:calendar id="to" value="#{eventBean.event.endHour}" pattern="HH:mm a" timeOnly="true" />
+                            <p:calendar id="from" value="#{eventBean.event.startDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+
+                            <p:outputLabel for="to" value="Datetime:" />
+                            <p:calendar id="to" value="#{eventBean.event.endDate}" pattern="MM/dd/yyyy HH:mm:ss" />
 
                             <h:outputLabel for="place" value="Place:" />
                             <p:inputText id="place" value="#{eventBean.event.place}" required="true" />
@@ -129,6 +127,21 @@
 
                     </p:dialog>
 
+                    <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold">
+                        <p:panelGrid id="dates" columns="2" columnClasses="label,value">
+
+                            <h:outputText value="Datetime:" />
+                            <h:outputText value="#{eventBean.event.startDate}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+
+                            <h:outputText value="Datetime:" />
+                            <h:outputText value="#{eventBean.event.endDate}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </p:panelGrid>
+                    </p:dialog>
+
                     <p:dialog modal="true" resizable="false" widgetVar="dlg" header="Values" showEffect="clip">
                         <p:panelGrid columns="2" id="INOUT" columnClasses="label,value">
                             <h:outputText value=":" />
@@ -151,7 +164,7 @@
 
         <style type="text/css">
             .value {
-                width: 700px;
+                width: 1000px;
             }
         </style>
     </h:body>

@@ -5,19 +5,11 @@
  */
 package managerBeans;
 
-import entities.Preference;
-import javax.ejb.Remote;
-
 /**
  *
  * @author home
  */
-@Remote
 public interface PreferenceManagerInterface {
-
-    public void updatePreference(Preference preference);
-    
-    public void addPreference(Preference get);
     
     
 }

@@ -5,13 +5,10 @@
  */
 package managerBeans;
 
-import javax.ejb.Remote;
-
 /**
  *
  * @author home
  */
-@Remote(ForecastManagerInterface.class)
 public class ForecastManager {
     
 }
