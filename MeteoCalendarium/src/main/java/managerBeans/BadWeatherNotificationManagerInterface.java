@@ -5,7 +5,6 @@
  */
 package managerBeans;
 
-import HelpClasses.Date;
 import entities.BadWeatherNotification;
 import entities.User;
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.List;
  */
 public interface BadWeatherNotificationManagerInterface {
     
-     public List<BadWeatherNotification> searchByDate(Date date);
+     public List<BadWeatherNotification> searchByDate(String date);
  
      public List<BadWeatherNotification> getAllUserBadWeatherNotification(User creator);
       

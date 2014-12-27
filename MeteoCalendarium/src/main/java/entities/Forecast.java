@@ -5,7 +5,6 @@
  */
 package entities;
 
-import HelpClasses.Date;
 import java.io.Serializable;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,7 +31,7 @@ public class Forecast implements Serializable {
     private MainCondition mainCondition;
     
     @NotNull(message = "May not be empty")
-    private Date date;
+    private String date;
     
     @NotNull(message = "May not be empty")
     private Forecast forecast;
@@ -63,11 +62,11 @@ public class Forecast implements Serializable {
         this.mainCondition = mainCondition;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

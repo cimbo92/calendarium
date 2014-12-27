@@ -5,11 +5,12 @@
  */
 package managerBeans;
 
-import HelpClasses.Date;
+import HelpClasses.OverlappingException;
 import entities.Event;
 import entities.Invitation;
 import entities.Place;
 import entities.Preference;
+import entities.User;
 import java.security.Principal;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -32,21 +33,31 @@ public class EventManager implements EventManagerInterface  {
     Principal principal;
     
     @Override
-    public void addEvent(Event event) {
-        //TODO evitare overlapping
+    public void addEvent(String idUser, Event event) throws OverlappingException  {
         
+        if(searchEventOverlapping(idUser, event.getDate(), event.getStartHour(), event.getEndHour()))
+            throw new OverlappingException();
         
         em.persist(event);
     }
     
     @Override
-    public boolean modifyEvent(int idEvent, String title, Date startDate, Date endDate, String description, Place place, boolean outdoor, List<Preference> preferences) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+       public boolean modifyEvent(int idEvent, String title, String Date, String startHour, String endHour, String description, Place place, boolean outdoor, List<Preference> preferences) {
+           throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       }
 
     @Override
     public boolean removeEvent(int idEvent) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        try{
+            Event event = em.find(Event.class,idEvent);
+            
+            
+        }catch (Exception e){
+            
+        }
+        
+        return false;
     }
 
     @Override
@@ -153,4 +164,30 @@ public class EventManager implements EventManagerInterface  {
     private boolean overlappingRight(int startFirst, int endFirst, int startSecond, int endSecond){
         return startFirst <= startSecond && endFirst > startSecond;
     }
+
+    @Override
+    public List<User> getInvitedUsers(Event event) {
+       
+        List<Invitation> listInvitation = null;
+        List<User> listUser = null;
+        
+        
+      try{
+        Query query = em.createQuery("SELECT i " +
+                                                                                        "FROM Invitation i JOIN i.event e " +
+                                                                                        "WHERE e.idEvent = : idEvent");
+        
+        listInvitation = (List<Invitation>) (Invitation) query.setParameter("idEvent", event.getIdEvent()).getResultList();
+           
+    }catch (Exception e){
+        System.out.println("Errore nella query getInvitedUsers");
+    }
+      
+      for(Invitation i : listInvitation){
+          listUser.add(i.getOwner());
+      }
+     
+      return listUser;
+    }
+
 }

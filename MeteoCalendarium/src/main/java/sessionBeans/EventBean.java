@@ -5,6 +5,7 @@
  */
 package sessionBeans;
 
+import HelpClasses.OverlappingException;
 import entities.Event;
 import entities.MainCondition;
 import entities.Preference;
@@ -33,6 +34,8 @@ public class EventBean {
     private PreferenceManager pm;    
     @EJB
     private EventManager em;
+    @EJB
+    private UserManager um;
 
     
     
@@ -55,7 +58,12 @@ public class EventBean {
     
     
     public void addEvent() {
-        em.addEvent(event);
+        
+        try{
+            em.addEvent(um.getLoggedUser().getEmail(), event);
+        }catch (OverlappingException e ){
+               System.out.println("Errore in add event di EventManager");
+        }
     }
     
     public void create(){

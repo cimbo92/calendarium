@@ -5,7 +5,6 @@
  */
 package entities;
 
-import HelpClasses.Date;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,9 +37,8 @@ public class BadWeatherNotification implements Serializable {
     
     private String description;
     
-    @Temporal(DATE)
     @NotNull
-    private Date date;
+    private String date;
 
     @NotNull
     private boolean dontCare;
@@ -77,11 +75,11 @@ public class BadWeatherNotification implements Serializable {
         this.description = description;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
     

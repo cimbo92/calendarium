@@ -5,7 +5,6 @@
  */
 package managerBeans;
 
-import HelpClasses.Date;
 import entities.BadWeatherNotification;
 import entities.User;
 import java.security.Principal;
@@ -31,7 +30,7 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
     Principal principal;
     
     @Override
-    public List<BadWeatherNotification> searchByDate(Date date) {
+    public List<BadWeatherNotification> searchByDate(String date) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

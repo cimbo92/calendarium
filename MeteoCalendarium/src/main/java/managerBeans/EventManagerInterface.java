@@ -5,7 +5,7 @@
  */
 package managerBeans;
 
-import HelpClasses.Date;
+import HelpClasses.OverlappingException;
 import entities.Event;
 import entities.Place;
 import entities.Preference;
@@ -19,9 +19,10 @@ import javax.ejb.Remote;
  */
 public interface EventManagerInterface {
    
-    public void addEvent(Event event);
+    public void addEvent(String idUser, Event event) throws OverlappingException;
     
-    public boolean modifyEvent(int idEvent, String title, Date startDate, Date endDate,  String description, Place place, boolean outdoor, List<Preference> preferences);
+    //TODO
+    public boolean modifyEvent(int idEvent, String title, String Date, String startHour, String endHour,  String description, Place place, boolean outdoor, List<Preference> preferences);
 
     public boolean removeEvent(int idEvent);
     
@@ -32,6 +33,9 @@ public interface EventManagerInterface {
     public List<Event> searchEventIndoorUser(String idUser);
     
     public List<Event> searchOutdoorEvent(String idUser);
+    
+    //Questo metodo da tutti gli utenti che siano invitati ad un evento
+    public List<User> getInvitedUsers(Event event);
     
     public boolean searchEventOverlapping(String idUser, String date, String starthour, String endHour);
       
