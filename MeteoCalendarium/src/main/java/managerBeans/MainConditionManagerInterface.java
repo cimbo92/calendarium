@@ -5,15 +5,19 @@
  */
 package managerBeans;
 
+import entities.MainCondition;
 import javax.ejb.Remote;
 
 /**
  *
  * @author home
  */
-@Remote(NotificationManagerInterface.class)
-public class NotificationManager implements NotificationManagerInterface {
+@Remote
+interface MainConditionManagerInterface {
     
+    public void updateMainCondition(MainCondition mainCondition);
+    
+    public void addMainCondition(MainCondition mainCondition);
     
     
 }

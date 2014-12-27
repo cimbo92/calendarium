@@ -17,7 +17,9 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import managerBeans.EventManager;
+import managerBeans.EventManagerInterface;
 import managerBeans.PreferenceManager;
+import managerBeans.PreferenceManagerInterface;
 import managerBeans.UserManager;
 
 /**
@@ -31,9 +33,9 @@ public class EventBean {
 
 
     @EJB
-    private PreferenceManager pm;    
+    private PreferenceManagerInterface pm;    
     @EJB
-    private EventManager em;
+    private EventManagerInterface em;
     @EJB
     private UserManager um;
 

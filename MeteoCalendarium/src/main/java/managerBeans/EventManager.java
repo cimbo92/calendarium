@@ -13,6 +13,7 @@ import entities.Preference;
 import entities.User;
 import java.security.Principal;
 import java.util.List;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -24,6 +25,7 @@ import javax.persistence.Query;
  * @author home
  */
 @Stateless
+@Remote(EventManagerInterface.class)
 public class EventManager implements EventManagerInterface  {
     
     @PersistenceContext
