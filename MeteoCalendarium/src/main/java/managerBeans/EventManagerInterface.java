@@ -17,6 +17,7 @@ import javax.ejb.Remote;
  *
  * @author home
  */
+@Remote
 public interface EventManagerInterface {
    
     public void addEvent(String idUser, Event event) throws OverlappingException;

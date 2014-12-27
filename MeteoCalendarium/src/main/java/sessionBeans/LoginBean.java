@@ -5,6 +5,7 @@
 */
 package sessionBeans;
 
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Named
 @RequestScoped
+@Stateful
 public class LoginBean {
     
     private String username;
@@ -53,7 +55,7 @@ try {
             context.addMessage(null, new FacesMessage("Login failed."));
             return "index";
         }
-        return "/user/calendario";
+        return "/calendar";
     }
     
     public String logout() {
