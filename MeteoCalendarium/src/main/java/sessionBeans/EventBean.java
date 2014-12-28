@@ -57,12 +57,7 @@ public class EventBean {
     
     
     public void addEvent() {
-        
-        try{
-            em.addEvent(um.getLoggedUser().getEmail(), event);
-        }catch (OverlappingException e ){
-               System.out.println("Errore in add event di EventManager");
-        }
+        em.addEvent(event);
     }
     
     public void create(){

@@ -35,10 +35,6 @@ public class BadWeatherNotification implements Serializable {
     @OneToOne( targetEntity = Event.class, optional = false)
     private Event event;    
     
-    private String description;
-    
-    @NotNull
-    private String date;
 
     @NotNull
     private boolean dontCare;
@@ -65,22 +61,6 @@ public class BadWeatherNotification implements Serializable {
 
     public void setEvent(Event event) {
         this.event = event;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
     
       public boolean isDontCare() {

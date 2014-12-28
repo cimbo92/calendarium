@@ -39,8 +39,13 @@ public class EventManager implements EventManagerInterface  {
         
       //  if(searchEventOverlapping(idUser, event.getDate(), event.getStartHour(), event.getEndHour()))
       //      throw new OverlappingException();
-        event.setCreator(em.find(User.class, idUser));
-        System.out.println(idUser+ " " + event+"\n");
+       // event.setCreator(em.find(User.class, idUser));
+        //System.out.println(idUser+ " " + event+"\n");
+        em.persist(event);
+    }
+    
+    public void addEvent(Event event)
+    {
         em.persist(event);
     }
     

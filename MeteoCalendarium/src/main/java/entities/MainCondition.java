@@ -23,6 +23,7 @@ public class MainCondition implements Serializable {
     @Id
     String conditione; 
 
+    
     public String getCondition() {
         return conditione;
     }

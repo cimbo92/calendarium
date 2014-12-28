@@ -10,39 +10,27 @@
     <h:body>
         <h:form>
             <p:layout style="min-width:400px;min-height:900px; ">
-                <p:layoutUnit position="west" resizable="false" size="400" minSize="40" maxSize="400" >
-                    <div class="westpanel" >
-                        <div class="west-panel-user" style="position: absolute; margin:0px auto; " >
-                            <p:panelGrid columns="1" >
+                <p:layoutUnit position="west" resizable="false">
+                           <p:panelGrid columns="1" >
                                 <f:facet name="header">
                                     <h:graphicImage value="/resources/images/demo.jpg" width="350" />
                                 </f:facet>
                                 <h:outputText value="Benvenuto: #{loginBean.username}" />
                             </p:panelGrid>
-                        </div>
-                        <div class="west-panel-calendar" style ="position : absolute ; bottom : 50px; ">     
-                        </div>
-                    </div>
+           
                 </p:layoutUnit>
                 <p:layoutUnit position="center" >
                     <p:growl id="messages" showDetail="true" />
                     <p:growl id="msgs" showDetail="true" />
-                    <div style="margin-right: 0px ;position: absolute ;right: 200px">
-                        <h:panelGrid columnClasses="value">
-                            <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" timeZone="GMT+2" style="width: 1000px ; height: 500px">
-
+                        <h:panelGrid columnClasses="value" style ="margin : 0px auto">
+                            <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" timeZone="GMT+2">
                                 <p:ajax event="dateSelect" listener="#{scheduleView.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                                 <p:ajax event="eventSelect" listener="#{scheduleView.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                                 <p:ajax event="eventMove" listener="#{scheduleView.onEventMove}" update="messages" />
                                 <p:ajax event="eventResize" listener="#{scheduleView.onEventResize}" update="messages" />
-
                             </p:schedule>
-
-
                         </h:panelGrid>
-                    </div>
-                    <div style="margin-right: 0px ;position: absolute ;  bottom : 0px; right: 200px">
-                        <p:toolbar style="height: 50px ; width: 1000px ;">
+                        <p:toolbar style=" position: absolute ; bottom : 10px; right: 10px">
                             <f:facet name="right">
                                 <p:commandButton value="Warnings" id="warn"  onclick="PF('dlg-warnings').show();"/>
                                 <p:commandButton value="Invitations" id="users"   onclick="PF('dlg-invitations').show();"/>
@@ -50,40 +38,25 @@
                                 <p:commandButton value="Settings" id="settings" onclick="" />
                             </f:facet>
                         </p:toolbar>
-                    </div>
 
-
-                    <p:dialog header="Warnings" widgetVar="dlg-warnings"  resizable="false" >
-                        <div style="min-height: 400px;min-width: 400px">
-                            <h:panelGrid>
-                                <h:outputText value="Resistance to PrimeFaces is futile!" />             
-                                <div>
-                                    <p:toolbar style="position:absolute; bottom: 30px;right: 20px ">
+                    <p:dialog header="Warnings" widgetVar="dlg-warnings">
+                               <h:outputText value="Resistance to PrimeFaces is futile!" />             
+                                     <p:toolbar style=" position: absolute ; bottom : 10px; right: 10px">
                                         <f:facet name="right">
                                             <p:commandButton value="Previous" id="prev_warn"  onclick=""/>
                                             <p:commandButton value="Next" id="next_warn"  onclick=""/>
                                         </f:facet>
                                     </p:toolbar>
-                                </div>       
-                            </h:panelGrid>
-
-                        </div>
                     </p:dialog>
 
-                    <p:dialog header="Invitations" widgetVar="dlg-invitations" minHeight="40">
-                        <div style="min-height: 400px;min-width: 400px">                           
-                            <h:panelGrid>
+                    <p:dialog header="Invitations" widgetVar="dlg-invitations">      
                                 <h:outputText value="Resistance to PrimeFaces is futile!" />
-                                <div>
-                                    <p:toolbar style="position:absolute; bottom: 30px;right: 20px ">
+                                     <p:toolbar style=" position: absolute ; bottom : 10px; right: 10px">
                                         <f:facet name="right">
                                             <p:commandButton value="Previous" id="prev_inv"  onclick=""/>
                                             <p:commandButton value="Next" id="next_inv"  onclick=""/>
                                         </f:facet>
-                                    </p:toolbar>
-                                </div>
-                            </h:panelGrid>                        
-                        </div>
+                                    </p:toolbar>                     
                     </p:dialog>
 
                     <p:dialog header="Users" widgetVar="dlg-users" minHeight="40">
@@ -151,7 +124,7 @@
 
         <style type="text/css">
             .value {
-                width: 700px;
+                width: 1000px;
             }
         </style>
     </h:body>

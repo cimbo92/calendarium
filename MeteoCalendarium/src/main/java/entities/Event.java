@@ -30,9 +30,12 @@ public class Event implements Serializable {
     @GeneratedValue(generator="increment")
     private int idEvent;
     
+    
+    /*
     @NotNull
     @OneToOne(targetEntity = User.class, optional = false)
     private User creator;
+    */
     
     @NotNull(message = "May not be empty")
     private String title;
@@ -46,23 +49,13 @@ public class Event implements Serializable {
     @NotNull(message = "May not be empty")
     private String endHour;
     
-    
     private String description;
     
     @NotNull(message = "May not be empty")
     @ManyToOne(targetEntity = Place.class, optional = false, cascade={CascadeType.PERSIST},fetch=FetchType.LAZY)
     private Place place = new Place();
     
-    
     private boolean outdoor;
-    
-    @OneToMany(mappedBy = "event")
-    private List<Preference> preferences;
-    
-    @OneToMany(mappedBy = "event")
-    private List<Invitation> invitations;
-
-    
     
     public int getIdEvent() {
         return idEvent;
@@ -72,6 +65,8 @@ public class Event implements Serializable {
         this.idEvent = idEvent;
     }
 
+    
+    /*
     public User getCreator() {
         return creator;
     }
@@ -79,7 +74,8 @@ public class Event implements Serializable {
     public void setCreator(User creator) {
         this.creator = creator;
     }
-
+*/
+    
     public String getTitle() {
         return title;
     }
@@ -134,28 +130,6 @@ public class Event implements Serializable {
 
     public void setOutdoor(boolean outdoor) {
         this.outdoor = outdoor;
-    }
-    
-    public List<Preference> getPreferences() {
-        return preferences;
-    }
-
-    public void setPreferences(List<Preference> preferences) {
-        this.preferences = preferences;
-    }
-    
-    public List<Invitation> getInvitations() {
-        return invitations;
-    }
-
-    public void setInvitations(List<Invitation> invitations) {
-        this.invitations = invitations;
-    }
-    
-    @Override
-    public String toString(){
-        return idEvent + " " + creator + " " + title + " " + date + " " + startHour + " " + endHour + " " + description + "\n";
-                
     }
     
 }

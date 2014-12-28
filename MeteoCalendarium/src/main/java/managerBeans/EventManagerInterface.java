@@ -39,5 +39,7 @@ public interface EventManagerInterface {
     public List<User> getInvitedUsers(Event event);
     
     public boolean searchEventOverlapping(String idUser, String date, String starthour, String endHour);
+
+    public void addEvent(Event event);
       
 }
