@@ -7,9 +7,13 @@ package entities;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
@@ -47,7 +51,10 @@ public class Event implements Serializable {
     private String description;
     
     @NotNull(message = "May not be empty")
-    private Place place;
+    @ManyToOne(targetEntity = Place.class, optional = false, cascade={CascadeType.PERSIST},fetch=FetchType.LAZY)
+    private Place place = new Place();
+    
+    
     private boolean outdoor;
     
     @OneToMany(mappedBy = "event")
@@ -55,10 +62,7 @@ public class Event implements Serializable {
     
     @OneToMany(mappedBy = "event")
     private List<Invitation> invitations;
-    
-    
-    
-    
+
     
     
     public int getIdEvent() {
@@ -147,6 +151,12 @@ public class Event implements Serializable {
 
     public void setInvitations(List<Invitation> invitations) {
         this.invitations = invitations;
+    }
+    
+    @Override
+    public String toString(){
+        return idEvent + " " + creator + " " + title + " " + date + " " + startHour + " " + endHour + " " + description + "\n";
+                
     }
     
 }

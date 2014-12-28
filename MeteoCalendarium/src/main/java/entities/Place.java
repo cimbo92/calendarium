@@ -6,15 +6,21 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author home
  */
+@Entity
 public class Place implements Serializable {
     
     private static final long serialVersionUID = 1L;
@@ -24,10 +30,13 @@ public class Place implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     
-    @NotNull(message = "May not be empty")
-    private String postalCode;
+//    @NotNull(message = "May not be empty")
+//    private String postalCode;
     @NotNull(message = "May not be empty")
     private String city;
+    
+    @OneToMany(targetEntity = Event.class, mappedBy = "place")
+    private List<Event> events;
     
     
     public int getId() {
@@ -38,13 +47,13 @@ public class Place implements Serializable {
         this.id = id;
     }
 
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
+//    public String getPostalCode() {
+//        return postalCode;
+//    }
+//
+//    public void setPostalCode(String postalCode) {
+//        this.postalCode = postalCode;
+//    }
 
     public String getCity() {
         return city;
@@ -52,6 +61,14 @@ public class Place implements Serializable {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
     }
     
      @Override

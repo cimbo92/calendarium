@@ -32,10 +32,10 @@ public class Preference implements Serializable {
       @GeneratedValue(strategy = GenerationType.AUTO)
       private int id;
       
-      @ManyToOne
+      @ManyToOne(targetEntity = Event.class, optional = false)
       private Event event= new Event();
       
-      @ManyToOne
+      @ManyToOne(targetEntity = MainCondition.class, optional = false)
       private MainCondition main= new MainCondition();
 
     public Preference() {

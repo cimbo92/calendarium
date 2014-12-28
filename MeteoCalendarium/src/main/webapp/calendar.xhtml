@@ -105,7 +105,7 @@
                             <p:calendar id="to" value="#{eventBean.event.endHour}" pattern="HH:mm a" timeOnly="true" />
 
                             <h:outputLabel for="place" value="Place:" />
-                            <p:inputText id="place" value="#{eventBean.event.place}" required="true" />
+                            <p:inputText id="place" value="#{eventBean.event.place.city}" required="true" />
 
                             <h:outputLabel for="description" value="Description:" />
                             <p:inputText id="description" value="#{eventBean.event.description}" required="true" />
