@@ -7,9 +7,7 @@ package entities;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,14 +22,10 @@ import javax.validation.constraints.NotNull;
 public class Place implements Serializable {
     
     private static final long serialVersionUID = 1L;
-
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
     
 //    @NotNull(message = "May not be empty")
 //    private String postalCode;
+    @Id
     @NotNull(message = "May not be empty")
     private String city;
     
@@ -39,12 +33,12 @@ public class Place implements Serializable {
     private List<Event> events;
     
     
-    public int getId() {
-        return id;
+    public String getId() {
+        return city;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(String city) {
+        this.city = city;
     }
 
 //    public String getPostalCode() {
@@ -77,15 +71,10 @@ public class Place implements Serializable {
             return false;
         }
         Place place = (Place) obj;
-        if(id == place.getId()){
+        if(city == place.getId()){
             return true;
         }
         return false;
-    }
-    
-    @Override
-    public int hashCode() {
-        return id;
     }
     
     

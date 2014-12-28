@@ -7,7 +7,6 @@ package entities;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -51,7 +50,7 @@ public class Event implements Serializable {
     private String description;
     
     @NotNull(message = "May not be empty")
-    @ManyToOne(targetEntity = Place.class, optional = false, cascade={CascadeType.REFRESH},fetch=FetchType.LAZY)
+    @ManyToOne(targetEntity = Place.class, optional = false, cascade={CascadeType.PERSIST},fetch=FetchType.LAZY)
     private Place place = new Place();
     
     

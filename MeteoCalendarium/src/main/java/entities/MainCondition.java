@@ -21,7 +21,7 @@ import javax.persistence.Id;
 public class MainCondition implements Serializable {
     
     @Id
-    String conditione ; 
+    String conditione; 
 
     public String getCondition() {
         return conditione;

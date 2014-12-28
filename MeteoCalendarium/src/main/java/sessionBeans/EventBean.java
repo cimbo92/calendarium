@@ -9,16 +9,12 @@ import HelpClasses.OverlappingException;
 import entities.Event;
 import entities.MainCondition;
 import entities.Preference;
-import entities.User;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import managerBeans.EventManager;
 import managerBeans.EventManagerInterface;
-import managerBeans.PreferenceManager;
 import managerBeans.PreferenceManagerInterface;
 import managerBeans.UserManager;
 
