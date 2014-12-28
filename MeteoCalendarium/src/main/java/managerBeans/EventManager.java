@@ -46,7 +46,7 @@ public class EventManager implements EventManagerInterface  {
     
     public void addEvent(Event event)
     {
-        em.persist(event);
+        em.merge(event);
     }
     
     @Override

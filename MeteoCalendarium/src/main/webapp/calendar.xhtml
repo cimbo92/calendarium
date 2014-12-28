@@ -11,55 +11,72 @@
         <h:form>
             <p:layout style="min-width:400px;min-height:900px; ">
                 <p:layoutUnit position="west" resizable="false">
-                           <p:panelGrid columns="1" >
-                                <f:facet name="header">
-                                    <h:graphicImage value="/resources/images/demo.jpg" width="350" />
-                                </f:facet>
-                                <h:outputText value="Benvenuto: #{loginBean.username}" />
-                            </p:panelGrid>
-           
+                    <p:panelGrid columns="1" >
+                        <f:facet name="header">
+                            <h:graphicImage value="/resources/images/demo.jpg" width="350" />
+                        </f:facet>
+                        <h:outputText value="Benvenuto: #{loginBean.username}" />
+                    </p:panelGrid>
+
                 </p:layoutUnit>
                 <p:layoutUnit position="center" >
                     <p:growl id="messages" showDetail="true" />
                     <p:growl id="msgs" showDetail="true" />
-                        <h:panelGrid columnClasses="value" style ="margin : 0px auto">
-                            <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" timeZone="GMT+2">
-                                <p:ajax event="dateSelect" listener="#{scheduleView.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
-                                <p:ajax event="eventSelect" listener="#{scheduleView.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
-                                <p:ajax event="eventMove" listener="#{scheduleView.onEventMove}" update="messages" />
-                                <p:ajax event="eventResize" listener="#{scheduleView.onEventResize}" update="messages" />
-                            </p:schedule>
-                        </h:panelGrid>
-                        <p:toolbar style=" position: absolute ; bottom : 10px; right: 10px">
-                            <f:facet name="right">
-                                <p:commandButton value="Warnings" id="warn"  onclick="PF('dlg-warnings').show();"/>
-                                <p:commandButton value="Invitations" id="users"   onclick="PF('dlg-invitations').show();"/>
-                                <p:commandButton value=" Utenti" id="invitations"  onclick="PF('dlg-users').show();"/>
-                                <p:commandButton value="Settings" id="settings" onclick="" />
-                            </f:facet>
-                        </p:toolbar>
+                    <h:panelGrid columnClasses="value" style ="margin : 0px auto">
+                        <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" timeZone="GMT+2">
+                            <p:ajax event="dateSelect" listener="#{scheduleView.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+                            <p:ajax event="eventSelect" listener="#{scheduleView.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+                            <p:ajax event="eventMove" listener="#{scheduleView.onEventMove}" update="messages" />
+                            <p:ajax event="eventResize" listener="#{scheduleView.onEventResize}" update="messages" />
+                        </p:schedule>
+                    </h:panelGrid>
+                    <p:toolbar style=" position: absolute ; bottom : 10px; right: 10px">
+                        <f:facet name="right">
+                            <p:commandButton value="Warnings" id="warn"  onclick="PF('dlg-warnings').show();"/>
+                            <p:commandButton value="Invitations" id="users"   onclick="PF('dlg-invitations').show();"/>
+                            <p:commandButton value=" Utenti" id="invitations"  onclick="PF('dlg-users').show();"/>
+                            <p:commandButton value="Settings" id="settings" onclick="" />
+                        </f:facet>
+                    </p:toolbar>
 
                     <p:dialog header="Warnings" widgetVar="dlg-warnings">
-                               <h:outputText value="Resistance to PrimeFaces is futile!" />             
-                                     <p:toolbar style=" position: absolute ; bottom : 10px; right: 10px">
-                                        <f:facet name="right">
-                                            <p:commandButton value="Previous" id="prev_warn"  onclick=""/>
-                                            <p:commandButton value="Next" id="next_warn"  onclick=""/>
-                                        </f:facet>
-                                    </p:toolbar>
+                        <h:outputText value="Resistance to PrimeFaces is futile!" />             
+                        <p:toolbar>
+                            <f:facet name="right">
+                                <p:commandButton value="Previous" id="prev_warn"  onclick=""/>
+                                <p:commandButton value="Next" id="next_warn"  onclick=""/>
+                            </f:facet>
+                        </p:toolbar>
                     </p:dialog>
 
-                    <p:dialog header="Invitations" widgetVar="dlg-invitations">      
-                                <h:outputText value="Resistance to PrimeFaces is futile!" />
-                                     <p:toolbar style=" position: absolute ; bottom : 10px; right: 10px">
-                                        <f:facet name="right">
-                                            <p:commandButton value="Previous" id="prev_inv"  onclick=""/>
-                                            <p:commandButton value="Next" id="next_inv"  onclick=""/>
-                                        </f:facet>
-                                    </p:toolbar>                     
+                    <p:dialog header="Invitations" widgetVar="dlg-invitations" resizable="false">
+                        <p:panelGrid columns="2">
+                            <h:outputText value="Title:" />
+                            <h:outputText value="Porchiddio" />
+                            
+                            <h:outputText value="Invitor:" />
+                            <h:outputText value="Porchiddio" />
+                            
+                            <h:outputText value="Place:" />
+                            <h:outputText value="Porchiddio" />
+
+                            <h:outputText value="When:"/>
+                            <h:outputText value="Porchiddio/Porchiddio/Porchiddio; Porchiddio:Porchiddio" />
+                        </p:panelGrid>
+                        <p:panelGrid columns="2">
+                        <p:commandButton value="Accept" id="accept-inv"  onclick=""/>
+                        <p:commandButton value="Decline" id="decline_inv"  onclick=""/>
+                        </p:panelGrid>     
+
+                        <p:toolbar style="margin-bottom: 0px">
+                            <f:facet name="right">
+                                <p:commandButton value="Previous" id="prev_inv"  onclick=""/>
+                                <p:commandButton value="Next" id="next_inv"  onclick=""/>
+                            </f:facet>
+                        </p:toolbar>                     
                     </p:dialog>
 
-                    <p:dialog header="Users" widgetVar="dlg-users" minHeight="40">
+                    <p:dialog header="Users" widgetVar="dlg-users">
                         <h:outputText value="Resistance to PrimeFaces is futile!" />
                     </p:dialog>
 
@@ -73,7 +90,7 @@
 
                             <p:outputLabel for="from" value="From:" />
                             <p:calendar id="from" value="#{eventBean.event.startHour}" pattern="HH:mm a" timeOnly="true" />
-                            
+
                             <p:outputLabel for="to" value="To:" />
                             <p:calendar id="to" value="#{eventBean.event.endHour}" pattern="HH:mm a" timeOnly="true" />
 

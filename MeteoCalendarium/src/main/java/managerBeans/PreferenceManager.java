@@ -35,7 +35,7 @@ public class PreferenceManager implements PreferenceManagerInterface {
 
     @Override
     public void addPreference(Preference preference) {
-        em.persist(preference);
+        em.merge(preference);
     }
     
     

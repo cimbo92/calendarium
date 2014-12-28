@@ -8,7 +8,9 @@ package entities;
 import HelpClasses.PreferenceHelp;
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,12 +34,13 @@ public class Preference implements Serializable {
       @GeneratedValue(strategy = GenerationType.AUTO)
       private int id;
       
-      @ManyToOne(targetEntity = Event.class, optional = false)
+      @ManyToOne(targetEntity = Event.class, optional = false , cascade={CascadeType.MERGE},fetch=FetchType.LAZY)
       private Event event= new Event();
       
-      @ManyToOne(targetEntity = MainCondition.class, optional = false)
+      @ManyToOne(targetEntity = MainCondition.class, optional = false , cascade={CascadeType.MERGE}, fetch=FetchType.LAZY )
       private MainCondition main= new MainCondition();
 
+      
     public Preference() {
     }
 

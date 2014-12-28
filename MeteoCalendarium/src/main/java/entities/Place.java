@@ -29,10 +29,6 @@ public class Place implements Serializable {
     @NotNull(message = "May not be empty")
     private String city;
     
-    @OneToMany(targetEntity = Event.class, mappedBy = "place")
-    private List<Event> events;
-    
-    
     public String getId() {
         return city;
     }
@@ -57,14 +53,6 @@ public class Place implements Serializable {
         this.city = city;
     }
 
-    public List<Event> getEvents() {
-        return events;
-    }
-
-    public void setEvents(List<Event> events) {
-        this.events = events;
-    }
-    
      @Override
     public boolean equals(Object obj){
         if(!(obj instanceof Place)){

@@ -35,8 +35,6 @@ public class EventBean {
     @EJB
     private UserManager um;
 
-    
-    
     private List<String> selectedPref = new ArrayList<>();
     private List<Preference> preferences = new ArrayList<>();
     private Event event;

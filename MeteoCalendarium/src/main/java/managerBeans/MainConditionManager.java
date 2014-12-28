@@ -36,6 +36,6 @@ public class MainConditionManager implements MainConditionManagerInterface {
     @Override
     public void addMainCondition(MainCondition mainCondition) {
         
-        em.persist(mainCondition);
+        em.merge(mainCondition);
     }
 }
