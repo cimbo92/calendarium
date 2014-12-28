@@ -85,15 +85,12 @@
                             <h:outputLabel for="title" value="Title:" />
                             <p:inputText id="title" value="#{eventBean.event.title}" required="true" />
 
-                            <p:outputLabel for="date" value="Date:" />
-                            <p:calendar id="date" value="#{eventBean.event.date}" mode="inline" />
-
-                            <p:outputLabel for="from" value="From:" />
-                            <p:calendar id="from" value="#{eventBean.event.startHour}" pattern="HH:mm a" timeOnly="true" />
-
-                            <p:outputLabel for="to" value="To:" />
-                            <p:calendar id="to" value="#{eventBean.event.endHour}" pattern="HH:mm a" timeOnly="true" />
-
+                            <p:outputLabel for="startDate" value="From:" />
+                            <p:calendar id="startDate" value="#{eventBean.startDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+ 
+                            <p:outputLabel for="endDate" value="To:" />
+                            <p:calendar id="endDate" value="#{eventBean.endDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+ 
                             <h:outputLabel for="place" value="Place:" />
                             <p:inputText id="place" value="#{eventBean.event.place.city}" required="true" />
 

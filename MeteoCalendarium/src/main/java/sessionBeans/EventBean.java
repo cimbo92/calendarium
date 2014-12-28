@@ -10,6 +10,7 @@ import entities.Event;
 import entities.MainCondition;
 import entities.Preference;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -38,6 +39,25 @@ public class EventBean {
     private List<String> selectedPref = new ArrayList<>();
     private List<Preference> preferences = new ArrayList<>();
     private Event event;
+    private Date startDate = new Date();
+    private Date endDate = new Date();
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+    
     
     public EventBean(){}
     
@@ -55,6 +75,8 @@ public class EventBean {
     
     
     public void addEvent() {
+       event.convertStartDate(startDate);
+       event.convertEndDate(endDate);
         em.addEvent(event);
     }
     

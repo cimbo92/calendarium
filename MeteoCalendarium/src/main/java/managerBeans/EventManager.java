@@ -138,13 +138,13 @@ public class EventManager implements EventManagerInterface  {
                 }
         
         for(Event e : listEvent){
-            
+            /*
             int startH = Integer.parseInt(e.getStartHour());
             int endH = Integer.parseInt(e.getEndHour());
             
             if(overlapping(Integer.parseInt(startHour),Integer.parseInt(endHour), startH, endH))
             return true;
-            
+            */
         }
         
         return false;

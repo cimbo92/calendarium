@@ -6,16 +6,18 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.sql.Time;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 
 /**
  *
@@ -29,8 +31,7 @@ public class Event implements Serializable {
     @NotNull
     @GeneratedValue(generator="increment")
     private int idEvent;
-    
-    
+   
     /*
     @NotNull
     @OneToOne(targetEntity = User.class, optional = false)
@@ -41,14 +42,39 @@ public class Event implements Serializable {
     private String title;
     
     @NotNull(message = "May not be empty")
-    private String date;
+    private Timestamp startDate;
+
+     @NotNull(message = "May not be empty")
+    private Timestamp endDate;
+
+    public Timestamp getStartDate() {
+        return startDate;
+    }
+
+    public void convertStartDate(Date date)
+    {
+     startDate = new java.sql.Timestamp(date.getTime());        
+    }
     
-    @NotNull(message = "May not be empty")
-    private String startHour ;
+    public void convertEndDate(Date date)
+    {
+       endDate = new java.sql.Timestamp(date.getTime());      
+    }
     
-    @NotNull(message = "May not be empty")
-    private String endHour;
-    
+    public void setStartDate(Timestamp startDate) {
+        this.startDate = startDate;
+    }
+
+    public Timestamp getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Timestamp endDate) {
+        this.endDate = endDate;
+    }
+
+
+     
     private String description;
     
     @NotNull(message = "May not be empty")
@@ -83,30 +109,6 @@ public class Event implements Serializable {
 
     public void setTitle(String Title) {
         this.title = Title;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getStartHour() {
-        return startHour;
-    }
-
-    public void setStartHour(String startHour) {
-        this.startHour = startHour;
-    }
-
-    public String getEndHour() {
-        return endHour;
-    }
-
-    public void setEndHour(String endHour) {
-        this.endHour = endHour;
     }
     
     public String getDescription() {
