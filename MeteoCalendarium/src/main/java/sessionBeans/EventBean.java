@@ -41,6 +41,19 @@ public class EventBean {
     private Event event;
     private Date startDate = new Date();
     private Date endDate = new Date();
+    private String outdoor;
+
+    public String getOutdoor() {
+        return outdoor;
+    }
+
+    public void setOutdoor(String outdoor) {
+        this.outdoor = outdoor;
+    }
+
+    
+    
+    
 
     public Date getStartDate() {
         return startDate;
@@ -57,7 +70,6 @@ public class EventBean {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-    
     
     public EventBean(){}
     
@@ -77,7 +89,15 @@ public class EventBean {
     public void addEvent() {
        event.convertStartDate(startDate);
        event.convertEndDate(endDate);
-        em.addEvent(event);
+       boolean inout;
+       if(outdoor.equalsIgnoreCase("indoor"))
+       {
+           inout=false;
+       } else {
+           inout=true;
+       }
+       event.setOutdoor(inout);
+       em.addEvent(event);
     }
     
     public void create(){

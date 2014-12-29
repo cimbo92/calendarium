@@ -98,7 +98,7 @@
                             <p:inputText id="description" value="#{eventBean.event.description}" required="true" />
 
                             <p:outputLabel for="outdoor" value="In/Out"  />
-                            <p:selectOneRadio id="outdoor" value="#{eventBean.event.outdoor}">
+                            <p:selectOneRadio id="outdoor" value="#{eventBean.outdoor}">
                                 <f:selectItem itemLabel="Indoor" itemValue="indoor" />
                                 <f:selectItem itemLabel="Outdoor" itemValue="outdoor" />
                             </p:selectOneRadio>
@@ -117,8 +117,7 @@
                     </p:dialog>
 
                     <p:dialog modal="true" resizable="false" widgetVar="dlg" header="Values" showEffect="clip">
-                        <p:panelGrid columns="2" id="INOUT" columnClasses="label,value">
-                            <h:outputText value=":" />
+                        <p:panelGrid columns="2" id="INOUT" columnClasses="label,value">  
                             <h:outputText value="#{eventBean.event.outdoor}" />
                         </p:panelGrid>
                     </p:dialog>
