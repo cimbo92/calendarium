@@ -98,17 +98,11 @@ public class User implements Serializable {
         return false;
     }
     
-    @Override
-    public String toString(){
-        return email;
-    }
-    
     //TODO
 //    @Override
 //    public int hashCode() {
 //        return email;
 //    }
-    
     
     
 }

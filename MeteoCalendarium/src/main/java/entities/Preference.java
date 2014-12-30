@@ -35,7 +35,7 @@ public class Preference implements Serializable {
       private int id;
       
       @ManyToOne(targetEntity = Event.class, optional = false , cascade={CascadeType.MERGE},fetch=FetchType.LAZY)
-      private Event event= new Event();
+      private Event event;
       
       @ManyToOne(targetEntity = MainCondition.class, optional = false , cascade={CascadeType.MERGE}, fetch=FetchType.LAZY )
       private MainCondition main= new MainCondition();

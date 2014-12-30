@@ -9,17 +9,19 @@ import HelpClasses.OverlappingException;
 import entities.Event;
 import entities.MainCondition;
 import entities.Preference;
+import entities.User;
+import entities.UserEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import managerBeans.EventManagerInterface;
 import managerBeans.PreferenceManagerInterface;
+import managerBeans.UserEventManagerInterface;
 import managerBeans.UserManager;
+import managerBeans.UserManagerInterface;
 
 /**
  *
@@ -36,14 +38,20 @@ public class EventBean {
     @EJB
     private EventManagerInterface em;
     @EJB
-    private UserManager um;
+    private UserEventManagerInterface uem;
+    @EJB
+    private UserManagerInterface um;
 
     private List<String> selectedPref = new ArrayList<>();
     private List<Preference> preferences = new ArrayList<>();
+    private List<String> invitated = new ArrayList<>();
     private Event event;
+
+    
     private Date startDate = new Date();
     private Date endDate = new Date();
     private String outdoor;
+    private UserEvent userEvent;
 
     public String getOutdoor() {
         return outdoor;
@@ -52,6 +60,10 @@ public class EventBean {
     public void setOutdoor(String outdoor) {
         this.outdoor = outdoor;
     }
+
+    
+    
+    
 
     public Date getStartDate() {
         return startDate;
@@ -85,34 +97,34 @@ public class EventBean {
     
     
     public void addEvent() {
-        
        event.convertStartDate(startDate);
-       
        event.convertEndDate(endDate);
-       
        boolean inout;
-       
        if(outdoor.equalsIgnoreCase("indoor"))
        {
            inout=false;
        } else {
            inout=true;
        }
-       
        event.setOutdoor(inout);
-       
-       event.setCreator(um.getLoggedUser());
-       
-        try {
-            em.addEvent(event);
-        } catch (OverlappingException ex) {
-            Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       em.addEvent(event);
     }
     
     public void create(){
         this.addEvent();
         this.save();
+        this.addUserEvent();
+        
+    }
+    
+    public void addUserEvent(){
+        userEvent=new UserEvent(event, um.getLoggedUser(), true);
+        //System.out.println(um.getLoggedUser());
+        uem.addUserEvent(userEvent);
+        for(int i=0;i<invitated.size();i++){
+            userEvent=new UserEvent(event, um.findByMail(invitated.get(i)) , false);
+               uem.addUserEvent(userEvent);
+        }
     }
       
 
@@ -145,6 +157,19 @@ public class EventBean {
     public List<String> listPref ()
     {
         return MainCondition.getListPref();
+    }
+    
+    public List<String> listUser()
+    {
+        return um.getListUsers();
+    }
+    
+    public List<String> getInvitated() {
+        return invitated;
+    }
+
+    public void setInvitated(List<String> invitated) {
+        this.invitated = invitated;
     }
 
 }

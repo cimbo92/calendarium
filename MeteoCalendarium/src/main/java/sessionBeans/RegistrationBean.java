@@ -10,6 +10,7 @@ import entities.User;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import managerBeans.UserManagerInterface;
 
 /**
  *
@@ -21,7 +22,7 @@ public class RegistrationBean {
 
 
     @EJB
-    private UserManager um;
+    private UserManagerInterface um;
 
     private User user;
 
@@ -41,7 +42,7 @@ public class RegistrationBean {
 
     public String register() {
         um.save(user);
-        return "registrationAuthentication?faces-redirect=true";
+        return "user/home?faces-redirect=true";
     }
 
 }

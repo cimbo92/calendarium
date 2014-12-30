@@ -107,6 +107,12 @@
                             <p:selectManyCheckbox id="grid" value="#{eventBean.selectedPref}" layout="grid" columns="3">
                                 <f:selectItems value="#{eventBean.listPref()}" var="preference" itemLabel="#{listPref}" itemValue="#{listPref}" />
                             </p:selectManyCheckbox>
+                            
+                            <p:outputLabel for="advanced" value="Advanced:" />
+                            <p:selectManyMenu id="advanced" value="#{eventBean.invitated}" 
+                                 filter="true" filterMatchMode="contains" showCheckbox="true">
+                            <f:selectItems value="#{eventBean.listUser()}" var="listUser" itemLabel="#{listUser}" itemValue="#{listUser}" />
+                            </p:selectManyMenu>
 
 
                             <p:commandButton type="reset" value="Reset" />
@@ -116,19 +122,12 @@
 
                     </p:dialog>
 
-                    <p:dialog modal="true" resizable="false" widgetVar="dlg" header="Values" showEffect="clip">
-                        <p:panelGrid columns="2" id="INOUT" columnClasses="label,value">  
-                            <h:outputText value="#{eventBean.event.outdoor}" />
-                        </p:panelGrid>
-                    </p:dialog>
+                   
 
-                    <p:dialog header="Values" modal="true" showEffect="clip" widgetVar="dlg" resizable="false">
-                        <p:outputPanel id="Pref">
-                            <p:dataList value="#{eventBean.selectedPref}" var="preference">
-                                #{preference}
-                            </p:dataList>
-                        </p:outputPanel>
-                    </p:dialog>
+                    
+                    
+                    
+                    
                 </p:layoutUnit>
 
             </p:layout>

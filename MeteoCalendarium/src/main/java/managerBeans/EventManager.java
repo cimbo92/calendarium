@@ -35,19 +35,21 @@ public class EventManager implements EventManagerInterface  {
     Principal principal;
     
     @Override
-    public void addEvent(Event event) throws OverlappingException  {
+    public void addEvent(String idUser, Event event) throws OverlappingException  {
         
       //  if(searchEventOverlapping(idUser, event.getDate(), event.getStartHour(), event.getEndHour()))
       //      throw new OverlappingException();
-        System.out.println(event+"\n");
+       // event.setCreator(em.find(User.class, idUser));
+        //System.out.println(idUser+ " " + event+"\n");
+       // em.persist(event);
+    }
+    
+    @Override
+    public void addEvent(Event event)
+    {       
         
-        try{
-        em.merge(event.getPlace());
-        }catch (Exception e){
-            
-        }
         
-        em.persist(event);
+        em.merge(event);
     }
     
     @Override
@@ -180,7 +182,7 @@ public class EventManager implements EventManagerInterface  {
         List<Invitation> listInvitation = null;
         List<User> listUser = null;
         
-        
+        /*
       try{
         Query query = em.createQuery("SELECT i " +
                                                                                         "FROM Invitation i JOIN i.event e " +
@@ -191,7 +193,7 @@ public class EventManager implements EventManagerInterface  {
     }catch (Exception e){
         System.out.println("Errore nella query getInvitedUsers");
     }
-      
+      */
       for(Invitation i : listInvitation){
           listUser.add(i.getOwner());
       }

@@ -20,7 +20,7 @@ import javax.ejb.Remote;
 @Remote
 public interface EventManagerInterface {
    
-    public void addEvent(Event event) throws OverlappingException;
+    public void addEvent(String idUser, Event event) throws OverlappingException;
     
     //TODO
     public boolean modifyEvent(int idEvent, String title, String Date, String startHour, String endHour,  String description, Place place, boolean outdoor, List<Preference> preferences);
@@ -39,5 +39,7 @@ public interface EventManagerInterface {
     public List<User> getInvitedUsers(Event event);
     
     public boolean searchEventOverlapping(String idUser, String date, String starthour, String endHour);
+
+    public void addEvent(Event event);
       
 }

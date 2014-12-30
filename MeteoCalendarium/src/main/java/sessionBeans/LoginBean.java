@@ -55,7 +55,7 @@ try {
             context.addMessage(null, new FacesMessage("Login failed."));
             return "index";
         }
-        return "/calendar";
+        return "calendar";
     }
     
     public String logout() {

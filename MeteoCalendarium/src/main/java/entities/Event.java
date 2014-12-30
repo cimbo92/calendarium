@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.persistence.GenerationType;
 import javax.persistence.OneToOne;
 import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 
@@ -28,63 +29,20 @@ public class Event implements Serializable {
      
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @NotNull
-    @GeneratedValue(generator="increment")
-    private int idEvent;
-   
     
-    @NotNull
-    @OneToOne(targetEntity = User.class, optional = false)
-    private User creator;
-    
-    
+      @Id
+      @GeneratedValue(strategy = GenerationType.TABLE)
+      private int idEvent;
+
     @NotNull(message = "May not be empty")
     private String title;
     
     @NotNull(message = "May not be empty")
     private Timestamp startDate;
 
-    @NotNull(message = "May not be empty")
+     @NotNull(message = "May not be empty")
     private Timestamp endDate;
 
-     
-    private String description;
-    
-    @NotNull(message = "May not be empty")
-    @ManyToOne(targetEntity = Place.class, optional = false, cascade={CascadeType.MERGE},fetch=FetchType.LAZY)
-    private Place place = new Place();
-    
-    
-    private boolean outdoor;
-    
-    public int getIdEvent() {
-        return idEvent;
-    }
-
-    public void setIdEvent(int idEvent) {
-        this.idEvent = idEvent;
-    }
-
-    
-    
-    public User getCreator() {
-        return creator;
-    }
-
-    public void setCreator(User creator) {
-        this.creator = creator;
-    }
-
-    
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String Title) {
-        this.title = Title;
-    }
-    
     public Timestamp getStartDate() {
         return startDate;
     }
@@ -109,6 +67,35 @@ public class Event implements Serializable {
 
     public void setEndDate(Timestamp endDate) {
         this.endDate = endDate;
+    }
+
+
+     
+    private String description;
+    
+    @NotNull(message = "May not be empty")
+    @ManyToOne(targetEntity = Place.class, optional = false, cascade={CascadeType.MERGE},fetch=FetchType.LAZY)
+    private Place place = new Place();
+    
+    
+    private boolean outdoor;
+    
+    
+    
+    public int getIdEvent() {
+        return idEvent;
+    }
+
+    public void setIdEvent(int idEvent) {
+        this.idEvent = idEvent;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String Title) {
+        this.title = Title;
     }
     
     public String getDescription() {
@@ -135,8 +122,4 @@ public class Event implements Serializable {
         this.outdoor = outdoor;
     }
     
-    @Override
-    public String toString(){
-        return idEvent + " " + title + " " + creator + " " + startDate + " " + endDate + " " + description + " "  + place + " " + outdoor;
-    }
 }

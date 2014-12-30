@@ -6,6 +6,7 @@
 package managerBeans;
 
 import entities.User;
+import java.util.List;
 import javax.ejb.Remote;
 
 /**
@@ -22,5 +23,9 @@ public interface UserManagerInterface {
      public User getLoggedUser();
      
      public User getUser(String idUser);
+     
+     public User findByMail(String mail);
+     
+     public List<String> getListUsers();
              
 }
