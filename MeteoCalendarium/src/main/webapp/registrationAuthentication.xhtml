@@ -30,12 +30,6 @@ and open the template in the editor.
         <h:form>
             <p:panel header="Registration Form">
                 <h:panelGrid columns="3" id="regGrid">
-                    <h:outputLabel for="name">Name:</h:outputLabel>
-                    <p:inputText id="name" value="#{registrationBean.user.name}">
-                        <p:ajax update="namemsg"/>
-                    </p:inputText>
-                    <p:message id="namemsg" for="name" />
-
                     <h:outputLabel for="email">Email:</h:outputLabel>
                     <p:inputText id="email" value="#{registrationBean.user.email}" >
                         <p:ajax update="emailmsg"/>

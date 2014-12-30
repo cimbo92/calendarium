@@ -43,7 +43,6 @@ public class UserManager implements UserManagerInterface {
 
     @Override
     public User getLoggedUser() {
-        System.out.println(principal.getName());
         return em.find(User.class, principal.getName());
       
     }
@@ -53,8 +52,7 @@ public class UserManager implements UserManagerInterface {
         //query utenti
         
         Query query;
-        query = em.createQuery("SELECT e.email " + "FROM User e");
-        
+        query = em.createQuery("SELECT e.email FROM User e WHERE e.email!= :usermail" ).setParameter("usermail", principal.getName());
         List<String> user;
         user = query.getResultList();
         return user;

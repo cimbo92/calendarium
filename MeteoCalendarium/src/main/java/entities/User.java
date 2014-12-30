@@ -35,16 +35,6 @@ public class User implements Serializable {
     private String password;
     @NotNull(message = "May not be empty")
     private String groupName;
-    @NotNull(message = "May not be empty")
-    private String name;
-    
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
@@ -54,8 +44,6 @@ public class User implements Serializable {
         return groupName;
     }
     
-
-
     public String getEmail() {
         return email;
     }
@@ -84,23 +72,7 @@ public class User implements Serializable {
         }
     }
     
-     @Override
-    public boolean equals(Object obj){
-        if(!(obj instanceof User)){
-            return false;
-        }
-        User user = (User) obj;
-        if(user.getEmail() == email){
-            return true;
-        }
-        return false;
-    }
-    
-    //TODO
-//    @Override
-//    public int hashCode() {
-//        return email;
-//    }
+   
     
     
 }

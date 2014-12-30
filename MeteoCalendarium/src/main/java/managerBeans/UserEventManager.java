@@ -9,10 +9,12 @@ import entities.Event;
 import entities.User;
 import entities.UserEvent;
 import java.security.Principal;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -31,5 +33,17 @@ public class UserEventManager implements UserEventManagerInterface {
     public void addUserEvent(UserEvent userEvent) {
         em.merge(userEvent);
     }
+
+    @Override
+    public User findEventCreator(Event event) {
+      Query query;
+        query =em.createQuery( "SELECT u FROM User u Join UserEvent ue WHERE ue.event= :event and ue.creator=1" ).setParameter("event", event);      
+        List<User> user =query.getResultList(); 
+       return user.get(0);
+           
+    }
     
+    
+    
+   
 }

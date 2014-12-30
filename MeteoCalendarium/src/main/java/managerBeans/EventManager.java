@@ -89,6 +89,8 @@ public class EventManager implements EventManagerInterface  {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    
+    
     @Override
     public boolean searchEventOverlapping(String idUser, String date, String startHour, String endHour) {
         
@@ -197,6 +199,16 @@ public class EventManager implements EventManagerInterface  {
       }
      
       return listUser;
+    }
+
+    @Override
+    public List<Event> findInvitatedEvent(User user) {
+    Query query = em
+                                        .createQuery("SELECT e FROM Event e JOIN UserEvent ue WHERE ue.user= :user AND ue.creator=0").setParameter("user", user);
+    List<Event> events = query.getResultList();
+    
+    System.out.println(events.get(0).getPlace().getCity());
+    return events;
     }
 
 }

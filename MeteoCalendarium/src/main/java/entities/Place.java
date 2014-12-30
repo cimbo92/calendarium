@@ -28,15 +28,7 @@ public class Place implements Serializable {
     @Id
     @NotNull(message = "May not be empty")
     private String city;
-    
-    public String getId() {
-        return city;
-    }
-
-    public void setId(String city) {
-        this.city = city;
-    }
-
+   
 //    public String getPostalCode() {
 //        return postalCode;
 //    }

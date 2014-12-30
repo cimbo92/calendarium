@@ -19,4 +19,6 @@ public interface UserEventManagerInterface {
     
     public void addUserEvent(UserEvent userEvent);
     
+    public User findEventCreator(Event event);
+    
 }
