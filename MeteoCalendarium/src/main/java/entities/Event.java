@@ -45,35 +45,8 @@ public class Event implements Serializable {
     @NotNull(message = "May not be empty")
     private Timestamp startDate;
 
-     @NotNull(message = "May not be empty")
+    @NotNull(message = "May not be empty")
     private Timestamp endDate;
-
-    public Timestamp getStartDate() {
-        return startDate;
-    }
-
-    public void convertStartDate(Date date)
-    {
-     startDate = new java.sql.Timestamp(date.getTime());        
-    }
-    
-    public void convertEndDate(Date date)
-    {
-       endDate = new java.sql.Timestamp(date.getTime());      
-    }
-    
-    public void setStartDate(Timestamp startDate) {
-        this.startDate = startDate;
-    }
-
-    public Timestamp getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Timestamp endDate) {
-        this.endDate = endDate;
-    }
-
 
      
     private String description;
@@ -112,6 +85,32 @@ public class Event implements Serializable {
         this.title = Title;
     }
     
+    public Timestamp getStartDate() {
+        return startDate;
+    }
+
+    public void convertStartDate(Date date)
+    {
+     startDate = new java.sql.Timestamp(date.getTime());        
+    }
+    
+    public void convertEndDate(Date date)
+    {
+       endDate = new java.sql.Timestamp(date.getTime());      
+    }
+    
+    public void setStartDate(Timestamp startDate) {
+        this.startDate = startDate;
+    }
+
+    public Timestamp getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Timestamp endDate) {
+        this.endDate = endDate;
+    }
+    
     public String getDescription() {
         return description;
     }
@@ -136,4 +135,8 @@ public class Event implements Serializable {
         this.outdoor = outdoor;
     }
     
+    @Override
+    public String toString(){
+        return idEvent + " " + title + " " + creator + " " + startDate + " " + endDate + " " + description + " "  + place + " " + outdoor;
+    }
 }

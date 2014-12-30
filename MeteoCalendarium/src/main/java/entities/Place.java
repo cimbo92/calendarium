@@ -65,5 +65,8 @@ public class Place implements Serializable {
         return false;
     }
     
-    
+    @Override
+    public String toString(){
+        return city;
+    }
 }
