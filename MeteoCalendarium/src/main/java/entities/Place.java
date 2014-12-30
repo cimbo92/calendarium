@@ -53,17 +53,7 @@ public class Place implements Serializable {
         this.city = city;
     }
 
-     @Override
-    public boolean equals(Object obj){
-        if(!(obj instanceof Place)){
-            return false;
-        }
-        Place place = (Place) obj;
-        if(city == place.getId()){
-            return true;
-        }
-        return false;
-    }
+   
     
     
 }

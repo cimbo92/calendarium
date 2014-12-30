@@ -5,22 +5,24 @@
  */
 package managerBeans;
 
-import entities.Event;
-import entities.MainCondition;
+import entities.User;
 import java.security.Principal;
+import java.util.List;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.Convert;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
  * @author Alessandro
  */
 @Stateless
-@Remote(MainConditionManagerInterface.class)
-public class MainConditionManager implements MainConditionManagerInterface {
+@Remote(IDEventManagerInterface.class)
+public class IDEventManager implements IDEventManagerInterface {
     
     @PersistenceContext
     private EntityManager em;
@@ -29,12 +31,22 @@ public class MainConditionManager implements MainConditionManagerInterface {
     Principal principal;
     
     @Override
-    public void updateMainCondition(MainCondition mainCondition) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Long findMax(){
+        Query query;
+        query =em.createQuery( "SELECT MAX(i.id) FROM iDEvent i" );
+        
+        List<Long> id =query.getResultList(); 
+        if(id.get(0)==null)
+        {
+            return Long.parseLong("1");
+        }
+        else
+        {
+        return id.get(0)+1;
+        }
+        
+        
     }
-
-    @Override
-    public void addMainCondition(MainCondition mainCondition) {
-        em.merge(mainCondition);
-    }
+    
+    
 }

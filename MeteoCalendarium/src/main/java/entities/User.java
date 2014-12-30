@@ -35,11 +35,9 @@ public class User implements Serializable {
     private String password;
     @NotNull(message = "May not be empty")
     private String groupName;
-    
     @NotNull(message = "May not be empty")
     private String name;
     
-
     public String getName() {
         return name;
     }

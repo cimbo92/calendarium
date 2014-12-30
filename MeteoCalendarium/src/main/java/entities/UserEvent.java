@@ -25,10 +25,10 @@ public class UserEvent {
         @GeneratedValue(generator="increment")
         private int idUserEvent;
     
-        @ManyToOne(targetEntity = Event.class, optional = false , cascade={CascadeType.MERGE},fetch=FetchType.LAZY)
+        @ManyToOne(targetEntity = Event.class, optional = false,fetch=FetchType.LAZY)
         private Event event;
         
-        @ManyToOne(targetEntity = User.class, optional = false , cascade={CascadeType.MERGE},fetch=FetchType.LAZY)
+        @ManyToOne(targetEntity = User.class, optional = false,fetch=FetchType.LAZY)
         private User user;
         
         public boolean creator;

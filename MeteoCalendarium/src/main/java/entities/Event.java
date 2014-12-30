@@ -16,8 +16,14 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.persistence.ElementCollection;
 import javax.persistence.GenerationType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 
@@ -29,11 +35,10 @@ public class Event implements Serializable {
      
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @OneToOne(targetEntity = iDEvent.class, optional = false, cascade={CascadeType.MERGE},fetch=FetchType.LAZY)
+    private iDEvent idEvent;
     
-      @Id
-      @GeneratedValue(strategy = GenerationType.TABLE)
-      private int idEvent;
-
     @NotNull(message = "May not be empty")
     private String title;
     
@@ -69,24 +74,20 @@ public class Event implements Serializable {
         this.endDate = endDate;
     }
 
-
-     
     private String description;
     
     @NotNull(message = "May not be empty")
     @ManyToOne(targetEntity = Place.class, optional = false, cascade={CascadeType.MERGE},fetch=FetchType.LAZY)
     private Place place = new Place();
-    
-    
+       
+   
     private boolean outdoor;
     
-    
-    
-    public int getIdEvent() {
+    public iDEvent getIdEvent() {
         return idEvent;
     }
 
-    public void setIdEvent(int idEvent) {
+    public void setIdEvent(iDEvent idEvent) {
         this.idEvent = idEvent;
     }
     
@@ -121,5 +122,6 @@ public class Event implements Serializable {
     public void setOutdoor(boolean outdoor) {
         this.outdoor = outdoor;
     }
+
     
 }

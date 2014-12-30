@@ -43,7 +43,9 @@ public class UserManager implements UserManagerInterface {
 
     @Override
     public User getLoggedUser() {
+        System.out.println(principal.getName());
         return em.find(User.class, principal.getName());
+      
     }
     @Override
     public List<String> getListUsers()
@@ -55,7 +57,6 @@ public class UserManager implements UserManagerInterface {
         
         List<String> user;
         user = query.getResultList();
-        System.out.println(user.get(0));
         return user;
     }
 

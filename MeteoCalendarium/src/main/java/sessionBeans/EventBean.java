@@ -11,13 +11,17 @@ import entities.MainCondition;
 import entities.Preference;
 import entities.User;
 import entities.UserEvent;
+import entities.iDEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import managerBeans.EventManagerInterface;
+import managerBeans.IDEventManager;
+import managerBeans.IDEventManagerInterface;
 import managerBeans.PreferenceManagerInterface;
 import managerBeans.UserEventManagerInterface;
 import managerBeans.UserManager;
@@ -41,7 +45,9 @@ public class EventBean {
     private UserEventManagerInterface uem;
     @EJB
     private UserManagerInterface um;
-
+    @EJB
+    private IDEventManagerInterface idm;
+    
     private List<String> selectedPref = new ArrayList<>();
     private List<Preference> preferences = new ArrayList<>();
     private List<String> invitated = new ArrayList<>();
@@ -60,10 +66,6 @@ public class EventBean {
     public void setOutdoor(String outdoor) {
         this.outdoor = outdoor;
     }
-
-    
-    
-    
 
     public Date getStartDate() {
         return startDate;
@@ -107,6 +109,11 @@ public class EventBean {
            inout=true;
        }
        event.setOutdoor(inout);
+       long id;
+       id=idm.findMax();
+       iDEvent idEv = new iDEvent();
+       idEv.setId(id);
+       event.setIdEvent(idEv);
        em.addEvent(event);
     }
     
@@ -118,8 +125,8 @@ public class EventBean {
     }
     
     public void addUserEvent(){
+        
         userEvent=new UserEvent(event, um.getLoggedUser(), true);
-        //System.out.println(um.getLoggedUser());
         uem.addUserEvent(userEvent);
         for(int i=0;i<invitated.size();i++){
             userEvent=new UserEvent(event, um.findByMail(invitated.get(i)) , false);
