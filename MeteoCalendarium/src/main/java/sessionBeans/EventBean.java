@@ -12,6 +12,8 @@ import entities.Preference;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
@@ -51,10 +53,6 @@ public class EventBean {
         this.outdoor = outdoor;
     }
 
-    
-    
-    
-
     public Date getStartDate() {
         return startDate;
     }
@@ -87,17 +85,29 @@ public class EventBean {
     
     
     public void addEvent() {
+        
        event.convertStartDate(startDate);
+       
        event.convertEndDate(endDate);
+       
        boolean inout;
+       
        if(outdoor.equalsIgnoreCase("indoor"))
        {
            inout=false;
        } else {
            inout=true;
        }
+       
        event.setOutdoor(inout);
-       em.addEvent(event);
+       
+       event.setCreator(um.getLoggedUser());
+       
+        try {
+            em.addEvent(event);
+        } catch (OverlappingException ex) {
+            Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void create(){

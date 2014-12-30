@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.persistence.OneToOne;
 import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 
 /**
@@ -32,11 +33,11 @@ public class Event implements Serializable {
     @GeneratedValue(generator="increment")
     private int idEvent;
    
-    /*
+    
     @NotNull
     @OneToOne(targetEntity = User.class, optional = false)
     private User creator;
-    */
+    
     
     @NotNull(message = "May not be empty")
     private String title;
@@ -93,7 +94,7 @@ public class Event implements Serializable {
     }
 
     
-    /*
+    
     public User getCreator() {
         return creator;
     }
@@ -101,7 +102,7 @@ public class Event implements Serializable {
     public void setCreator(User creator) {
         this.creator = creator;
     }
-*/
+
     
     public String getTitle() {
         return title;
