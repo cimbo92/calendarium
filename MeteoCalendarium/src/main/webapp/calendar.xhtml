@@ -73,8 +73,8 @@
 
                         <p:toolbar style="margin-bottom: 0px">
                             <f:facet name="right">
-                                 <p:commandButton value="Next" id="next_inv" action="#{invitationBean.next()}" oncomplete="PF.('inv-dialog').update()"/>
-                                <p:commandButton value="Previous" id="prev_inv" action="#{invitationBean.prev()}" oncomplete="PF.('inv-dialog').update()"/>
+                                 <p:commandButton value="Next" id="next_inv" update="inv-dialog" actionListener="#{invitationBean.next()}" />
+                                <p:commandButton value="Previous" id="prev_inv" update="inv-dialog" actionListener="#{invitationBean.prev()}"/>
                                   </f:facet>
                         </p:toolbar>                     
                     </p:dialog>

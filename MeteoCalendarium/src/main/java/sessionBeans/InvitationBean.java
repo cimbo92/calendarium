@@ -49,6 +49,8 @@ public class InvitationBean {
     private int i=0;
 
     public void next() {
+          System.out.println(i+"-"+invites.size());
+      
         if (i < invites.size()-1) {
             i++;
         } else {
@@ -66,10 +68,8 @@ public class InvitationBean {
     }
 
     public void loadList() {
-        i = 0;
+        i=0;
         invites = em.findInvitatedEvent(um.getLoggedUser());
-
-        System.out.println("porcodio");
     }
 
     public String getCurrentTitle() {
@@ -109,7 +109,6 @@ public class InvitationBean {
 
     public String getCurrentInvitor() {
         if (!invites.isEmpty()) {
-
             User creator = uem.findEventCreator(invites.get(i));
             return creator.getEmail();
         } else {

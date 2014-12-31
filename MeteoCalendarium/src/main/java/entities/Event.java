@@ -77,7 +77,7 @@ public class Event implements Serializable {
     private String description;
     
     @NotNull(message = "May not be empty")
-    @ManyToOne(targetEntity = Place.class, optional = false, cascade={CascadeType.MERGE},fetch=FetchType.LAZY)
+    @ManyToOne(targetEntity = Place.class, optional = false, cascade={CascadeType.MERGE},fetch=FetchType.EAGER)
     private Place place = new Place();
        
    

@@ -12,7 +12,10 @@ import entities.Place;
 import entities.Preference;
 import entities.User;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -203,12 +206,16 @@ public class EventManager implements EventManagerInterface  {
 
     @Override
     public List<Event> findInvitatedEvent(User user) {
-    Query query = em
-                                        .createQuery("SELECT e FROM Event e JOIN UserEvent ue WHERE ue.user= :user AND ue.creator=0").setParameter("user", user);
-    List<Event> events = query.getResultList();
+        
+    //Query query = em
+    //                                    .createQuery("SELECT DISTINCT e FROM Event AS e JOIN UserEvent AS ue WHERE ue.user= :user AND ue.creator=0").setParameter("user", user);
     
-    System.out.println(events.get(0).getPlace().getCity());
-    return events;
+    Query query1 = em.createQuery("SELECT ue.event FROM UserEvent ue where ue.user = :user and ue.creator=0").setParameter(("user"), user);
+    
+    List<Event> tempSet = new ArrayList<>(query1.getResultList());
+    
+  
+    return (List)tempSet;
     }
 
 }
