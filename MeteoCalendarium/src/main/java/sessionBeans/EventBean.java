@@ -33,7 +33,6 @@ import managerBeans.UserManagerInterface;
  */
 @Named
 @RequestScoped
-
 public class EventBean {
 
 

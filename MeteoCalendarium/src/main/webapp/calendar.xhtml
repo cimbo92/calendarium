@@ -8,7 +8,7 @@
 
     </h:head>
     <h:body>
-        <h:form>
+        <h:form id="form">
             <p:layout style="min-width:400px;min-height:900px; ">
                 <p:layoutUnit position="west" resizable="false">
                     <p:panelGrid columns="1" >
@@ -19,7 +19,7 @@
                     </p:panelGrid>
 
                 </p:layoutUnit>
-                <p:layoutUnit position="center" >
+                <p:layoutUnit position="center" id="center" >
                     <p:growl id="messages" showDetail="true" />
                     <p:growl id="msgs" showDetail="true" />
                     <h:panelGrid columnClasses="value" style ="margin : 0px auto">
@@ -33,8 +33,8 @@
                     <p:toolbar style=" position: absolute ; bottom : 10px; right: 10px">
                         <f:facet name="right">
                             <p:commandButton value="Warnings" id="warn"  onclick="PF('dlg-warnings').show();"/>
-                            <p:commandButton value="Invitations" id="users"   onclick="PF('dlg-invitations').show();#{invitationBean.loadList()};"/>
-                            <p:commandButton value=" Utenti" id="invitations"  onclick="PF('dlg-users').show();"/>
+                            <p:commandButton value="Invitations" id="invitations" onclick="PF('dlg-invitations').show();"/>
+                            <p:commandButton value=" Utenti" id="utenti"  onclick="PF('dlg-users').show();"/>
                             <p:commandButton value="Settings" id="settings" onclick="" />
                         </f:facet>
                     </p:toolbar>
@@ -50,34 +50,32 @@
                     </p:dialog>
 
                     <p:dialog header="Invitations" widgetVar="dlg-invitations" id="inv-dialog" resizable="false">
-                        <p:panelGrid columns="2">
-                            <h:outputText value="Title:" />
-                            <h:outputText value="#{invitationBean.currentTitle}" />
-                            
-                            <h:outputText value="Invitor:" />
-                            <h:outputText value="#{invitationBean.currentInvitor}" />
-                            
-                            <h:outputText value="Place:" />
-                            <h:outputText value="#{invitationBean.currentWhere}" />
+                        <p:carousel value="#{invitationBean.invites}" headerText="Basic" var="event" numVisible="1" >
+                        <h:panelGrid columns="2" style="width:100%;height: 100%"columnClasses="label,value">
+                                <h:outputText value="Title:" />
+                                <h:outputText value="#{event.title}" />
 
-                            <h:outputText value="When:"/>
-                            <h:outputText value="#{invitationBean.currentWhen}" />
-                            
-                             <h:outputText value="Description:"/>
-                             <h:outputText value="#{invitationBean.currentDescription}" />
-                        </p:panelGrid>
-                        <p:panelGrid columns="2">
-                        <p:commandButton value="Accept" id="accept-inv"  onclick=""/>
-                        <p:commandButton value="Decline" id="decline_inv"  onclick=""/>
-                        </p:panelGrid>     
+                                <h:outputText value="Invitor:" />
+                                <h:outputText value="#PROVA" />
 
-                        <p:toolbar style="margin-bottom: 0px">
-                            <f:facet name="right">
-                                 <p:commandButton value="Next" id="next_inv" update="inv-dialog" actionListener="#{invitationBean.next()}" />
-                                <p:commandButton value="Previous" id="prev_inv" update="inv-dialog" actionListener="#{invitationBean.prev()}"/>
-                                  </f:facet>
-                        </p:toolbar>                     
+                                <h:outputText value="Place:" />
+                                <h:outputText value="#{event.place.city}" />
+
+                                <h:outputText value="When:"/>
+                                <h:outputText value="From : #{event.startDate} To #{event.endDate}"/>
+                                
+                                <h:outputText value="Description:"/>
+                                <h:outputText value="#{event.description}" />
+
+                                <f:facet name="footer">
+                                    <p:commandButton icon="ui-icon-search">
+                                        <f:setPropertyActionListener value="#{car}" target="#{invitationBean.selectedEvent}" />
+                                    </p:commandButton>
+                                </f:facet>
+                            </h:panelGrid>
+                        </p:carousel> 
                     </p:dialog>
+
 
                     <p:dialog header="Users" widgetVar="dlg-users">
                         <h:outputText value="Resistance to PrimeFaces is futile!" />
@@ -90,10 +88,10 @@
 
                             <p:outputLabel for="startDate" value="From:" />
                             <p:calendar id="startDate" value="#{eventBean.startDate}" pattern="MM/dd/yyyy HH:mm:ss" />
- 
+
                             <p:outputLabel for="endDate" value="To:" />
                             <p:calendar id="endDate" value="#{eventBean.endDate}" pattern="MM/dd/yyyy HH:mm:ss" />
- 
+
                             <h:outputLabel for="place" value="Place:" />
                             <p:inputText id="place" value="#{eventBean.event.place.city}" required="true" />
 
@@ -110,11 +108,11 @@
                             <p:selectManyCheckbox id="grid" value="#{eventBean.selectedPref}" layout="grid" columns="3">
                                 <f:selectItems value="#{eventBean.listPref()}" var="preference" itemLabel="#{listPref}" itemValue="#{listPref}" />
                             </p:selectManyCheckbox>
-                            
+
                             <p:outputLabel for="advanced" value="Advanced:" />
                             <p:selectManyMenu id="advanced" value="#{eventBean.invitated}" 
-                                 filter="true" filterMatchMode="contains" showCheckbox="true">
-                            <f:selectItems value="#{eventBean.listUser()}" var="listUser" itemLabel="#{listUser}" itemValue="#{listUser}" />
+                                              filter="true" filterMatchMode="contains" showCheckbox="true">
+                                <f:selectItems value="#{eventBean.listUser()}" var="listUser" itemLabel="#{listUser}" itemValue="#{listUser}" />
                             </p:selectManyMenu>
 
 
@@ -125,12 +123,12 @@
 
                     </p:dialog>
 
-                   
 
-                    
-                    
-                    
-                    
+
+
+
+
+
                 </p:layoutUnit>
 
             </p:layout>

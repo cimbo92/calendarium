@@ -7,10 +7,14 @@ package sessionBeans;
 
 import entities.Event;
 import entities.User;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import managerBeans.EventManager;
 import managerBeans.EventManagerInterface;
@@ -21,10 +25,10 @@ import managerBeans.UserManagerInterface;
  *
  * @author Alessandro
  */
-@Named
-@RequestScoped
 
-public class InvitationBean {
+@ViewScoped
+@Named
+public class InvitationBean implements Serializable {
 
     @EJB
     EventManagerInterface em;
@@ -33,45 +37,52 @@ public class InvitationBean {
     @EJB
     UserEventManagerInterface uem;
 
-    private List<Event> invites = new ArrayList<>();
+    private List<Event> invites;
 
-    public List<Event> getInvites() {
-        return invites;
+    private Event selectedEvent;
+    
+    @PostConstruct
+    public void init() {
+        invites=new ArrayList<Event>();
+       invites = em.findInvitatedEvent(um.getLoggedUser());
+       invites.add(new Event());
+       
     }
-
-    public int getI() {
-        return i;
-    }
-
-    public void setInvites(List<Event> invites) {
-        this.invites = invites;
-    }
-    private int i=0;
-
+    /*
+  
     public void next() {
-          System.out.println(i+"-"+invites.size());
-      
-        if (i < invites.size()-1) {
-            i++;
+          loadList();
+          if (i < invites.size()-1) {
+          i++;
         } else {
             i = 0;
         }
+          loadStrings();
+          System.out.println(this.title+this.where);
     }
 
     public void prev() {
+        loadList();
         if (i != 0) {
             i--;
         }else
         {
             i=invites.size()-1;
         }
+        loadStrings();
+System.out.println(this.title+this.where);
     }
 
     public void loadList() {
-        i=0;
-        invites = em.findInvitatedEvent(um.getLoggedUser());
+     i=0;
+     System.out.println(i+"-"+invites.size());
+     invites = em.findInvitatedEvent(um.getLoggedUser());
+     System.out.println(i+"-"+invites.size());
+     loadStrings();
     }
 
+    
+    
     public String getCurrentTitle() {
         if (!invites.isEmpty()) {
             return invites.get(i).getTitle();
@@ -115,6 +126,22 @@ public class InvitationBean {
             return "";
         }
     }
+      */
 
+    public List<Event> getInvites() {
+        return invites;
+    }
+
+    public void setInvites(List<Event> invites) {
+        this.invites = invites;
+    }
+
+    public Event getSelectedEvent() {
+        return selectedEvent;
+    }
+
+    public void setSelectedEvent(Event selectedEvent) {
+        this.selectedEvent = selectedEvent;
+    }
 }
 

@@ -11,6 +11,7 @@ import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author home
  */
-@Named
+@ManagedBean(name="loginBean")
 @RequestScoped
 @Stateful
 public class LoginBean {
@@ -30,7 +31,7 @@ public class LoginBean {
     public LoginBean() {
     }
     
-    public String getUsername() {
+        public String getUsername() {
         return this.username;
     }
     
