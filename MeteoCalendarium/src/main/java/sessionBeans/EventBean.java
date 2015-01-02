@@ -9,24 +9,20 @@ import HelpClasses.OverlappingException;
 import entities.Event;
 import entities.MainCondition;
 import entities.Preference;
-import entities.User;
 import entities.UserEvent;
 import entities.iDEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import managerBeans.EventManagerInterface;
-import managerBeans.IDEventManager;
 import managerBeans.IDEventManagerInterface;
 import managerBeans.PreferenceManagerInterface;
 import managerBeans.UserEventManagerInterface;
-import managerBeans.UserManager;
 import managerBeans.UserManagerInterface;
 
 /**

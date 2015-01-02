@@ -111,11 +111,12 @@ public class EventManager implements EventManagerInterface  {
         try {
                         Query query = em
                                         .createQuery("SELECT e "
-                                                        + "FROM Event e JOIN e.owner u"
-                                                        + "WHERE u.email =: idUser");
+                                                        + "FROM Event e JOIN e.creator u "
+                                                        + "WHERE u.email =:idUser");
                         
                   //ListEvent contiene gli eventi creati dall'utente
                   listEvent = (List<Event>) query.setParameter("idUser", creator.getEmail()).getResultList();
+              
                   
                   Timestamp tmp;
                   for(Event e : listEvent){
@@ -128,6 +129,7 @@ public class EventManager implements EventManagerInterface  {
                   }
                         
                 } catch (Exception e) {
+                    System.out.println(e);
                     System.out.println("Errore query searchOverlapping");
                         return false;
                 }
@@ -139,7 +141,7 @@ public class EventManager implements EventManagerInterface  {
             Query query = em
                                         .createQuery("SELECT ue "
                                                         + "FROM UserEvent ue JOIN ue.user u "
-                                                        + "WHERE u.email =: idUser AND i.accepted = true");
+                                                        + "WHERE u.email =:idUser AND ue.accepted = true");
             
             listUserEvent = (List<UserEvent>) query.setParameter("idUser", creator.getEmail()).getResultList();
             
@@ -158,12 +160,12 @@ public class EventManager implements EventManagerInterface  {
             
             
         } catch (Exception e) {
+                    System.out.println(e);
                     System.out.println("Errore query searchOverlapping");
                         return false;
                 }
         
         for(Event e : listEvent){
-           
             if(overlapping(e.getStartDate(),e.getEndDate(), startDate,endDate))
             return true;
             
@@ -173,8 +175,9 @@ public class EventManager implements EventManagerInterface  {
     }
     
     public boolean overlapping(Timestamp beginFirst, Timestamp endFirst, Timestamp beginSecond, Timestamp endSecond){
-        //Beginning in the same day
         
+        //Beginning in the same day
+ 
         if(overlappingLeft(beginFirst, endFirst, beginSecond, endSecond) ||
            overlappingCenter(beginFirst, endFirst, beginSecond, endSecond) ||
            overlappingRight(beginFirst, endFirst, beginSecond, endSecond) )
@@ -186,7 +189,7 @@ public class EventManager implements EventManagerInterface  {
      private boolean overlappingLeft(Timestamp startFirst, Timestamp endFirst, Timestamp startSecond, Timestamp endSecond){
  
          
-       return  ( (startFirst.compareTo(startSecond) == 0) && (startFirst.compareTo(startSecond) > 0) ) &&
+       return  ( (startFirst.compareTo(startSecond) == 0) || (startFirst.compareTo(startSecond) > 0) ) &&
                 (endSecond.compareTo(startFirst) > 0 );
          
          
@@ -195,11 +198,12 @@ public class EventManager implements EventManagerInterface  {
     
     private boolean overlappingCenter(Timestamp startFirst, Timestamp endFirst, Timestamp startSecond, Timestamp endSecond){
         
-       return (  ( (startFirst.compareTo(startSecond) == 0) && (startFirst.compareTo(startSecond) < 0 ) )
+        
+       return (  ( (startFirst.compareTo(startSecond) == 0) || (startFirst.compareTo(startSecond) < 0 ) )
                
                &&
                
-                 ( (endFirst.compareTo(endSecond) == 0) && (endFirst.compareTo(endSecond) > 0 ) )
+                 ( (endFirst.compareTo(endSecond) == 0) || (endFirst.compareTo(endSecond) > 0 ) )
               );
         
        // return (startFirst <= startSecond && endFirst >= endSecond);
@@ -207,7 +211,7 @@ public class EventManager implements EventManagerInterface  {
     
     private boolean overlappingRight(Timestamp startFirst, Timestamp endFirst, Timestamp startSecond, Timestamp endSecond){
         
-        return ( ((startFirst.compareTo(startSecond)==0) && ((startFirst.compareTo(startSecond) < 0))) && (endFirst.compareTo(startSecond) > 0) );
+        return ( ((startFirst.compareTo(startSecond)==0) || ((startFirst.compareTo(startSecond) < 0))) && (endFirst.compareTo(startSecond) > 0) );
         
       //  return startFirst <= startSecond && endFirst > startSecond;
     }
@@ -215,10 +219,12 @@ public class EventManager implements EventManagerInterface  {
     @Override
     public List<User> getInvitedUsers(Event event) {
        
+        /*
+        
         List<Invitation> listInvitation = null;
         List<User> listUser = null;
         
-        /*
+        
       try{
         Query query = em.createQuery("SELECT i " +
                                                                                         "FROM Invitation i JOIN i.event e " +
@@ -229,12 +235,15 @@ public class EventManager implements EventManagerInterface  {
     }catch (Exception e){
         System.out.println("Errore nella query getInvitedUsers");
     }
-      */
+      
       for(Invitation i : listInvitation){
           listUser.add(i.getOwner());
       }
      
       return listUser;
+                
+                */
+        return null;
     }
 
     @Override

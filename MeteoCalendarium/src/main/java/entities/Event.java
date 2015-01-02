@@ -28,7 +28,7 @@ public class Event implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @OneToOne(targetEntity = iDEvent.class, optional = false, cascade={CascadeType.MERGE},fetch=FetchType.LAZY)
+    @OneToOne(targetEntity = iDEvent.class, optional = false, cascade={CascadeType.PERSIST},fetch=FetchType.LAZY)
     private iDEvent idEvent;
     
     @NotNull(message = "May not be empty")
