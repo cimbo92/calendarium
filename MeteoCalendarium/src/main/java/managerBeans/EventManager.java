@@ -15,9 +15,7 @@ import entities.UserEvent;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -42,9 +40,8 @@ public class EventManager implements EventManagerInterface  {
     @Override
     public void addEvent(Event event) throws OverlappingException  {
         
-      //  if(searchEventOverlapping(idUser, event.getDate(), event.getStartHour(), event.getEndHour()))
-      //      throw new OverlappingException();
-       // event.setCreator(em.find(User.class, idUser));
+        if(searchEventOverlapping(event))
+            throw new OverlappingException();
         
         try{
         em.merge(event.getPlace());

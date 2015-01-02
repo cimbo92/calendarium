@@ -6,26 +6,15 @@
 package entities;
 
 import java.io.Serializable;
-import java.sql.Time;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import javax.persistence.ElementCollection;
-import javax.persistence.GenerationType;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 
 /**
  *
@@ -43,6 +32,7 @@ public class Event implements Serializable {
     private iDEvent idEvent;
     
     @NotNull(message = "May not be empty")
+    @ManyToOne(targetEntity = User.class, optional = false)
     private User creator;
     
     @NotNull(message = "May not be empty")
