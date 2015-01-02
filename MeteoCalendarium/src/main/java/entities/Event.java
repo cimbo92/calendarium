@@ -33,6 +33,9 @@ import org.eclipse.persistence.jpa.jpql.parser.DateTime;
  */@Entity
 public class Event implements Serializable {
      
+     
+    //ATTRIBUTI 
+     
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -40,13 +43,35 @@ public class Event implements Serializable {
     private iDEvent idEvent;
     
     @NotNull(message = "May not be empty")
+    private User creator;
+    
+    @NotNull(message = "May not be empty")
     private String title;
     
     @NotNull(message = "May not be empty")
     private Timestamp startDate;
 
-     @NotNull(message = "May not be empty")
+    @NotNull(message = "May not be empty")
     private Timestamp endDate;
+     
+    private String description;
+    
+    @NotNull(message = "May not be empty")
+    @ManyToOne(targetEntity = Place.class, optional = false, cascade={CascadeType.MERGE},fetch=FetchType.EAGER)
+    private Place place = new Place();
+    
+    private boolean outdoor;
+    
+
+    //METODI
+    
+    public User getCreator() {
+        return creator;
+    }
+    
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
 
     public Timestamp getStartDate() {
         return startDate;
@@ -73,15 +98,6 @@ public class Event implements Serializable {
     public void setEndDate(Timestamp endDate) {
         this.endDate = endDate;
     }
-
-    private String description;
-    
-    @NotNull(message = "May not be empty")
-    @ManyToOne(targetEntity = Place.class, optional = false, cascade={CascadeType.MERGE},fetch=FetchType.EAGER)
-    private Place place = new Place();
-       
-   
-    private boolean outdoor;
     
     public iDEvent getIdEvent() {
         return idEvent;

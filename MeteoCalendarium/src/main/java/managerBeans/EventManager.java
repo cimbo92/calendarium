@@ -38,19 +38,20 @@ public class EventManager implements EventManagerInterface  {
     Principal principal;
     
     @Override
-    public void addEvent(String idUser, Event event) throws OverlappingException  {
+    public void addEvent(Event event) throws OverlappingException  {
         
       //  if(searchEventOverlapping(idUser, event.getDate(), event.getStartHour(), event.getEndHour()))
       //      throw new OverlappingException();
        // event.setCreator(em.find(User.class, idUser));
-        //System.out.println(idUser+ " " + event+"\n");
-       // em.persist(event);
-    }
-    
-    @Override
-    public void addEvent(Event event)
-    {       
-        em.merge(event);
+        
+        try{
+        em.merge(event.getPlace());
+        }catch (Exception e){
+            
+        }
+        
+        em.persist(event);
+  
     }
     
     @Override

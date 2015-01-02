@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
@@ -98,22 +100,29 @@ public class EventBean {
     
     
     public void addEvent() {
-       event.convertStartDate(startDate);
-       event.convertEndDate(endDate);
-       boolean inout;
-       if(outdoor.equalsIgnoreCase("indoor"))
-       {
-           inout=false;
-       } else {
-           inout=true;
-       }
-       event.setOutdoor(inout);
-       long id;
-       id=idm.findMax();
-       iDEvent idEv = new iDEvent();
-       idEv.setId(id);
-       event.setIdEvent(idEv);
-       em.addEvent(event);
+        
+            event.convertStartDate(startDate);
+            event.convertEndDate(endDate);
+            boolean inout;
+            if(outdoor.equalsIgnoreCase("indoor"))
+            {
+                inout=false;
+            } else {
+                inout=true;
+            }
+            event.setOutdoor(inout);
+            long id;
+            id=idm.findMax();
+            iDEvent idEv = new iDEvent();
+            idEv.setId(id);
+            event.setIdEvent(idEv);
+            event.setCreator(um.getLoggedUser());
+            
+        try {
+            em.addEvent(event);
+        } catch (OverlappingException ex) {
+            Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void create(){
