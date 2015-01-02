@@ -11,7 +11,9 @@ import entities.Invitation;
 import entities.Place;
 import entities.Preference;
 import entities.User;
+import entities.UserEvent;
 import java.security.Principal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -94,24 +96,39 @@ public class EventManager implements EventManagerInterface  {
     }
 
     
-    
     @Override
-    public boolean searchEventOverlapping(String idUser, String date, String startHour, String endHour) {
+    public boolean searchEventOverlapping(Event event) {
         
+  
+        
+        User creator = event.getCreator();
+        Timestamp startDate = event.getStartDate();
+        Timestamp endDate = event.getEndDate();
+       
         List<Event> listEvent;
-        
-        List<Invitation> listInvitations;
+      
+        List<UserEvent> listUserEvent;
         
         //lista da controllare Overlapping con eventi creati
-        
+               
         try {
                         Query query = em
                                         .createQuery("SELECT e "
                                                         + "FROM Event e JOIN e.owner u"
-                                                        + "WHERE e.date = :date AND u.email =: idUser");
+                                                        + "WHERE u.email =: idUser");
                         
-                  //ListEvent contiene gli eventi creati dall'utente nella data incriminata
-                  listEvent = (List<Event>) query.setParameter("date", date).setParameter("idUser", idUser).getResultList();
+                  //ListEvent contiene gli eventi creati dall'utente
+                  listEvent = (List<Event>) query.setParameter("idUser", creator.getEmail()).getResultList();
+                  
+                  Timestamp tmp;
+                  for(Event e : listEvent){
+                     tmp = e.getStartDate();
+                      if(!((tmp.getYear() == startDate.getYear()) &&
+                           (tmp.getMonth() == startDate.getMonth()) &&
+                           (tmp.getDate()== startDate.getDate())) ){
+                      listEvent.remove(e);
+                      }
+                  }
                         
                 } catch (Exception e) {
                     System.out.println("Errore query searchOverlapping");
@@ -123,18 +140,22 @@ public class EventManager implements EventManagerInterface  {
         try {
             
             Query query = em
-                                        .createQuery("SELECT i "
-                                                        + "FROM Invitation i JOIN i.owner u"
+                                        .createQuery("SELECT ue "
+                                                        + "FROM UserEvent ue JOIN ue.user u "
                                                         + "WHERE u.email =: idUser AND i.accepted = true");
             
-            listInvitations = (List<Invitation>) query.setParameter("idUser", idUser).getResultList();
+            listUserEvent = (List<UserEvent>) query.setParameter("idUser", creator.getEmail()).getResultList();
             
             //Dalle lista di inviti aggiungo alla lista di eventi da controllare
             //quelli in cui l'utente abbia accettato un invito!
             
-            for(Invitation i : listInvitations){
-                if(i.getDate().equals(date)){
-                    listEvent.add(i.getEvent());
+            Timestamp tmp;
+            for(UserEvent userEvent : listUserEvent){
+                tmp = userEvent.getEvent().getStartDate();
+                if(((tmp.getYear() == startDate.getYear()) &&
+                           (tmp.getMonth() == startDate.getMonth()) &&
+                           (tmp.getDate()== startDate.getDate()))){
+                    listEvent.add(userEvent.getEvent());
                 }
             }
             
@@ -145,19 +166,16 @@ public class EventManager implements EventManagerInterface  {
                 }
         
         for(Event e : listEvent){
-            /*
-            int startH = Integer.parseInt(e.getStartHour());
-            int endH = Integer.parseInt(e.getEndHour());
-            
-            if(overlapping(Integer.parseInt(startHour),Integer.parseInt(endHour), startH, endH))
+           
+            if(overlapping(e.getStartDate(),e.getEndDate(), startDate,endDate))
             return true;
-            */
+            
         }
         
         return false;
     }
     
-    public boolean overlapping(int beginFirst, int endFirst, int beginSecond, int endSecond){
+    public boolean overlapping(Timestamp beginFirst, Timestamp endFirst, Timestamp beginSecond, Timestamp endSecond){
         //Beginning in the same day
         
         if(overlappingLeft(beginFirst, endFirst, beginSecond, endSecond) ||
@@ -168,16 +186,33 @@ public class EventManager implements EventManagerInterface  {
         return false;
     }
     
-     private boolean overlappingLeft(int startFirst, int endFirst, int startSecond, int endSecond){
-      return  (startFirst >= startSecond && endSecond > startFirst);
+     private boolean overlappingLeft(Timestamp startFirst, Timestamp endFirst, Timestamp startSecond, Timestamp endSecond){
+ 
+         
+       return  ( (startFirst.compareTo(startSecond) == 0) && (startFirst.compareTo(startSecond) > 0) ) &&
+                (endSecond.compareTo(startFirst) > 0 );
+         
+         
+    //  return  (startFirst >= startSecond && endSecond > startFirst);
     }
     
-    private boolean overlappingCenter(int startFirst, int endFirst, int startSecond, int endSecond){
-        return (startFirst <= startSecond && endFirst >= endSecond);
+    private boolean overlappingCenter(Timestamp startFirst, Timestamp endFirst, Timestamp startSecond, Timestamp endSecond){
+        
+       return (  ( (startFirst.compareTo(startSecond) == 0) && (startFirst.compareTo(startSecond) < 0 ) )
+               
+               &&
+               
+                 ( (endFirst.compareTo(endSecond) == 0) && (endFirst.compareTo(endSecond) > 0 ) )
+              );
+        
+       // return (startFirst <= startSecond && endFirst >= endSecond);
     }
     
-    private boolean overlappingRight(int startFirst, int endFirst, int startSecond, int endSecond){
-        return startFirst <= startSecond && endFirst > startSecond;
+    private boolean overlappingRight(Timestamp startFirst, Timestamp endFirst, Timestamp startSecond, Timestamp endSecond){
+        
+        return ( ((startFirst.compareTo(startSecond)==0) && ((startFirst.compareTo(startSecond) < 0))) && (endFirst.compareTo(startSecond) > 0) );
+        
+      //  return startFirst <= startSecond && endFirst > startSecond;
     }
 
     @Override

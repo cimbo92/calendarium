@@ -36,7 +36,7 @@ public interface EventManagerInterface {
     //Questo metodo da tutti gli utenti che siano invitati ad un evento
     public List<User> getInvitedUsers(Event event);
     
-    public boolean searchEventOverlapping(String idUser, String date, String starthour, String endHour);
+    public boolean searchEventOverlapping(Event event);
 
     public void addEvent(Event event) throws OverlappingException;;
     

@@ -68,5 +68,30 @@ public class UserEvent {
             this.user=user;
             this.creator=creator;
         }
+
+    public int getIdUserEvent() {
+        return idUserEvent;
+    }
+
+    public void setIdUserEvent(int idUserEvent) {
+        this.idUserEvent = idUserEvent;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
     
+        
 }
