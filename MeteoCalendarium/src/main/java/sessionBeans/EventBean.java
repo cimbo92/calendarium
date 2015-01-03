@@ -21,6 +21,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import managerBeans.EventManagerInterface;
 import managerBeans.IDEventManagerInterface;
+import managerBeans.MailSenderManagerInterface;
 import managerBeans.PreferenceManagerInterface;
 import managerBeans.UserEventManagerInterface;
 import managerBeans.UserManagerInterface;
@@ -44,6 +45,8 @@ public class EventBean {
     private UserManagerInterface um;
     @EJB
     private IDEventManagerInterface idm;
+    @EJB
+    private MailSenderManagerInterface mailSender;
     
     private List<String> selectedPref = new ArrayList<>();
     private List<Preference> preferences = new ArrayList<>();
@@ -95,7 +98,7 @@ public class EventBean {
     }
     
     
-    public void addEvent() {
+    public void addEvent() throws OverlappingException {
         
             event.convertStartDate(startDate);
             event.convertEndDate(endDate);
@@ -114,18 +117,20 @@ public class EventBean {
             event.setIdEvent(idEv);
             event.setCreator(um.getLoggedUser());
             
-        try {
+        
             em.addEvent(event);
-        } catch (OverlappingException ex) {
-            Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
     }
     
-    public void create(){
-        this.addEvent();
-        this.save();
-        this.addUserEvent();
+    public void create() {   
         
+        try {
+            this.addEvent();
+            this.save();
+            this.addUserEvent();
+           } catch (OverlappingException ex) {
+            Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void addUserEvent(){
@@ -135,6 +140,7 @@ public class EventBean {
         for(int i=0;i<invitated.size();i++){
             userEvent=new UserEvent(event, um.findByMail(invitated.get(i)) , false);
                uem.addUserEvent(userEvent);
+               mailSender.sendMail(invitated.get(i),"Invitation",userEvent.getEvent().toString());
         }
     }
       

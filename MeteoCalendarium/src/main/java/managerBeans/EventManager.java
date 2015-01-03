@@ -40,8 +40,9 @@ public class EventManager implements EventManagerInterface  {
     @Override
     public void addEvent(Event event) throws OverlappingException  {
         
-        if(searchEventOverlapping(event))
-            throw new OverlappingException();
+        //TODO
+//        if(searchEventOverlapping(event))
+//           throw new OverlappingException();
         
         try{
         em.merge(event.getPlace());
@@ -98,7 +99,6 @@ public class EventManager implements EventManagerInterface  {
         
   
         
-        User creator = event.getCreator();
         Timestamp startDate = event.getStartDate();
         Timestamp endDate = event.getEndDate();
        
@@ -115,8 +115,9 @@ public class EventManager implements EventManagerInterface  {
                                                         + "WHERE u.email =:idUser");
                         
                   //ListEvent contiene gli eventi creati dall'utente
-                  listEvent = (List<Event>) query.setParameter("idUser", creator.getEmail()).getResultList();
-              
+                  listEvent = (List<Event>) query.setParameter("idUser", principal.getName()).getResultList();
+            
+                  
                   
                   Timestamp tmp;
                   for(Event e : listEvent){
@@ -141,9 +142,9 @@ public class EventManager implements EventManagerInterface  {
             Query query = em
                                         .createQuery("SELECT ue "
                                                         + "FROM UserEvent ue JOIN ue.user u "
-                                                        + "WHERE u.email =:idUser AND ue.accepted = true");
+                                                        + "WHERE (u.email =:idUser AND ue.accepted = true");
             
-            listUserEvent = (List<UserEvent>) query.setParameter("idUser", creator.getEmail()).getResultList();
+            listUserEvent = (List<UserEvent>) query.setParameter("idUser",principal.getName()).getResultList();
             
             //Dalle lista di inviti aggiungo alla lista di eventi da controllare
             //quelli in cui l'utente abbia accettato un invito!

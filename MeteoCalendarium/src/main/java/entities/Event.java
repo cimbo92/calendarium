@@ -129,5 +129,9 @@ public class Event implements Serializable {
         this.outdoor = outdoor;
     }
 
+    @Override
+    public String toString(){
+        return title + "\n" + "Creator: "+creator+"\n"+"Title: "+title+"\n"+"Description: "+description+"\n"+"Place: "+place.getCity()+"\n"+"OutDoor: "+outdoor+"\n";
+    }
     
 }
