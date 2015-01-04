@@ -63,7 +63,7 @@ public class UserEventManager implements UserEventManagerInterface {
             query.setParameter("decision", decision);
             query.executeUpdate();
    
-
+ 
     }
     
     
