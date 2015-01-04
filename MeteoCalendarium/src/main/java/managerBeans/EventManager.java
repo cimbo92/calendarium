@@ -15,6 +15,7 @@ import entities.UserEvent;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -115,16 +116,24 @@ public class EventManager implements EventManagerInterface  {
                   //ListEvent contiene gli eventi creati dall'utente
                   listEvent = (List<Event>) query.setParameter("idUser", principal.getName()).getResultList();
             
-                  
+                 
+
                   
                   Timestamp tmp;
-                  for(Event e : listEvent){
-                     tmp = e.getStartDate();
+                  
+                  // Get an iterator.
+                  Iterator<Event> ite = listEvent.iterator();
+
+                  while(ite.hasNext()){
+                      
+                      tmp = ite.next().getStartDate();
+                      
                       if(!((tmp.getYear() == startDate.getYear()) &&
                            (tmp.getMonth() == startDate.getMonth()) &&
                            (tmp.getDate()== startDate.getDate())) ){
-                      listEvent.remove(e);
+                      ite.remove();
                       }
+                      
                   }
                         
                 } catch (Exception e) {
@@ -135,8 +144,11 @@ public class EventManager implements EventManagerInterface  {
         
         //aggiungiamo eventuali eventi non creati dall'utente ma a cui esso partecipi
         
+        
+        
+        
         try {
-            /* MANCA ACCETTAZIONE INVITI
+     
             Query query = em
                                         .createQuery("SELECT ue "
                                                         + "FROM UserEvent ue JOIN ue.user u "
@@ -148,16 +160,25 @@ public class EventManager implements EventManagerInterface  {
             //quelli in cui l'utente abbia accettato un invito!
             
             Timestamp tmp;
-            for(UserEvent userEvent : listUserEvent){
-                tmp = userEvent.getEvent().getStartDate();
+            
+            // Get an iterator.
+            Iterator<UserEvent> ite = listUserEvent.iterator();
+            
+            while(ite.hasNext()){
+                
+                Event e = ite.next().getEvent();
+                
+                tmp = e.getStartDate();
+                
                 if(((tmp.getYear() == startDate.getYear()) &&
                            (tmp.getMonth() == startDate.getMonth()) &&
                            (tmp.getDate()== startDate.getDate()))){
-                    listEvent.add(userEvent.getEvent());
+                    listEvent.add(e);
                 }
+                
             }
             
-            */
+            
         } catch (Exception e) {
                     System.out.println(e);
                     System.out.println("Errore query searchOverlapping");
