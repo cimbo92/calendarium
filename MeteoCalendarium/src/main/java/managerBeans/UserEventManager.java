@@ -54,6 +54,7 @@ public class UserEventManager implements UserEventManagerInterface {
     return result.get(0);
     }
 
+    
     @Override
     public void modifyUserEvent(UserEvent userEvent,boolean decision) {
          Query query =em
