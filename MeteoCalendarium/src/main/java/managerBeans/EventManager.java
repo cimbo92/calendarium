@@ -49,6 +49,8 @@ public class EventManager implements EventManagerInterface  {
         em.persist(event);
        }
         
+        
+  
     }
     
     @Override
@@ -281,7 +283,7 @@ public class EventManager implements EventManagerInterface  {
     @Override
     public List<Event> loadCalendar(User user) {
         
-    Query query1 = em.createQuery("SELECT ue.event FROM UserEvent ue where ue.user = :user AND (ue.accepted=1 OR ue.creator=1)").setParameter(("user"), user);
+    Query query1 = em.createQuery("SELECT ue.event FROM UserEvent ue where (ue.user = :user AND ue.accepted = true)").setParameter(("user"), user);
     List<Event> tempSet = new ArrayList<>(query1.getResultList());
   
     return (List)tempSet;
