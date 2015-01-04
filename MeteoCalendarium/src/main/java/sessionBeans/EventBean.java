@@ -27,6 +27,8 @@ import managerBeans.MailSenderManagerInterface;
 import managerBeans.PreferenceManagerInterface;
 import managerBeans.UserEventManagerInterface;
 import managerBeans.UserManagerInterface;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.ScheduleEvent;
 
 /**
  *
@@ -193,4 +195,9 @@ public class EventBean {
         this.invitated = invitated;
     }
 
+    
+     public void onEventSelect(SelectEvent selectEvent) {
+       // event =  selectEvent.getObject();
+    }
+    
 }

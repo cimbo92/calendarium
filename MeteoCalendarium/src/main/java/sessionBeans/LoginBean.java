@@ -5,6 +5,7 @@
 */
 package sessionBeans;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.inject.Named;
@@ -15,6 +16,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import managerBeans.UserManagerInterface;
 
 /**
  *
@@ -28,7 +30,15 @@ public class LoginBean {
     private String username;
     private String password;
     
+    @EJB
+    UserManagerInterface um;
+     
     public LoginBean() {
+    }
+    
+    public String getName()
+    {
+        return um.getLoggedUser().getEmail();
     }
     
         public String getUsername() {
@@ -54,9 +64,9 @@ try {
     request.login(this.username, this.password);
         } catch (ServletException e) {
             context.addMessage(null, new FacesMessage("Login failed."));
-            return "index";
+            return "registrationAuthentication?faces-redirect=true";
         }
-        return "calendar";
+        return "calendar?faces-redirect=true";
     }
     
     public String logout() {

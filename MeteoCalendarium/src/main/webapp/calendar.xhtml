@@ -7,7 +7,7 @@
     <h:head>
 
     </h:head>
-    <h:body>
+    <h:body onload="#{scheduleView.setEventBean(eventBean)}">
 
         <h:form id="form">
             
@@ -19,7 +19,7 @@
                         <f:facet name="header">
                             <h:graphicImage value="/resources/images/demo.jpg" width="350" />
                         </f:facet>
-                        <h:outputText value="Benvenuto: #{loginBean.username}" />
+                        <h:outputText value="Benvenuto: #{loginBean.name}" />
                     </p:panelGrid>
 
                 </p:layoutUnit>
@@ -29,8 +29,8 @@
                         <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" timeZone="GMT+2">
                             <p:ajax event="dateSelect" listener="#{scheduleView.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                             <p:ajax event="eventSelect" listener="#{scheduleView.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
-                            <p:ajax event="eventMove" listener="#{scheduleView.onEventMove}" update="growl" />
-                            <p:ajax event="eventResize" listener="#{scheduleView.onEventResize}" update="growl" />
+                            <p:ajax event="eventMove" listener="#{scheduleView.onEventMove(event)}" update="growl" />
+                            <p:ajax event="eventResize" listener="#{scheduleView.onEventResize(event)}" update="growl" />
                         </p:schedule>
                     </h:panelGrid>
                     <p:toolbar style=" position: absolute ; bottom : 10px; right: 10px">

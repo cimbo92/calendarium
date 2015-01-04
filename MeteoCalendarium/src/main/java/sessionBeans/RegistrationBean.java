@@ -41,8 +41,8 @@ public class RegistrationBean {
     }
 
     public String register() {
-        um.save(user);
-        return "calendar.xhtml?faces-redirect=true";
+        um.save(user);  
+        return "registrationAutenthentication.xhtml?faces-redirect=true";
     }
 
 }
