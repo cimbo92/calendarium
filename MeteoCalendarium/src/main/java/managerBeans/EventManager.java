@@ -283,7 +283,7 @@ public class EventManager implements EventManagerInterface  {
     @Override
     public List<Event> loadCalendar(User user) {
         
-    Query query1 = em.createQuery("SELECT ue.event FROM UserEvent ue where ue.user = :user").setParameter(("user"), user);
+    Query query1 = em.createQuery("SELECT ue.event FROM UserEvent ue where (ue.user = :user AND ue.accepted = true)").setParameter(("user"), user);
     List<Event> tempSet = new ArrayList<>(query1.getResultList());
   
     return (List)tempSet;
