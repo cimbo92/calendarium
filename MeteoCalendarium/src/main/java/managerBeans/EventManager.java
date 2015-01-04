@@ -152,7 +152,7 @@ public class EventManager implements EventManagerInterface  {
             Query query = em
                                         .createQuery("SELECT ue "
                                                         + "FROM UserEvent ue JOIN ue.user u "
-                                                        + "WHERE (u.email =:idUser AND ue.accepted = true");
+                                                        + "WHERE (u.email =:idUser AND ue.accepted = true)");
             
             listUserEvent = (List<UserEvent>) query.setParameter("idUser",principal.getName()).getResultList();
             
