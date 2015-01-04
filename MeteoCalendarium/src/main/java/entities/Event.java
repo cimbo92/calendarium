@@ -131,7 +131,7 @@ public class Event implements Serializable {
 
     @Override
     public String toString(){
-        return title + "\n" + "Creator: "+creator+"\n"+"Title: "+title+"\n"+"Description: "+description+"\n"+"Place: "+place.getCity()+"\n"+"OutDoor: "+outdoor+"\n";
+        return title + "\n" + "Creator: "+creator+"\n"+"Title: "+title+"\n"+"Description: "+description+"\n"+"Place: "+place.getCity()+"\n"+"Starting from: "+startDate+"\n"+"To: "+endDate+"\n"+"OutDoor: "+outdoor+"\n";
     }
     
 }
