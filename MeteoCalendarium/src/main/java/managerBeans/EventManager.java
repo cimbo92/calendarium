@@ -54,8 +54,25 @@ public class EventManager implements EventManagerInterface  {
     }
     
     @Override
-       public boolean modifyEvent(int idEvent, String title, String Date, String startHour, String endHour, String description, Place place, boolean outdoor, List<Preference> preferences) {
-           throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       public boolean modifyEvent(Event event,User user) {
+       Query query =em
+                    .createQuery("Select ue from UserEvent ue where ue.event= :event and  ue.user: =user").setParameter("event", event);
+       query.setParameter("user", user);
+       query.executeUpdate();
+       List<UserEvent> result = query.getResultList();
+       UserEvent result0 = result.get(0);
+           
+       if(result0.isCreator()==false)
+           return false;
+       else
+       {
+        Query query1 =em
+                    .createQuery("UPDATE Event ue SET ue :event"
+                            + " WHERE ue= :event");
+            query1.setParameter("event",event);
+            query1.executeUpdate();
+            return true;
+       }
        }
 
     @Override

@@ -21,7 +21,7 @@ import javax.ejb.Remote;
 public interface EventManagerInterface {
        
     //TODO
-    public boolean modifyEvent(int idEvent, String title, String Date, String startHour, String endHour,  String description, Place place, boolean outdoor, List<Preference> preferences);
+    public boolean modifyEvent(Event event,User user);
 
     public boolean removeEvent(int idEvent);
     

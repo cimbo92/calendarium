@@ -58,16 +58,12 @@ public class UserEventManager implements UserEventManagerInterface {
     @Override
     public void modifyUserEvent(UserEvent userEvent,boolean decision) {
          Query query =em
-                    .createQuery("UPDATE UserEvent ue SET ue.accepted = :decision "
-                            + "WHERE ue= :userEvent");
+                    .createQuery("UPDATE UserEvent ue SET ue.accepted = :decision , ue.view = :view"
+                            + " WHERE ue= :userEvent");
             query.setParameter("userEvent", userEvent);
             query.setParameter("decision", decision);
+            query.setParameter("view",true);
             query.executeUpdate();
-   
- 
     }
     
-    
-    
-   
 }

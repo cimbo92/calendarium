@@ -45,17 +45,18 @@ public class InvitationBean implements Serializable {
     public void init() {
         invites = new ArrayList<>();
         invites = em.findInvitatedEvent(um.getLoggedUser());
-        invites.add(new Event());
     }
 
     public void acceptInvite(Event event) {
        UserEvent ue =uem.getUserEventofUser(event, um.getLoggedUser());
      uem.modifyUserEvent(ue,true);
+     invites.remove(event);
     }
 
     public void declineInvite(Event event) {
-        UserEvent ue =uem.getUserEventofUser(event, um.getLoggedUser());
-     uem.modifyUserEvent(ue,false);
+    UserEvent ue =uem.getUserEventofUser(event, um.getLoggedUser());
+    uem.modifyUserEvent(ue,false);
+    invites.remove(event);
     }
 
     public List<Event> getInvites() {

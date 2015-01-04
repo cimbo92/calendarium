@@ -118,8 +118,6 @@ public class EventBean {
             idEv.setId(id);
             event.setIdEvent(idEv);
             event.setCreator(um.getLoggedUser());
-            
-        
             em.addEvent(event);
        
     }
