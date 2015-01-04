@@ -40,17 +40,15 @@ public class EventManager implements EventManagerInterface  {
     @Override
     public void addEvent(Event event) throws OverlappingException  {
         
-        //TODO
-//        if(searchEventOverlapping(event))
-//           throw new OverlappingException();
-        
-        try{
+        if(this.searchEventOverlapping(event))
+        {
+            throw new OverlappingException();
+        }else{
         em.merge(event.getPlace());
-        }catch (Exception e){
-            
-        }
-        
         em.persist(event);
+       }
+        
+        
   
     }
     
@@ -138,7 +136,7 @@ public class EventManager implements EventManagerInterface  {
         //aggiungiamo eventuali eventi non creati dall'utente ma a cui esso partecipi
         
         try {
-            
+            /* MANCA ACCETTAZIONE INVITI
             Query query = em
                                         .createQuery("SELECT ue "
                                                         + "FROM UserEvent ue JOIN ue.user u "
@@ -159,7 +157,7 @@ public class EventManager implements EventManagerInterface  {
                 }
             }
             
-            
+            */
         } catch (Exception e) {
                     System.out.println(e);
                     System.out.println("Errore query searchOverlapping");
@@ -261,4 +259,13 @@ public class EventManager implements EventManagerInterface  {
     return (List)tempSet;
     }
 
+    @Override
+    public List<Event> loadCalendar(User user) {
+        
+    Query query1 = em.createQuery("SELECT ue.event FROM UserEvent ue where ue.user = :user").setParameter(("user"), user);
+    List<Event> tempSet = new ArrayList<>(query1.getResultList());
+  
+    return (List)tempSet;
+    }
+    
 }

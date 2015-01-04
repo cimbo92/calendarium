@@ -43,10 +43,9 @@ public class InvitationBean implements Serializable {
     
     @PostConstruct
     public void init() {
-        invites=new ArrayList<Event>();
+       invites=new ArrayList<>();
        invites = em.findInvitatedEvent(um.getLoggedUser());
        invites.add(new Event());
-       
     }
     /*
   

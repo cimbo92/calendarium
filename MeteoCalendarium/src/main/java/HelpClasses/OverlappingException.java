@@ -9,9 +9,9 @@ package HelpClasses;
  *
  * @author home
  */
-public class OverlappingException extends Exception {
-    
+public class OverlappingException extends Exception{
+       
     public OverlappingException(){
-        super();
+        super("Operation Impossible, Found Overlapping");
     }
 }

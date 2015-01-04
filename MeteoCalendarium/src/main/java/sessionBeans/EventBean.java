@@ -18,6 +18,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import managerBeans.EventManagerInterface;
 import managerBeans.IDEventManagerInterface;
@@ -122,17 +124,21 @@ public class EventBean {
        
     }
     
-    public void create() {   
+    public void create(){  
+        FacesContext context = FacesContext.getCurrentInstance();
         
-        try {
+        try{
             this.addEvent();
             this.save();
             this.addUserEvent();
-           } catch (OverlappingException ex) {
-            Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
+            
+             context.addMessage(null, new FacesMessage("Successful","Event Created") );
+       }catch(OverlappingException e)
+        {
+                  context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", e.getMessage()));
         }
     }
-    
+
     public void addUserEvent(){
         
         userEvent=new UserEvent(event, um.getLoggedUser(), true);

@@ -41,5 +41,7 @@ public interface EventManagerInterface {
     public void addEvent(Event event) throws OverlappingException;;
     
     public List<Event> findInvitatedEvent(User user);
-      
+    
+     public List<Event> loadCalendar(User user);
+   
 }
