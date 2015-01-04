@@ -43,7 +43,7 @@
                     </p:toolbar>
 
                     <p:dialog header="Warnings" widgetVar="dlg-warnings">
-                        <h:outputText value="Resistance to PrimeFaces is futile!" />             
+                         <h:outputText value="Resistance to PrimeFaces is futile!" />             
                         <p:toolbar>
                             <f:facet name="right">
                                 <p:commandButton value="Previous" id="prev_warn"  onclick=""/>
@@ -52,9 +52,11 @@
                         </p:toolbar>
                     </p:dialog>
 
+                    <h:form id="form">
                     <p:dialog header="Invitations" widgetVar="dlg-invitations" id="inv-dialog" width="800px" height="300px" resizable="false">
-                        <p:carousel value="#{invitationBean.invites}" style="width:90%" headerText="Advanced" var="event" numVisible="1" itemStyle="width:100%" easing="easeOutBounce" styleClass="carouselAdvanced">
-                            <p:panelGrid columns="2" style="width:800px" columnClasses="label,value">
+                        <p:carousel value="#{invitationBean.invites}" var="event" numVisible="1" itemStyle="height:200px;width:750px;" effect="easeInStrong" headerText="Invitation" style="margin-bottom:0;">
+                            <p:tab>
+                            <p:panelGrid columns="2" columnClasses="label,value">
                                 <h:outputText value="Title:" />
                                 <h:outputText value="#{event.title}" />
 
@@ -69,16 +71,18 @@
 
                                 <h:outputText value="Description:"/>
                                 <h:outputText value="#{event.description}" />
-
+                
                                 <f:facet name="footer">
-                                    <p:commandButton icon="ui-icon-search">
-                                        <f:setPropertyActionListener value="#{ev}" target="#{invitationBean.selectedEvent}" />
+                                    <p:commandButton value="Accept" id="accept-inv" actionListener="#{invitationBean.acceptInvite(event)}" oncomplete="PF('dlg-invitations').hide();" process="@this" >
+                                    </p:commandButton>
+                                    <p:commandButton value="Decline" id="decline-inv" actionListener="#{invitationBean.declineInvite(event)}" oncomplete="PF('dlg-invitations').hide();" process="@this">
                                     </p:commandButton>
                                 </f:facet>
                             </p:panelGrid>
+                                </p:tab>
                         </p:carousel> 
                     </p:dialog>
-
+                   </h:form>
 
                     <p:dialog header="Users" widgetVar="dlg-users">
                         <h:outputText value="Resistance to PrimeFaces is futile!" />

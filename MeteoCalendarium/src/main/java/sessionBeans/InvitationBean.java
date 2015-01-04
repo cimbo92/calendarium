@@ -7,6 +7,7 @@ package sessionBeans;
 
 import entities.Event;
 import entities.User;
+import entities.UserEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,6 @@ import managerBeans.UserManagerInterface;
  *
  * @author Alessandro
  */
-
 @ViewScoped
 @Named
 public class InvitationBean implements Serializable {
@@ -40,92 +40,23 @@ public class InvitationBean implements Serializable {
     private List<Event> invites;
 
     private Event selectedEvent;
-    
+
     @PostConstruct
     public void init() {
-       invites=new ArrayList<>();
-       invites = em.findInvitatedEvent(um.getLoggedUser());
-       invites.add(new Event());
-    }
-    /*
-  
-    public void next() {
-          loadList();
-          if (i < invites.size()-1) {
-          i++;
-        } else {
-            i = 0;
-        }
-          loadStrings();
-          System.out.println(this.title+this.where);
+        invites = new ArrayList<>();
+        invites = em.findInvitatedEvent(um.getLoggedUser());
+        invites.add(new Event());
     }
 
-    public void prev() {
-        loadList();
-        if (i != 0) {
-            i--;
-        }else
-        {
-            i=invites.size()-1;
-        }
-        loadStrings();
-System.out.println(this.title+this.where);
+    public void acceptInvite(Event event) {
+       UserEvent ue =uem.getUserEventofUser(event, um.getLoggedUser());
+     uem.modifyUserEvent(ue,true);
     }
 
-    public void loadList() {
-     i=0;
-     System.out.println(i+"-"+invites.size());
-     invites = em.findInvitatedEvent(um.getLoggedUser());
-     System.out.println(i+"-"+invites.size());
-     loadStrings();
+    public void declineInvite(Event event) {
+        UserEvent ue =uem.getUserEventofUser(event, um.getLoggedUser());
+     uem.modifyUserEvent(ue,false);
     }
-
-    
-    
-    public String getCurrentTitle() {
-        if (!invites.isEmpty()) {
-            return invites.get(i).getTitle();
-        } else {
-            return "NoInvitation";
-        }
-    }
-
-    public String getCurrentDescription() {
-        if (!invites.isEmpty()) {
-
-            return invites.get(i).getDescription();
-        } else {
-            return "";
-        }
-    }
-
-    public String getCurrentWhen() {
-        if (!invites.isEmpty()) {
-
-            return invites.get(i).getStartDate().toString() + " - " + invites.get(i).getEndDate().toString();
-        } else {
-            return "";
-        }
-    }
-
-    public String getCurrentWhere() {
-        if (!invites.isEmpty()) {
-
-            return invites.get(i).getPlace().getCity();
-        } else {
-            return "";
-        }
-    }
-
-    public String getCurrentInvitor() {
-        if (!invites.isEmpty()) {
-            User creator = uem.findEventCreator(invites.get(i));
-            return creator.getEmail();
-        } else {
-            return "";
-        }
-    }
-      */
 
     public List<Event> getInvites() {
         return invites;
@@ -143,4 +74,3 @@ System.out.println(this.title+this.where);
         this.selectedEvent = selectedEvent;
     }
 }
-

@@ -21,4 +21,8 @@ public interface UserEventManagerInterface {
     
     public User findEventCreator(Event event);
     
+    public UserEvent getUserEventofUser(Event event,User user);
+    
+    public void modifyUserEvent(UserEvent userEvent,boolean decision);
+    
 }
