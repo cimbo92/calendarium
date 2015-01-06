@@ -5,12 +5,18 @@
  */
 package sessionBeans;
 
+import Forecast.ForecastWeatherData;
+import Forecast.WeatherData;
+import Forecast.WeatherForecastResponse;
 import HelpClasses.OverlappingException;
+import com.google.gson.Gson;
 import entities.Event;
 import entities.MainCondition;
 import entities.Preference;
 import entities.UserEvent;
 import entities.iDEvent;
+import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,9 +30,11 @@ import javax.inject.Named;
 import managerBeans.EventManagerInterface;
 import managerBeans.IDEventManagerInterface;
 import managerBeans.MailSenderManagerInterface;
+import managerBeans.OwmClientInterface;
 import managerBeans.PreferenceManagerInterface;
 import managerBeans.UserEventManagerInterface;
 import managerBeans.UserManagerInterface;
+import org.json.JSONException;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.ScheduleEvent;
 
@@ -51,6 +59,8 @@ public class EventBean {
     private IDEventManagerInterface idm;
     @EJB
     private MailSenderManagerInterface mailSender;
+    @EJB
+    private OwmClientInterface forecast;
     
     private List<String> selectedPref = new ArrayList<>();
     private List<Preference> preferences = new ArrayList<>();
@@ -120,6 +130,8 @@ public class EventBean {
             idEv.setId(id);
             event.setIdEvent(idEv);
             event.setCreator(um.getLoggedUser());
+        
+            
             em.addEvent(event);
        
     }

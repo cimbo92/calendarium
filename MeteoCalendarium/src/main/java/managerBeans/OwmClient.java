@@ -6,17 +6,29 @@
 package managerBeans;
 
 
+import Forecast.ForecastWeatherData;
 import Forecast.StatusWeatherData;
 import Forecast.WeatherForecastResponse;
 import Forecast.WeatherHistoryCityResponse;
 import Forecast.WeatherHistoryStationResponse;
 import Forecast.WeatherStatusResponse;
+import entities.iDEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.Remote;
+import javax.ejb.Schedule;
+import javax.ejb.Singleton;
+import javax.ejb.Stateless;
+import javax.ws.rs.core.MediaType;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -26,11 +38,16 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
+import sessionBeans.EventBean;
 
 /** Implements a synchronous HTTP client to the Open Weather Map service described
  * in http://openweathermap.org/wiki/API/JSON_API
  * @author mtavares */
-public class OwmClient {
+@Singleton
+@Remote(OwmClientInterface.class)
+public class OwmClient implements OwmClientInterface{
+    
+    
 	static private final String APPID_HEADER = "x-api-key";
 
 	static public enum HistoryType {
@@ -38,10 +55,11 @@ public class OwmClient {
 		TICK, HOUR, DAY 
 	}
 
-	private String baseOwmUrl = "http://api.openweathermap.org/data/2.1/";
-	private String owmAPPID = null;
+	private String baseOwmUrl = "http://api.openweathermap.org/data/2.5/";
+	private String owmAPPID = "fce2b320322d6a2bb16e1d3d901bcd47";
 
 	private HttpClient httpClient;
+        
 
 	public OwmClient () {
 		this.httpClient = new DefaultHttpClient ();
@@ -166,6 +184,7 @@ public class OwmClient {
 	 * @param cityName is the name of the city
 	 * @throws JSONException if the response from the OWM server can't be parsed
 	 * @throws IOException if there's some network error or the OWM server replies with a error. */
+        @Override
 	public WeatherStatusResponse currentWeatherAtCity (String cityName) throws IOException, JSONException {
 		String subUrl = String.format (Locale.ROOT, "find/name?q=%s", cityName);
 		JSONObject response = doQuery (subUrl);
@@ -197,11 +216,20 @@ public class OwmClient {
 	 * @param cityName is the Name of the city
 	 * @throws JSONException if the response from the OWM server can't be parsed
 	 * @throws IOException if there's some network error or the OWM server replies with a error. */
+        @Override
 	public WeatherForecastResponse forecastWeatherAtCity (String cityName) throws JSONException, IOException {
 		String subUrl = String.format (Locale.ROOT, "forecast/city?q=%s&type=json&units=metric", cityName);
 		JSONObject response = doQuery (subUrl);
 		return new WeatherForecastResponse (response);
 	}
+        
+        @Override
+        public WeatherForecastResponse tenForecastWeatherAtCity (String cityName)throws JSONException, IOException {
+            
+            String subUrl = String.format (Locale.ROOT, "forecast/daily?q=%s&cnt=10&mode=json", cityName);
+		JSONObject response = doQuery (subUrl);
+		return new WeatherForecastResponse (response);
+        }
 
 	/** Get the weather history of a city.
 	 * @param cityId is the OWM city ID
@@ -224,6 +252,35 @@ public class OwmClient {
 		JSONObject response = doQuery (subUrl);
 		return new WeatherHistoryStationResponse (response);
 	}
+        
+        @Schedule(second = "30", minute = "*", hour = "*", persistent = false)
+        public void checkWeather() {
+            
+            
+            try {
+           WeatherForecastResponse risposta;
+           risposta = this.tenForecastWeatherAtCity("Milan");
+           List<ForecastWeatherData> list = risposta.getForecasts();
+           for(ForecastWeatherData fwd : list){
+               System.out.println("Prova Milan"+" "+new Timestamp(fwd.getCalcDateTime())+" Main_condition :"+fwd.getWeatherConditions().get(0).getMain());
+           }
+//               try {
+//                  List<WeatherData.WeatherCondition> finalList = fwd.getWeatherConditions();
+//                  for(WeatherData.WeatherCondition c : finalList){
+//                      Timestamp stamp = new Timestamp(fwd.getCalcDateTime());                    
+//              //    System.out.println(event.getPlace().getCity()+stamp.toString()+" : "+c.getMain());
+//                  }
+//               } catch (Exception ex) {
+//                   Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
+//               }
+//           }
+        } catch (JSONException ex) {
+            Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+
 
 	private JSONObject doQuery (String subUrl) throws JSONException, IOException {
 		String responseBody = null;

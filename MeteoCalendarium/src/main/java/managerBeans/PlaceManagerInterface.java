@@ -5,6 +5,8 @@
  */
 package managerBeans;
 
+import entities.Place;
+import java.util.List;
 import javax.ejb.Remote;
 
 /**
@@ -12,8 +14,8 @@ import javax.ejb.Remote;
  * @author home
  */
 @Remote
-public interface ForecastManagerInterface {
- 
-    
+public interface PlaceManagerInterface {
+
+    public List<Place> getAllPlaces();
     
 }

@@ -35,8 +35,8 @@ public class MainCondition implements Serializable {
     public static List<String> getListPref()
     {
         List<String> pref = new ArrayList<>();
-        pref.add("Sun");
-        pref.add("Cloud");
+        pref.add("Clear");
+        pref.add("Clouds");
         pref.add("Rain");
         pref.add("Snow");
         return pref;

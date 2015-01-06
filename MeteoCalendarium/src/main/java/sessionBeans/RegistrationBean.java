@@ -24,7 +24,7 @@ public class RegistrationBean {
     @EJB
     private UserManagerInterface um;
 
-    private User user;
+    private User user = new User();
 
     public RegistrationBean() {
     }
@@ -42,7 +42,7 @@ public class RegistrationBean {
 
     public String register() {
         um.save(user);  
-        return "registrationAutenthentication.xhtml?faces-redirect=true";
+        return "registrationAuthentication.xhtml?faces-redirect=true";
     }
 
 }

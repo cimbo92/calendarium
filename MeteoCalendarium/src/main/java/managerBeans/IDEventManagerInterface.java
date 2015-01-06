@@ -5,10 +5,13 @@
  */
 package managerBeans;
 
+import javax.ejb.Remote;
+
 /**
  *
  * @author Alessandro
  */
+@Remote
 public interface IDEventManagerInterface {
     public Long findMax();
 }
