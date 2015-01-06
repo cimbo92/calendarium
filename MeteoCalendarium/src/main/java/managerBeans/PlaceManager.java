@@ -6,6 +6,7 @@
 package managerBeans;
 
 import entities.Place;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -32,12 +33,22 @@ public class PlaceManager implements PlaceManagerInterface {
     public List<Place> getAllPlaces(){
         
         try{
-        Query query = em.createQuery("SELECT * FROM Place");
+        Query query = em.createNativeQuery("SELECT * FROM Place");
         
-        return  (List<Place>) query.getResultList();
+        List<String> list = (List<String>) query.getResultList();
+        
+        List<Place> listPlace = new ArrayList<Place>();
+        
+        for(String s : list){
+            System.out.println(s+": "+em.find(Place.class,s));
+            listPlace.add(em.find(Place.class,s));
+        }
+        
+        return listPlace;
            
-    }catch (Exception e){
-        System.out.println("Errore nella query getInvitedUsers");
+        }catch (Exception e){
+        System.out.println("Errore nella query getAllPlaces");
+        System.out.println(e);
     }
          return null;
     }

@@ -45,4 +45,9 @@ public class Place implements Serializable {
         this.city = city.toLowerCase();
     }
     
+//    @Override
+//    public String toString(){
+//        return city;
+//    }
+//    
 }

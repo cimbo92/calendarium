@@ -5,6 +5,9 @@
  */
 package managerBeans;
 
+import entities.Forecast;
+import entities.Place;
+import java.util.List;
 import javax.ejb.Remote;
 
 /**
@@ -14,6 +17,6 @@ import javax.ejb.Remote;
 @Remote
 public interface ForecastManagerInterface {
  
-    
+    public List<Forecast> getForecastInPlace(Place place);
     
 }

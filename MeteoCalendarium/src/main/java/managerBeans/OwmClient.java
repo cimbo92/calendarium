@@ -12,23 +12,27 @@ import Forecast.WeatherForecastResponse;
 import Forecast.WeatherHistoryCityResponse;
 import Forecast.WeatherHistoryStationResponse;
 import Forecast.WeatherStatusResponse;
-import entities.iDEvent;
+import entities.Forecast;
+import entities.MainCondition;
+import entities.Place;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.sql.Timestamp;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
-import javax.ejb.Stateless;
-import javax.ws.rs.core.MediaType;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -44,7 +48,6 @@ import sessionBeans.EventBean;
  * in http://openweathermap.org/wiki/API/JSON_API
  * @author mtavares */
 @Singleton
-@Remote(OwmClientInterface.class)
 public class OwmClient implements OwmClientInterface{
     
     
@@ -59,6 +62,15 @@ public class OwmClient implements OwmClientInterface{
 	private String owmAPPID = "fce2b320322d6a2bb16e1d3d901bcd47";
 
 	private HttpClient httpClient;
+        
+        @PersistenceContext
+        private EntityManager entityManager;
+        
+        @EJB
+        private ForecastManagerInterface forecastManager;
+        
+        @EJB
+        private PlaceManagerInterface placeManager;
         
 
 	public OwmClient () {
@@ -253,33 +265,74 @@ public class OwmClient implements OwmClientInterface{
 		return new WeatherHistoryStationResponse (response);
 	}
         
-        @Schedule(second = "30", minute = "*", hour = "*", persistent = false)
+        @Schedule(second = "59", minute = "*", hour = "*", persistent = false)
         public void checkWeather() {
+        
+            System.out.println("Inizio check");
+            
+            List<Place> listPlaceInDb;
+            List<Forecast> listForecastInDb = new ArrayList<Forecast>();
+            
+            listPlaceInDb = placeManager.getAllPlaces();
             
             
-            try {
-           WeatherForecastResponse risposta;
-           risposta = this.tenForecastWeatherAtCity("Milan");
-           List<ForecastWeatherData> list = risposta.getForecasts();
-           for(ForecastWeatherData fwd : list){
-               System.out.println("Prova Milan"+" "+new Timestamp(fwd.getCalcDateTime())+" Main_condition :"+fwd.getWeatherConditions().get(0).getMain());
-           }
-//               try {
-//                  List<WeatherData.WeatherCondition> finalList = fwd.getWeatherConditions();
-//                  for(WeatherData.WeatherCondition c : finalList){
-//                      Timestamp stamp = new Timestamp(fwd.getCalcDateTime());                    
-//              //    System.out.println(event.getPlace().getCity()+stamp.toString()+" : "+c.getMain());
-//                  }
-//               } catch (Exception ex) {
-//                   Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
-//               }
-//           }
-        } catch (JSONException ex) {
-            Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        }
+                 for(Place p : listPlaceInDb){
+                     
+                     for(Forecast f : forecastManager.getForecastInPlace(p)){
+                         listForecastInDb.add(f);
+                         
+                         }  
+                   }
+            
+                  //Adesso ho nella mia lista tutti i forecast del mio db
+                  
+                  //Devo pulire quelli con la data vecchia
+                  
+                  Timestamp now = new Timestamp(new java.util.Date().getTime());
+            
+                  for(Forecast f : listForecastInDb){
+                     if((f.getDate().compareTo(now) < 0) || (f.getDate().compareTo(now) == 0 )){
+                         listForecastInDb.remove(f);
+                         entityManager.remove(f);
+                     }       
+                  }
+                  
+                  //Qui nel mio database dovrei avere solo forecast aggiornati
+                  
+                  
+                for(Place p : listPlaceInDb){
+                    
+                     try {
+                            WeatherForecastResponse risposta;
+                            risposta = this.tenForecastWeatherAtCity(p.getCity());
+                            List<ForecastWeatherData> list = risposta.getForecasts();
+                                    for(ForecastWeatherData fwd : list){
+                                        System.out.println(p.getCity()+" "+new Timestamp(fwd.getCalcDateTime())+" Main_condition :"+fwd.getWeatherConditions().get(0).getMain());
+                                        Forecast f = new Forecast();
+                                        //Recupero nel database la main condition associata
+                                        MainCondition c = entityManager.find(MainCondition.class, fwd.getWeatherConditions().get(0).getMain());
+                                        
+                                        //Ho preparato tutti i parametri necessari
+                                        f.setPlace(p);
+                                        f.setMainCondition(c);
+                                        f.setDate(new Timestamp(fwd.getCalcDateTime()));
+                                        
+                                      
+                                        entityManager.merge(f);
+                                        entityManager.persist(f);
+                                       
+                                       
+                                  }
+                     } catch (JSONException ex) {
+                        Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
+                      } catch (IOException ex) {
+                        Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
+                      }
+                     
+                   }
+               
+                  
+}
 
 
 	private JSONObject doQuery (String subUrl) throws JSONException, IOException {

@@ -16,6 +16,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import managerBeans.OwmClientInterface;
 import managerBeans.UserManagerInterface;
 
 /**
@@ -32,6 +33,7 @@ public class LoginBean {
     
     @EJB
     UserManagerInterface um;
+   
      
     public LoginBean() {
     }

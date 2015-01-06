@@ -5,23 +5,15 @@
  */
 package sessionBeans;
 
-import Forecast.ForecastWeatherData;
-import Forecast.WeatherData;
-import Forecast.WeatherForecastResponse;
 import HelpClasses.OverlappingException;
-import com.google.gson.Gson;
 import entities.Event;
 import entities.MainCondition;
 import entities.Preference;
 import entities.UserEvent;
 import entities.iDEvent;
-import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -34,9 +26,7 @@ import managerBeans.OwmClientInterface;
 import managerBeans.PreferenceManagerInterface;
 import managerBeans.UserEventManagerInterface;
 import managerBeans.UserManagerInterface;
-import org.json.JSONException;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.ScheduleEvent;
 
 /**
  *
@@ -130,7 +120,6 @@ public class EventBean {
             idEv.setId(id);
             event.setIdEvent(idEv);
             event.setCreator(um.getLoggedUser());
-        
             
             em.addEvent(event);
        

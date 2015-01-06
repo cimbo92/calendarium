@@ -6,6 +6,8 @@
 package entities;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +18,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author home
  */
+@Entity
 public class Forecast implements Serializable {
     
     private static final long serialVersionUID = 1L;  
@@ -31,12 +34,8 @@ public class Forecast implements Serializable {
     private MainCondition mainCondition;
     
     @NotNull(message = "May not be empty")
-    private String date;
-    
-    @NotNull(message = "May not be empty")
-    private Forecast forecast;
-
-    
+    private Timestamp date;
+     
     
     public int getId() {
         return id;
@@ -62,20 +61,12 @@ public class Forecast implements Serializable {
         this.mainCondition = mainCondition;
     }
 
-    public String getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Timestamp date) {
         this.date = date;
-    }
-
-    public Forecast getForecast() {
-        return forecast;
-    }
-
-    public void setForecast(Forecast forecast) {
-        this.forecast = forecast;
     }
     
     @Override
