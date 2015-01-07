@@ -290,12 +290,13 @@ public class OwmClient implements OwmClientInterface{
                   
                   Timestamp now = new Timestamp(new java.util.Date().getTime());
             
+                  synchronized(listForecastInDb){
                   for(Forecast f : listForecastInDb){
                      if((f.getDate().compareTo(now) < 0) || (f.getDate().compareTo(now) == 0 )){
-                         listForecastInDb.remove(f);
-                         entityManager.remove(f);
+                         entityManager.remove(entityManager.find(Forecast.class, f.getId()));
                      }       
                   }
+        }
                   
                   //Qui nel mio database dovrei avere solo forecast aggiornati
                   
