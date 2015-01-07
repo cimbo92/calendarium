@@ -40,7 +40,6 @@ public class PlaceManager implements PlaceManagerInterface {
         List<Place> listPlace = new ArrayList<Place>();
         
         for(String s : list){
-            System.out.println(s+": "+em.find(Place.class,s));
             listPlace.add(em.find(Place.class,s));
         }
         
