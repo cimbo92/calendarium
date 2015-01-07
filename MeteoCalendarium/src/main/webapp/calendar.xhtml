@@ -27,10 +27,10 @@
                   
                     <h:panelGrid columnClasses="value" style ="margin : 0px auto">
                         <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" timeZone="GMT+2">
-                            <p:ajax event="dateSelect" listener="#{scheduleView.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+                            <p:ajax event="dateSelect"  listener="#{eventBean.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                             <p:ajax event="eventSelect" listener="#{eventBean.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
-                            <p:ajax event="eventMove" listener="#{scheduleView.onEventMove(event)}" update="growl" />
-                            <p:ajax event="eventResize" listener="#{scheduleView.onEventResize(event)}" update="growl" />
+                         <!--   <p:ajax event="eventMove" listener="#{scheduleView.onEventMove(event)}" update="growl" /> -->
+                          <!--  <p:ajax event="eventResize" listener="#{scheduleView.onEventResize(event)}" update="growl" /> -->
                         </p:schedule>
                     </h:panelGrid>
                     <p:toolbar style=" position: absolute ; bottom : 10px; right: 10px">

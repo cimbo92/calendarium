@@ -69,31 +69,6 @@ public class ScheduleView implements Serializable {
         return eventModel;
     }
      
-    private Calendar today() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 0, 0, 0);
- 
-        return calendar;
-    }
-      
-    
-    public void onEventSelect(SelectEvent selectEvent) {
-      
-    }
-     
-    public void onDateSelect(SelectEvent selectEvent) {
-     DefaultScheduleEvent event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
-   
-    }
-     
-    public void onEventMove(ScheduleEntryMoveEvent event) {
-    }
-     
-    public void onEventResize(ScheduleEntryResizeEvent event) {
-    }
-     
-    private void addMessage(FacesMessage message) {
-        FacesContext.getCurrentInstance().addMessage(null, message);
-    }
+
 }
 

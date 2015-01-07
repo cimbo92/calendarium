@@ -5,7 +5,9 @@
  */
 package managerBeans;
 
+import entities.Event;
 import entities.Preference;
+import java.util.List;
 import javax.ejb.Remote;
 
 /**
@@ -19,5 +21,6 @@ public interface PreferenceManagerInterface {
     
     public void addPreference(Preference get);
     
-    
+    public List<String> getPreferenceOfEvent(Event event);
+            
 }

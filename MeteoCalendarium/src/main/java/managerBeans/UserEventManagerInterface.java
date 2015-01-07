@@ -8,6 +8,7 @@ package managerBeans;
 import entities.Event;
 import entities.User;
 import entities.UserEvent;
+import java.util.List;
 import javax.ejb.Remote;
 
 /**
@@ -25,4 +26,5 @@ public interface UserEventManagerInterface {
     
     public void modifyUserEvent(UserEvent userEvent,boolean decision);
     
+    public List<String> invitedUsersOfEvent(Event event);
 }

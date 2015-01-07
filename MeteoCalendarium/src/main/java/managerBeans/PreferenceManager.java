@@ -7,12 +7,16 @@ package managerBeans;
 
 import entities.Event;
 import entities.Preference;
+import entities.iDEvent;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -37,6 +41,23 @@ public class PreferenceManager implements PreferenceManagerInterface {
     public void addPreference(Preference preference) {
         em.merge(preference);
     }
+
+    @Override
+    public List<String> getPreferenceOfEvent(Event event) {
+   
+     Query query =em
+                    .createQuery("Select pref.main.conditione FROM Preference pref WHERE pref.event= :event").setParameter("event", event);
+       
+    List<String> result = new ArrayList<>(query.getResultList());
+
+    
+    
+    
+    
+    return result; }
+
+    
+    
     
     
 }

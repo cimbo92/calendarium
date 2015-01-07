@@ -103,7 +103,11 @@ public class EventManager implements EventManagerInterface  {
        Long idLong=Long.parseLong(iDEvent);
        id.setId(idLong);
                     Query query = em.createQuery("SELECT e FROM Event e WHERE e.idEvent =:id").setParameter("id", id);
-                  List<Event> result = new ArrayList<>(query.getResultList());      
+                  List<Event> result = new ArrayList<>(query.getResultList());    
+  Query query2 = em.createQuery("SELECT id FROM iDEvent id WHERE id.id =:id").setParameter("id", id.getId());
+                  List<iDEvent> result2 = new ArrayList<>(query2.getResultList());
+                  
+                  result.get(0).setIdEvent(result2.get(0));
        return result.get(0);    
     }
 

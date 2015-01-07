@@ -30,6 +30,15 @@ public class iDEvent implements Serializable {
         this.id = id;
     }
 
+    public iDEvent(Long id)
+    {
+        this.id=id;
+    }
+    
+        public iDEvent()
+    {
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

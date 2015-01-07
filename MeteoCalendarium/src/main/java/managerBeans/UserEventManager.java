@@ -9,6 +9,7 @@ import entities.Event;
 import entities.User;
 import entities.UserEvent;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -64,6 +65,29 @@ public class UserEventManager implements UserEventManagerInterface {
             query.setParameter("decision", decision);
             query.setParameter("view",true);
             query.executeUpdate();
+    }
+
+    @Override
+    public List<String> invitedUsersOfEvent(Event event) {
+      Query query;
+       query =em.createQuery( "SELECT ue FROM UserEvent ue WHERE ue.event.idEvent.id= :event and ue.creator=0" ).setParameter("event", event.getIdEvent().getId());
+      
+            
+    List<UserEvent> result = new ArrayList<>(query.getResultList());
+
+    
+    List<String> ritorno = new ArrayList<>();
+
+        for (UserEvent result1 : result) {
+            query =em.createQuery( "SELECT ue.user.email FROM UserEvent ue WHERE ue.idUserEvent= :id" ).setParameter("id", result1.getIdUserEvent());
+            List<String> temp = new ArrayList<>(query.getResultList());
+            ritorno.add(temp.get(0));
+        }
+
+    
+    
+    
+            return ritorno;
     }
     
 }

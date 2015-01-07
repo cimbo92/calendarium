@@ -9,12 +9,15 @@ import HelpClasses.OverlappingException;
 import entities.Event;
 import entities.MainCondition;
 import entities.Preference;
+import entities.User;
 import entities.UserEvent;
 import entities.iDEvent;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
@@ -55,6 +58,9 @@ public class EventBean implements Serializable {
     private MailSenderManagerInterface mailSender;
     @EJB
     private OwmClientInterface forecast;
+
+    
+    
     
     private List<String> selectedPref = new ArrayList<>();
     private List<Preference> preferences = new ArrayList<>();
@@ -67,6 +73,8 @@ public class EventBean implements Serializable {
     private String outdoor;
     private UserEvent userEvent;
 
+
+    
     public String getOutdoor() {
         return outdoor;
     }
@@ -137,7 +145,6 @@ public class EventBean implements Serializable {
             this.addEvent();
             this.save();
             this.addUserEvent();
-            
              context.addMessage(null, new FacesMessage("Successful","Event Created") );
        }catch(OverlappingException e)
         {
@@ -205,7 +212,25 @@ public class EventBean implements Serializable {
      public void onEventSelect(SelectEvent selectEvent) {
           DefaultScheduleEvent selectedEvent = (DefaultScheduleEvent) selectEvent.getObject(); 
           event=em.loadSpecificEvent(selectedEvent.getDescription());
-    }
+         List<String> preferenzeEvento = pm.getPreferenceOfEvent(event);
+              
+        for (String preferenza : preferenzeEvento) {
+            this.selectedPref.add(preferenza);
+        }
+         List<String> invitedUsers = uem.invitedUsersOfEvent(event);
+        for (String invitedUser : invitedUsers) {
+            this.invitated.add(invitedUser);
+        }
+    
+     }
+     
+       public void onDateSelect(SelectEvent selectEvent) {
+           
+     DefaultScheduleEvent selectedEvent = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
+    
+     this.setStartDate(selectedEvent.getStartDate());
+     this.setEndDate(selectedEvent.getStartDate());
+       }
     
      
      
