@@ -11,11 +11,13 @@ import entities.MainCondition;
 import entities.Preference;
 import entities.UserEvent;
 import entities.iDEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -27,6 +29,8 @@ import managerBeans.PreferenceManagerInterface;
 import managerBeans.UserEventManagerInterface;
 import managerBeans.UserManagerInterface;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultScheduleEvent;
+import org.primefaces.model.ScheduleEvent;
 
 /**
  *
@@ -34,7 +38,7 @@ import org.primefaces.event.SelectEvent;
  */
 @Named
 @RequestScoped
-public class EventBean {
+public class EventBean implements Serializable {
 
 
     @EJB
@@ -94,6 +98,7 @@ public class EventBean {
          if (event == null) {
             event = new Event();      
         }
+
         return event;
     }
     
@@ -198,7 +203,10 @@ public class EventBean {
 
     
      public void onEventSelect(SelectEvent selectEvent) {
-       // event =  selectEvent.getObject();
+          DefaultScheduleEvent selectedEvent = (DefaultScheduleEvent) selectEvent.getObject(); 
+          event=em.loadSpecificEvent(selectedEvent.getDescription());
     }
     
+     
+     
 }

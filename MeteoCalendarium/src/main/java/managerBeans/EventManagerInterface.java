@@ -25,7 +25,7 @@ public interface EventManagerInterface {
 
     public boolean removeEvent(int idEvent);
     
-    public Event loadSpecificEvent(int idEvent);
+    public Event loadSpecificEvent(String idEvent);
     
     public List<Event> getAllUserEvent(String idUser);
     
@@ -43,5 +43,7 @@ public interface EventManagerInterface {
     public List<Event> findInvitatedEvent(User user);
     
      public List<Event> loadCalendar(User user);
+     
+   
    
 }

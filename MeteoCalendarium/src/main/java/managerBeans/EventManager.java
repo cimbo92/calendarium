@@ -7,16 +7,19 @@ package managerBeans;
 
 import HelpClasses.OverlappingException;
 import entities.Event;
+import static entities.Event_.idEvent;
 import entities.Invitation;
 import entities.Place;
 import entities.Preference;
 import entities.User;
 import entities.UserEvent;
+import entities.iDEvent;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -89,9 +92,19 @@ public class EventManager implements EventManagerInterface  {
         return false;
     }
 
+    /**
+     *
+     * @param iDEvent
+     * @return
+     */
     @Override
-    public Event loadSpecificEvent(int idEvent) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Event loadSpecificEvent(String iDEvent) {
+       iDEvent id = new iDEvent();
+       Long idLong=Long.parseLong(iDEvent);
+       id.setId(idLong);
+                    Query query = em.createQuery("SELECT e FROM Event e WHERE e.idEvent =:id").setParameter("id", id);
+                  List<Event> result = new ArrayList<>(query.getResultList());      
+       return result.get(0);    
     }
 
     @Override
@@ -299,10 +312,19 @@ public class EventManager implements EventManagerInterface  {
 
     @Override
     public List<Event> loadCalendar(User user) {
-        
-    Query query1 = em.createQuery("SELECT ue.event FROM UserEvent ue where (ue.user = :user AND ue.accepted = true)").setParameter(("user"), user);
-    List<Event> tempSet = new ArrayList<>(query1.getResultList());
-  
+            
+    Query query = em.createQuery("SELECT ue.event FROM UserEvent ue WHERE (ue.user = :user AND (ue.accepted=true OR ue.creator=true))").setParameter(("user"), user);
+    List<Event> tempSet = new ArrayList<>(query.getResultList());
+
+    Query query2 = em.createQuery("SELECT ue.event.idEvent FROM UserEvent ue WHERE (ue.user = :user AND (ue.accepted=true OR ue.creator=true))").setParameter(("user"), user);
+
+    List<iDEvent> lista = new ArrayList<>(query2.getResultList());
+   
+    for(int i =0;i<tempSet.size();i++)
+    {
+        tempSet.get(i).setIdEvent(lista.get(i));
+    }
+
     return (List)tempSet;
     }
     
