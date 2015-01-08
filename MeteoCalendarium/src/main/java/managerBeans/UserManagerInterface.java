@@ -28,4 +28,6 @@ public interface UserManagerInterface {
      
      public List<String> getListUsers();
              
+         public List<User> userList();
+
 }

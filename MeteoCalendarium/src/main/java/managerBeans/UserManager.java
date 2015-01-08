@@ -59,6 +59,17 @@ public class UserManager implements UserManagerInterface {
     }
 
     @Override
+    public List<User> userList()
+    {
+           
+        Query query;
+        query = em.createQuery("SELECT e FROM User e WHERE e.email!= :usermail" ).setParameter("usermail", principal.getName());
+        List<User> user;
+        user = query.getResultList();
+        return user;
+    }
+    
+    @Override
     public User getUser(String idUser) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

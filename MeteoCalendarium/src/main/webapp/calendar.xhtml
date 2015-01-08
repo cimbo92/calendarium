@@ -18,6 +18,7 @@
                     <p:panelGrid columns="1" >
                         <f:facet name="header">
                             <h:graphicImage  value="#{imageBean.getUserImage()}" width="350" />
+
                         </f:facet>
                         <h:outputText value="Benvenuto: #{loginBean.name}" />
                     </p:panelGrid>
@@ -84,30 +85,17 @@
 
 
                     <p:dialog header="Users" widgetVar="dlg-users">
-     
-                   <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" columnClasses="label, value">
-        <p:outputLabel for="basic" value="Basic:" />
-        <p:selectOneListbox id="basic" value="#{selectOneView.option}">
-            <f:selectItem itemLabel="Option 1" itemValue="1" />
-            <f:selectItem itemLabel="Option 2" itemValue="2" />
-            <f:selectItem itemLabel="Option 3" itemValue="3" />
-        </p:selectOneListbox>
-
-                        <p:commandButton value="Go" id="goToCalendar" actionListener="#{publicEventBean.nothing()}" action="#{scheduleViewPublic.loadCalendar()}" oncomplete="PF('publicCalendar').update();PF('dlg-pubcal').show();PF('publicCalendar').update();PF('dlg-users').hide()" process="@this" />
-                         <p:commandButton value="Submit" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-check" />
- 
+                        <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" columnClasses="label, value">
+                            
+                             <p:selectManyMenu  value="#{scheduleViewPublic.prova1}" 
+                                              filter="true" filterMatchMode="contains" showCheckbox="true">
+                                 <f:selectItems value="#{scheduleViewPublic.prova2}" var="listUser" itemLabel="#{listUser}" itemValue="#{listUser.email}" />
+                            </p:selectManyMenu>
+                            
+                            <p:commandButton value="Go" id="goToCalendar" actionListener="#{publicEventBean.nothing()}" action="#{scheduleViewPublic.loadCalendar()}" oncomplete="PF('publicCalendar').update();PF('dlg-pubcal').show();PF('publicCalendar').update();PF('dlg-users').hide()" process="@this" />
                         </h:panelGrid>
                     </p:dialog>
 
-                    <p:dialog header="Selected Values" modal="true" showEffect="fade" widgetVar="dlg" resizable="false">
-        <p:panelGrid columns="2" id="display" columnClasses="label,output">
-            <h:outputText value="Basic:" />
-            <h:outputText value="#{scheduleViewPublic.username}" />
-        </p:panelGrid>
-    </p:dialog>
-                    
-                    
-                    
                     <p:dialog header="Public Calendar" id="dialogpubcal" widgetVar="dlg-pubcal">
                         <h:panelGrid id="panelpubcal" columnClasses="value" style ="margin : 0px auto">
                             <p:schedule id="pubcal" value="#{scheduleViewPublic.eventModel}"  widgetVar="publicCalendar" timeZone="GMT+2">
@@ -183,12 +171,12 @@
                             <p:outputLabel for="outdoorPublic" value="In/Out"  />
                             <p:outputLabel id="outdoorPublic" value="#{publicEventBean.outdoor}"/>
 
-                                                        <p:outputLabel for="preferencePublic" value="Preferences"  />
+                            <p:outputLabel for="preferencePublic" value="Preferences"  />
                             <p:dataList id="preferencePublic" value="#{publicEventBean.preferences}" var="pref" type="ordered">
                                 #{pref}
                             </p:dataList>
-                                                        <p:outputLabel for="invitationPublic" value="invitations"  />
-                        
+                            <p:outputLabel for="invitationPublic" value="invitations"  />
+
                             <p:dataList id="invitationPublic" value="#{publicEventBean.invitated}" var="invit" type="ordered">
                                 #{invit}
                             </p:dataList>

@@ -6,13 +6,14 @@
 package sessionBeans;
 
 import entities.Event;
+import entities.User;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import managerBeans.EventManagerInterface;
@@ -26,7 +27,8 @@ import org.primefaces.model.ScheduleModel;
  *
  * @author Alessandro
  */
-@ViewScoped
+
+@RequestScoped
 @Named("scheduleViewPublic")
 public class ScheduleViewPublic implements Serializable {
  
@@ -38,7 +40,27 @@ public class ScheduleViewPublic implements Serializable {
      @EJB
     private UserManagerInterface um;
      
+     private List<User> prova1;
 
+    public List<User> getProva1() {
+        return prova1;
+    }
+
+    public void setProva1(List<User> prova1) {
+        this.prova1 = prova1;
+    }
+ 
+    public List<User> getProva2() {
+        return prova2;
+    }
+
+    public void setProva2(List<User> prova2) {
+        this.prova2 = prova2;
+    }
+
+     private List<User> prova2;
+     
+     
 private String username;
 
 private List<String> users =new ArrayList<>();
@@ -65,11 +87,15 @@ private List<String> users =new ArrayList<>();
     public void init() {
         eventModel = new DefaultScheduleModel();   
         users =  um.getListUsers();
+        prova2 = um.userList();
+        prova1= new ArrayList<>();
     }
      
     public void loadCalendar(){
-        username="b@b.it";
-        System.out.println(username);
+        
+       // username= prova1.get(0).getEmail();
+       // System.out.println(username);
+        username="";
         List<Event> tempCalendar = em.loadPublicCalendar(username);
        
         for (Event tempCalendar1 : tempCalendar) {
