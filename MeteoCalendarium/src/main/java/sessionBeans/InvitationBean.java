@@ -44,9 +44,20 @@ public class InvitationBean implements Serializable {
     @PostConstruct
     public void init() {
         invites = new ArrayList<>();
-        invites = em.findInvitatedEvent(um.getLoggedUser());
     }
 
+    
+    public void loadInvites()
+    {
+             invites = em.findInvitatedEvent(um.getLoggedUser());
+             if(invites.isEmpty())
+             {
+                 Event noInvitation = new Event();
+                 noInvitation.setTitle("No Invitation");
+                 invites.add(noInvitation);
+             }
+    }
+    
     public void acceptInvite(Event event) {
        UserEvent ue =uem.getUserEventofUser(event, um.getLoggedUser());
      uem.modifyUserEvent(ue,true);

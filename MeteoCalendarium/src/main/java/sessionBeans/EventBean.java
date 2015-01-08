@@ -70,18 +70,10 @@ public class EventBean implements Serializable {
     
     private Date startDate = new Date();
     private Date endDate = new Date();
-    private String outdoor;
+   
     private UserEvent userEvent;
 
 
-    
-    public String getOutdoor() {
-        return outdoor;
-    }
-
-    public void setOutdoor(String outdoor) {
-        this.outdoor = outdoor;
-    }
 
     public Date getStartDate() {
         return startDate;
@@ -119,15 +111,7 @@ public class EventBean implements Serializable {
         
             event.convertStartDate(startDate);
             event.convertEndDate(endDate);
-            boolean inout;
-            if(outdoor.equalsIgnoreCase("indoor"))
-            {
-                inout=false;
-            } else {
-                inout=true;
-            }
-            event.setOutdoor(inout);
-            long id;
+             long id;
             id=idm.findMax();
             iDEvent idEv = new iDEvent();
             idEv.setId(id);

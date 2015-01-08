@@ -24,6 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import managerBeans.EventManagerInterface;
 import managerBeans.UserManagerInterface;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
@@ -61,6 +62,9 @@ public class ScheduleView implements Serializable {
            if(!eventModel.getEvents().contains(temp)) 
            {
                eventModel.addEvent(temp);
+           }else
+           {
+               eventModel.updateEvent(temp);
            }
         }       
     }	

@@ -44,6 +44,6 @@ public interface EventManagerInterface {
     
      public List<Event> loadCalendar(User user);
      
-   
+     public List<Event> loadPublicCalendar(String username);
    
 }

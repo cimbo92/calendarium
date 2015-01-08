@@ -50,9 +50,20 @@ public class Event implements Serializable {
     @ManyToOne(targetEntity = Place.class, optional = false, cascade={CascadeType.MERGE},fetch=FetchType.EAGER)
     private Place place = new Place();
     
+    @NotNull(message = "May not be empty")
+    
     private boolean outdoor;
     
+    @NotNull(message = "May not be empty")
+    private boolean publicEvent;
 
+    public boolean isPublicEvent() {
+        return publicEvent;
+    }
+
+    public void setPublicEvent(boolean publicEvent) {
+        this.publicEvent = publicEvent;
+    }
     //METODI
     
     public User getCreator() {
@@ -120,14 +131,16 @@ public class Event implements Serializable {
     public void setPlace(Place Place) {
         this.place = Place;
     }
-    
-    public boolean getOutdoor() {
+
+    public boolean isOutdoor() {
         return outdoor;
     }
 
     public void setOutdoor(boolean outdoor) {
         this.outdoor = outdoor;
     }
+    
+ 
 
     @Override
     public String toString(){

@@ -323,4 +323,22 @@ public class EventManager implements EventManagerInterface  {
     return (List)tempSet;
     }
     
+    @Override
+    public List<Event> loadPublicCalendar(String username) {
+            
+    Query query = em.createQuery("SELECT ue.event FROM UserEvent ue WHERE (ue.user.email = :user AND (ue.accepted=true OR ue.creator=true) AND ue.event.publicEvent=true)").setParameter(("user"), username);
+    List<Event> tempSet = new ArrayList<>(query.getResultList());
+
+    Query query2 = em.createQuery("SELECT ue.event.idEvent FROM UserEvent ue WHERE (ue.user.email = :user AND (ue.accepted=true OR ue.creator=true) AND ue.event.publicEvent=true)").setParameter(("user"), username);
+
+    List<iDEvent> lista = new ArrayList<>(query2.getResultList());
+   
+    for(int i =0;i<tempSet.size();i++)
+    {
+        tempSet.get(i).setIdEvent(lista.get(i));
+    }
+
+    return (List)tempSet;
+    }
+    
 }
