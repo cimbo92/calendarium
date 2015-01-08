@@ -13,18 +13,18 @@
 
             <p:growl id="growl" showDetail="true"/>       
 
-            <p:layout style="min-width:400px;min-height:900px; ">
+            <p:layout style="min-width:390px;min-height:890px; ">
                 <p:layoutUnit position="west" resizable="false">
                     <p:panelGrid columns="1" >
                         <f:facet name="header">
-                            <h:graphicImage  value="#{imageBean.getUserImage()}" width="350" />
+                            <h:graphicImage  value="#{imageBean.getUserImage()}"  />
 
                         </f:facet>
                         <h:outputText value="Benvenuto: #{loginBean.name}" />
                     </p:panelGrid>
 
                 </p:layoutUnit>
-                <p:layoutUnit position="center" id="center" style="background-image: " >
+                <p:layoutUnit position="center" id="center" >
 
                     <h:panelGrid id="principalgrid" columnClasses="value" style ="margin : 0px auto">
                         <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" timeZone="GMT+2">
@@ -203,8 +203,19 @@
 
         <style type="text/css">
             .value {
-                width: 1000px;
+                width: 900px;
             }
+            
+            
+                    .ui-layout-unit{
+                border : 0px;
+                border-color: deepskyblue;
+                    }
+            
+            .ui-layout-unit-content{      
+                background-image:url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/background.jpg'); 
+            }
+            
         </style>
     </h:body>
 </html>
