@@ -17,7 +17,7 @@
                 <p:layoutUnit position="west" resizable="false">
                     <p:panelGrid columns="1" >
                         <f:facet name="header">
-                            <h:graphicImage value="/resources/images/demo.jpg" width="350" />
+                            <h:graphicImage  value="#{imageBean.getUserImage()}" width="350" />
                         </f:facet>
                         <h:outputText value="Benvenuto: #{loginBean.name}" />
                     </p:panelGrid>
@@ -145,7 +145,6 @@
                                 <f:selectItem itemLabel="Public" itemValue="true"/>
                                 <f:selectItem itemLabel="Private" itemValue="false" />
                             </p:selectOneRadio>
-
 
                             <h:outputText value="Preferences:" />
                             <p:selectManyCheckbox id="grid" value="#{eventBean.selectedPref}" layout="grid" columns="3">

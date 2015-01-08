@@ -139,10 +139,10 @@ public class EventBean implements Serializable {
         
         userEvent=new UserEvent(event, um.getLoggedUser(), true);
         uem.addUserEvent(userEvent);
-        for(int i=0;i<invitated.size();i++){
-            userEvent=new UserEvent(event, um.findByMail(invitated.get(i)) , false);
-               uem.addUserEvent(userEvent);
-               mailSender.sendMail(invitated.get(i),"Invitation",userEvent.getEvent().toString());
+        for (String invitated1 : invitated) {
+            userEvent = new UserEvent(event, um.findByMail(invitated1), false);
+            uem.addUserEvent(userEvent);
+            mailSender.sendMail(invitated1, "Invitation", userEvent.getEvent().toString());
         }
     }
       
