@@ -21,7 +21,7 @@ import javax.ejb.Remote;
 public interface EventManagerInterface {
        
     //TODO
-    public boolean modifyEvent(Event event,User user);
+    public void modifyEvent(Event event);
 
     public boolean removeEvent(int idEvent);
     

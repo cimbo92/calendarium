@@ -133,7 +133,6 @@ public class EventBean implements Serializable {
             idEv.setId(id);
             event.setIdEvent(idEv);
             event.setCreator(um.getLoggedUser());
-            
             em.addEvent(event);
        
     }

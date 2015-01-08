@@ -44,6 +44,9 @@ public class EventManager implements EventManagerInterface  {
     @Override
     public void addEvent(Event event) throws OverlappingException  {
         
+        
+        
+        
         if(this.searchEventOverlapping(event))
         {
             throw new OverlappingException();
@@ -57,25 +60,13 @@ public class EventManager implements EventManagerInterface  {
     }
     
     @Override
-       public boolean modifyEvent(Event event,User user) {
-       Query query =em
-                    .createQuery("Select ue from UserEvent ue where ue.event= :event and  ue.user: =user").setParameter("event", event);
-       query.setParameter("user", user);
-       query.executeUpdate();
-       List<UserEvent> result = query.getResultList();
-       UserEvent result0 = result.get(0);
-           
-       if(result0.isCreator()==false)
-           return false;
-       else
-       {
+       public void modifyEvent(Event event) {
+       
         Query query1 =em
                     .createQuery("UPDATE Event ue SET ue :event"
                             + " WHERE ue= :event");
             query1.setParameter("event",event);
             query1.executeUpdate();
-            return true;
-       }
        }
 
     @Override

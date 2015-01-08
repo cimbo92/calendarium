@@ -5,6 +5,7 @@
  */
 package managerBeans;
 
+import entities.Event;
 import entities.User;
 import java.security.Principal;
 import java.util.List;
@@ -32,6 +33,7 @@ public class IDEventManager implements IDEventManagerInterface {
     
     @Override
     public Long findMax(){
+
         Query query;
         query =em.createQuery( "SELECT MAX(i.id) FROM iDEvent i" );
         
