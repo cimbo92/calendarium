@@ -42,16 +42,28 @@
                         </f:facet>
                     </p:toolbar>
 
-                    <p:dialog header="Warnings" widgetVar="dlg-warnings">
-                        <h:outputText value="Resistance to PrimeFaces is futile!" />             
-                        <p:toolbar>
-                            <f:facet name="right">
-                                <p:commandButton value="Previous" id="prev_warn"  onclick=""/>
-                                <p:commandButton value="Next" id="next_warn"  onclick=""/>
-                            </f:facet>
-                        </p:toolbar>
-                    </p:dialog>
+                   
+                        
+                    <p:dialog header="Warnings" widgetVar="dlg-warnings" id="inv-dialogW" width="800px" height="300px" resizable="false">
+                        <p:carousel value="#{warningBean.warnings}" var="eventWarning" numVisible="1" itemStyle="height:200px;width:750px;" effect="easeInStrong" headerText="Warning" style="margin-bottom:0;">
+                            <p:tab>
+                                <p:panelGrid columns="2" columnClasses="label,value">
+                                    <h:outputText value="Title:" />
+                                    <h:outputText value="#{eventWarning.title}"  />
 
+                                    <h:outputText value="Invitor:" />
+                                    <h:outputText value="#PROVA" />
+
+                                    <f:facet name="footer">
+                                        <p:commandButton value="Accept" id="accept-inv" actionListener="#{invitationBean.acceptInvite(event)}" oncomplete="PF('dlg-invitations').hide();" process="@this">
+                                        </p:commandButton>
+                                        <p:commandButton value="Decline" id="decline-inv" actionListener="#{invitationBean.declineInvite(event)}" oncomplete="PF('dlg-invitations').hide();" process="@this">
+                                        </p:commandButton>
+                                    </f:facet>
+                                </p:panelGrid>
+                            </p:tab>
+                        </p:carousel> 
+                    </p:dialog>
 
                     <p:dialog header="Invitations" widgetVar="dlg-invitations" id="inv-dialog" width="800px" height="300px" resizable="false">
                         <p:carousel value="#{invitationBean.invites}" var="event" numVisible="1" itemStyle="height:200px;width:750px;" effect="easeInStrong" headerText="Invitation" style="margin-bottom:0;">
