@@ -26,7 +26,7 @@ import managerBeans.UserManagerInterface;
  *
  * @author Alessandro
  */
-@ViewScoped
+@RequestScoped
 @Named
 public class InvitationBean implements Serializable {
 
@@ -44,6 +44,7 @@ public class InvitationBean implements Serializable {
     @PostConstruct
     public void init() {
         invites = new ArrayList<>();
+        loadInvites();
     }
 
     

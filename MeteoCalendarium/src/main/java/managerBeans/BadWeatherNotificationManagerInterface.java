@@ -6,7 +6,9 @@
 package managerBeans;
 
 import entities.BadWeatherNotification;
+import entities.Event;
 import entities.User;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -18,6 +20,10 @@ public interface BadWeatherNotificationManagerInterface {
      public List<BadWeatherNotification> searchByDate(String date);
  
      public List<BadWeatherNotification> getAllUserBadWeatherNotification(User creator);
+     
+     public List<Event> findWarnings(User creator);
+     
+     public List<Timestamp> findSolution(List<Event> eventWarning);
       
      
 }
