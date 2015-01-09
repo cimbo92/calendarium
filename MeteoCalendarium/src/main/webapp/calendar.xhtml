@@ -37,13 +37,13 @@
                         <f:facet name="right">
                             <p:commandButton value="Warnings" id="warn"  onclick="PF('dlg-warnings').show();"/>
                             <p:commandButton value="Invitations" id="invitations" oncomplete="PF('dlg-invitations').show();" />
-                            <p:commandButton value=" Utenti" id="utenti"  onclick="PF('dlg-users').show();"/>
+                            <p:commandButton value=" Utenti" id="utenti"  oncomplete="PF('utenti').show();"/>
                             <p:commandButton value="Settings" id="settings" onclick="" />
                         </f:facet>
                     </p:toolbar>
 
-                   
-                        
+
+
                     <p:dialog header="Warnings" widgetVar="dlg-warnings" id="inv-dialogW" width="800px" height="300px" resizable="false">
                         <p:carousel value="#{warningBean.warnings}" var="eventWarning" numVisible="1" itemStyle="height:200px;width:750px;" effect="easeInStrong" headerText="Warning" style="margin-bottom:0;">
                             <p:tab>
@@ -96,104 +96,101 @@
                     </p:dialog>
 
 
-                    <p:dialog header="Users" widgetVar="dlg-users">
-                        <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" columnClasses="label, value">
-                            
-                            <p:selectOneMenu  value="#{scheduleViewPublic.username}" var="user" 
-                                              filter="true" filterMatchMode="contains"  >
-                                <f:selectItems value="#{scheduleViewPublic.users}" var="listUser" itemLabel="#{listUser}" itemValue="#{listUser}" />                             
-                            </p:selectOneMenu>
-                            
-                            <p:commandButton value="Go" id="goToCalendar" actionListener="#{publicEventBean.nothing()}" action="#{scheduleViewPublic.loadCalendar()}" oncomplete="PF('publicCalendar').update();PF('dlg-pubcal').show();PF('publicCalendar').update();PF('dlg-users').hide()" process="@this" />
-                        </h:panelGrid>
-                    </p:dialog>
-
-                    <p:dialog header="Public Calendar of #{scheduleViewPublic.username}" id="dialogpubcal" widgetVar="dlg-pubcal">
-                        <h:panelGrid id="panelpubcal" columnClasses="value" style ="margin : 0px auto">
-                            <p:schedule id="pubcal" value="#{scheduleViewPublic.eventModel}"  widgetVar="publicCalendar" timeZone="GMT+2">
-                                <p:ajax event="eventSelect"  listener="#{publicEventBean.onEventSelect}" update="eventDetailsPublic" oncomplete="PF('eventDialogPublic').show();" />
-                            </p:schedule>
-                        </h:panelGrid>
-                    </p:dialog>
+                    <p:dialog header="utenti" widgetVar="users">
+                        <p:selectOneMenu  value="#{scheduleViewPublic.username}" 
+                                          filter="true" filterMatchMode="contains"  >
+                            <f:selectItems value="#{scheduleViewPublic.users}" />                             
+                        </p:selectOneMenu>
+                        <p:commandButton value="Go" id="goToCalendar" actionListener="#{scheduleViewPublic.loadCalendar()}" update="panelpubcal" oncomplete="PF('dlg-pubcal').show();PF('dlg-users').hide()" process="@this" />
+                        </p:dialog>
+                    
+                   
+                        <p:dialog header="Public Calendar of #{scheduleViewPublic.username}" id="dialogpubcal" widgetVar="dlg-pubcal">
+                            <h:panelGrid id="panelpubcal" columnClasses="value" style ="margin : 0px auto">
+                                <p:schedule id="pubcal" value="#{scheduleViewPublic.eventModel}"  widgetVar="publicCalendar" timeZone="GMT+2">
+                                    <p:ajax event="eventSelect"  listener="#{publicEventBean.onEventSelect}" update="eventDetailsPublic" oncomplete="PF('eventDialogPublic').show();" />
+                                </p:schedule>
+                            </h:panelGrid>
+                        </p:dialog>
 
 
-                    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
-                        <h:panelGrid id="eventDetails" columns="2">
-                            <h:outputLabel for="title" value="Title:" />
-                            <p:inputText id="title" value="#{eventBean.event.title}" required="true" />
+                        <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
+                            <h:panelGrid id="eventDetails" columns="2">
+                                <h:outputLabel for="title" value="Title:" />
+                                <p:inputText id="title" value="#{eventBean.event.title}" required="true" />
 
-                            <p:outputLabel for="startDate" value="From:" />
-                            <p:calendar id="startDate" value="#{eventBean.startDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+                                <p:outputLabel for="startDate" value="From:" />
+                                <p:calendar id="startDate" value="#{eventBean.startDate}" pattern="MM/dd/yyyy HH:mm:ss" />
 
-                            <p:outputLabel for="endDate" value="To:" />
-                            <p:calendar id="endDate" value="#{eventBean.endDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+                                <p:outputLabel for="endDate" value="To:" />
+                                <p:calendar id="endDate" value="#{eventBean.endDate}" pattern="MM/dd/yyyy HH:mm:ss" />
 
-                            <h:outputLabel for="place" value="Place:" />
-                            <p:inputText id="place" value="#{eventBean.event.place.city}" required="true" />
+                                <h:outputLabel for="place" value="Place:" />
+                                <p:inputText id="place" value="#{eventBean.event.place.city}" required="true" />
 
-                            <h:outputLabel for="description" value="Description:" />
-                            <p:inputText id="description" value="#{eventBean.event.description}" required="true" />
+                                <h:outputLabel for="description" value="Description:" />
+                                <p:inputText id="description" value="#{eventBean.event.description}" required="true" />
 
-                            <p:outputLabel for="outdoor" value="In/Out"  />
-                            <p:selectOneRadio id="outdoor" value="#{eventBean.event.outdoor}">
-                                <f:selectItem itemLabel="Indoor" itemValue="false" />
-                                <f:selectItem itemLabel="Outdoor" itemValue="true" />
-                            </p:selectOneRadio>
+                                <p:outputLabel for="outdoor" value="In/Out"  />
+                                <p:selectOneRadio id="outdoor" value="#{eventBean.event.outdoor}">
+                                    <f:selectItem itemLabel="Indoor" itemValue="false" />
+                                    <f:selectItem itemLabel="Outdoor" itemValue="true" />
+                                </p:selectOneRadio>
 
-                            <p:outputLabel for="public" value="In/Out"  />
-                            <p:selectOneRadio id="public" value="#{eventBean.event.publicEvent}">
-                                <f:selectItem itemLabel="Public" itemValue="true"/>
-                                <f:selectItem itemLabel="Private" itemValue="false" />
-                            </p:selectOneRadio>
+                                <p:outputLabel for="public" value="In/Out"  />
+                                <p:selectOneRadio id="public" value="#{eventBean.event.publicEvent}">
+                                    <f:selectItem itemLabel="Public" itemValue="true"/>
+                                    <f:selectItem itemLabel="Private" itemValue="false" />
+                                </p:selectOneRadio>
 
-                            <h:outputText value="Preferences:" />
-                            <p:selectManyCheckbox id="grid" value="#{eventBean.selectedPref}" layout="grid" columns="3">
-                                <f:selectItems value="#{eventBean.listPref()}" var="preference" itemLabel="#{listPref}" itemValue="#{listPref}" />
-                            </p:selectManyCheckbox>
+                                <h:outputText value="Preferences:" />
+                                <p:selectManyCheckbox id="grid" value="#{eventBean.selectedPref}" layout="grid" columns="3">
+                                    <f:selectItems value="#{eventBean.listPref()}" var="preference" itemLabel="#{listPref}" itemValue="#{listPref}" />
+                                </p:selectManyCheckbox>
 
-                            <p:outputLabel for="invites" value="Invites:" />
-                            <p:selectManyMenu id="invites" value="#{eventBean.invitated}" 
-                                              filter="true" filterMatchMode="contains" showCheckbox="true">
-                                <f:selectItems value="#{eventBean.listUser()}" var="listUser" itemLabel="#{listUser}" itemValue="#{listUser}" />
-                            </p:selectManyMenu>
+                                <p:outputLabel for="invites" value="Invites:" />
+                                <p:selectManyMenu id="invites" value="#{eventBean.invitated}" 
+                                                  filter="true" filterMatchMode="contains" showCheckbox="true">
+                                    <f:selectItems value="#{eventBean.listUser()}" var="listUser" itemLabel="#{listUser}" itemValue="#{listUser}" />
+                                </p:selectManyMenu>
 
-                            <p:commandButton type="reset" value="Reset" />
-                            <p:commandButton id="addButton" value="Save" actionListener="#{eventBean.create()}" action="#{scheduleView.loadCalendar()}" update="growl" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+                                <p:commandButton type="reset" value="Reset" />
+                                <p:commandButton id="addButton" value="Save" actionListener="#{eventBean.create()}" action="#{scheduleView.loadCalendar()}" update="growl" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
 
-                        </h:panelGrid>
-                    </p:dialog>
+                            </h:panelGrid>
+                        </p:dialog>
 
-                    <p:dialog widgetVar="eventDialogPublic" header="Event Details" showEffect="clip" hideEffect="clip">
-                        <h:panelGrid id="eventDetailsPublic" columns="2">
-                            <h:outputLabel for="titlePublic" value="Title:" />
-                            <p:outputLabel id="titlePublic" value="#{publicEventBean.event.title}" />
+                        <p:dialog widgetVar="eventDialogPublic" header="Event Details" showEffect="clip" hideEffect="clip">
+                            <h:panelGrid id="eventDetailsPublic" columns="2">
+                                <h:outputLabel for="titlePublic" value="Title:" />
+                                <p:outputLabel id="titlePublic" value="#{publicEventBean.event.title}" />
 
-                            <p:outputLabel for="startDatePublic" value="From:" />
-                            <p:outputLabel id="startDatePublic" value="#{publicEventBean.startDate}"/>
+                                <p:outputLabel for="startDatePublic" value="From:" />
+                                <p:outputLabel id="startDatePublic" value="#{publicEventBean.startDate}"/>
 
-                            <p:outputLabel for="endDatePublic" value="To:" />
-                            <p:outputLabel id="endDatePublic" value="#{publicEventBean.endDate}"/>
+                                <p:outputLabel for="endDatePublic" value="To:" />
+                                <p:outputLabel id="endDatePublic" value="#{publicEventBean.endDate}"/>
 
-                            <h:outputLabel for="placePublic" value="Place:" />
-                            <p:outputLabel id="placePublic" value="#{publicEventBean.event.place.city}"/>
+                                <h:outputLabel for="placePublic" value="Place:" />
+                                <p:outputLabel id="placePublic" value="#{publicEventBean.event.place.city}"/>
 
-                            <h:outputLabel for="descriptionPublic" value="Description:" />
-                            <p:outputLabel id="descriptionPublic" value="#{publicEventBean.event.description}"/>
+                                <h:outputLabel for="descriptionPublic" value="Description:" />
+                                <p:outputLabel id="descriptionPublic" value="#{publicEventBean.event.description}"/>
 
-                            <p:outputLabel for="outdoorPublic" value="In/Out"  />
-                            <p:outputLabel id="outdoorPublic" value="#{publicEventBean.outdoor}"/>
+                                <p:outputLabel for="outdoorPublic" value="In/Out"  />
+                                <p:outputLabel id="outdoorPublic" value="#{publicEventBean.outdoor}"/>
 
-                            <p:outputLabel for="preferencePublic" value="Preferences"  />
-                            <p:dataList id="preferencePublic" value="#{publicEventBean.preferences}" var="pref" type="ordered">
-                                #{pref}
-                            </p:dataList>
-                            <p:outputLabel for="invitationPublic" value="invitations"  />
+                                <p:outputLabel for="preferencePublic" value="Preferences"  />
+                                <p:dataList id="preferencePublic" value="#{publicEventBean.preferences}" var="pref" type="ordered">
+                                    #{pref}
+                                </p:dataList>
+                                <p:outputLabel for="invitationPublic" value="invitations"  />
 
-                            <p:dataList id="invitationPublic" value="#{publicEventBean.invitated}" var="invit" type="ordered">
-                                #{invit}
-                            </p:dataList>
-                        </h:panelGrid>
-                    </p:dialog> 
+                                <p:dataList id="invitationPublic" value="#{publicEventBean.invitated}" var="invit" type="ordered">
+                                    #{invit}
+                                </p:dataList>
+                            </h:panelGrid>
+                        </p:dialog> 
 
 
                 </p:layoutUnit>
@@ -205,17 +202,17 @@
             .value {
                 width: 1000px;
             }
-            
-            
-                    .ui-layout-unit{
+
+
+            .ui-layout-unit{
                 border : 0px;
                 border-color: deepskyblue;
-                    }
-            
+            }
+
             .ui-layout-unit-content{      
                 background-image:url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/background.jpg'); 
             }
-            
+
         </style>
     </h:body>
 </html>

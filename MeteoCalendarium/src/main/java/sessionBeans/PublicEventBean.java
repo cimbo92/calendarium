@@ -53,12 +53,20 @@ public class PublicEventBean {
     @EJB
     private UserManagerInterface um;
     
-    
-    
+
     private List<String> preferences = new ArrayList<>();
     private List<String> invitated = new ArrayList<>();
     private Event event;
-     
+    private String username;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    
     @PostConstruct
     public void init()
     {

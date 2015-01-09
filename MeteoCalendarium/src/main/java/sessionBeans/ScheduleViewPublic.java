@@ -6,41 +6,40 @@
 package sessionBeans;
 
 import entities.Event;
-import entities.User;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
+import javax.ejb.SessionBean;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.spi.Bean;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import managerBeans.EventManagerInterface;
 import managerBeans.UserManagerInterface;
-import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleModel;
+
+
 
 /**
  *
  * @author Alessandro
  */
 
-@RequestScoped
-@Named("scheduleViewPublic")
+@Named
 public class ScheduleViewPublic implements Serializable {
  
-    private ScheduleModel eventModel;
+  private ScheduleModel eventModel;
    
     @EJB
-    private EventManagerInterface em;
+  private EventManagerInterface em;
     
      @EJB
-    private UserManagerInterface um;
-     
-
+  private UserManagerInterface um;
+   
 private String username;
 
 private List<String> users =new ArrayList<>();
@@ -64,12 +63,16 @@ private List<String> users =new ArrayList<>();
     @PostConstruct
     public void init() {
         eventModel = new DefaultScheduleModel();   
-        users =  um.getListUsers();
-       
+        users =  um.getListUsers();  
     }
      
-    public void loadCalendar(){
+    public void saveUser(String user)
+    {
+    this.username=user;
+    }
     
+    public void loadCalendar(){
+
         List<Event> tempCalendar = em.loadPublicCalendar(username);
         for (Event tempCalendar1 : tempCalendar) {
            DefaultScheduleEvent temp = new DefaultScheduleEvent(tempCalendar1.getTitle(), tempCalendar1.getStartDate(), tempCalendar1.getEndDate());

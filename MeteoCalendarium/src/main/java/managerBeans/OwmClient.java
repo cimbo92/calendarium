@@ -308,7 +308,7 @@ public class OwmClient implements OwmClientInterface{
                             risposta = this.tenForecastWeatherAtCity(p.getCity());
                             List<ForecastWeatherData> list = risposta.getForecasts();
                                     for(ForecastWeatherData fwd : list){
-                                        System.out.println(p.getCity()+" "+new Timestamp(fwd.getCalcDateTime())+" Main_condition :"+fwd.getWeatherConditions().get(0).getMain());
+                                //        System.out.println(p.getCity()+" "+new Timestamp(fwd.getCalcDateTime())+" Main_condition :"+fwd.getWeatherConditions().get(0).getMain());
                                         Forecast f = new Forecast();
                                         //Recupero nel database la main condition associata
                                         MainCondition c = entityManager.find(MainCondition.class, fwd.getWeatherConditions().get(0).getMain());
@@ -331,6 +331,7 @@ public class OwmClient implements OwmClientInterface{
                       }
                      
                    }
+                System.out.println("Check Weather Completed!");
                
                   
 }
