@@ -9,6 +9,7 @@ import HelpClasses.PreferenceHelp;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
+import static javax.persistence.CascadeType.REMOVE;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;

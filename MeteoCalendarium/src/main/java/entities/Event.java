@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Date;
+import static javax.persistence.CascadeType.REMOVE;
 import javax.persistence.OneToOne;
 
 /**

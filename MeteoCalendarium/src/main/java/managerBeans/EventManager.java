@@ -63,9 +63,8 @@ public class EventManager implements EventManagerInterface  {
        public void modifyEvent(Event event) {
        
         Query query1 =em
-                    .createQuery("UPDATE Event ue SET ue :event"
-                            + " WHERE ue= :event");
-            query1.setParameter("event",event);
+                    .createQuery("UPDATE Event e SET e.startDate =:date WHERE e.idEvent= :id");
+            query1.setParameter("id",event.getIdEvent()).setParameter(("date"), event.getStartDate());
             query1.executeUpdate();
        }
 

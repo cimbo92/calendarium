@@ -5,8 +5,10 @@
  */
 package entities;
 
+import static java.awt.AWTEventMulticaster.remove;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
+import static javax.persistence.CascadeType.REMOVE;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
