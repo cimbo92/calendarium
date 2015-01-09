@@ -1,5 +1,5 @@
 package sessionBeans;
- /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -9,7 +9,6 @@ package sessionBeans;
  *
  * @author Alessandro
  */
-
 import entities.Event;
 import java.io.Serializable;
 import java.util.Calendar;
@@ -33,46 +32,46 @@ import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
- 
+
 @ViewScoped
 @Named("scheduleView")
 public class ScheduleView implements Serializable {
- 
+
     private ScheduleModel eventModel;
-   
+
     @EJB
     private EventManagerInterface em;
-    
-     @EJB
-    UserManagerInterface um;
-   
 
-     
+    @EJB
+    UserManagerInterface um;
+
     @PostConstruct
     public void init() {
-        eventModel = new DefaultScheduleModel();        
+        eventModel = new DefaultScheduleModel();
         loadCalendar();
     }
-     
-    public void loadCalendar(){
-       List<Event> tempCalendar = em.loadCalendar(um.getLoggedUser());
+
+    public void loadCalendar() {
+        List<Event> tempCalendar = em.loadCalendar(um.getLoggedUser());
         for (Event tempCalendar1 : tempCalendar) {
-           DefaultScheduleEvent temp = new DefaultScheduleEvent(tempCalendar1.getTitle(), tempCalendar1.getStartDate(), tempCalendar1.getEndDate());
-           temp.setDescription(tempCalendar1.getIdEvent().getId().toString());
-           if(!eventModel.getEvents().contains(temp)) 
-           {
-               eventModel.addEvent(temp);
-           }else
-           {
-               eventModel.updateEvent(temp);
-           }
-        }       
-    }	
-    
+            DefaultScheduleEvent temp;
+            if (tempCalendar1.getCreator().getEmail().equals(um.getLoggedUser().getEmail())) {
+                temp = new DefaultScheduleEvent(tempCalendar1.getTitle(), tempCalendar1.getStartDate(), tempCalendar1.getEndDate(), "emp1");
+
+            } else {
+                temp = new DefaultScheduleEvent(tempCalendar1.getTitle(), tempCalendar1.getStartDate(), tempCalendar1.getEndDate(), "emp2");
+            }
+            temp.setDescription(tempCalendar1.getIdEvent().getId().toString());
+            if (!eventModel.getEvents().contains(temp)) {
+                eventModel.addEvent(temp);
+            } else {
+                eventModel.updateEvent(temp);
+            }
+        }
+    }
+
     public ScheduleModel getEventModel() {
         return eventModel;
     }
-     
 
 }
-

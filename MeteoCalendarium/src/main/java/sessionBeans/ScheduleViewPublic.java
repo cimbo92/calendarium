@@ -66,11 +66,6 @@ private List<String> users =new ArrayList<>();
         users =  um.getListUsers();  
     }
      
-    public void saveUser(String user)
-    {
-    this.username=user;
-    }
-    
     public void loadCalendar(){
 
         List<Event> tempCalendar = em.loadPublicCalendar(username);
