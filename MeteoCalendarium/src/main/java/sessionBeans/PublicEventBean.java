@@ -50,13 +50,15 @@ public class PublicEventBean {
     private EventManagerInterface em;
     @EJB
     private UserEventManagerInterface uem;
-
+    @EJB
+    private UserManagerInterface um;
+    
+    
     
     private List<String> preferences = new ArrayList<>();
     private List<String> invitated = new ArrayList<>();
     private Event event;
-    
-    
+     
     @PostConstruct
     public void init()
     {

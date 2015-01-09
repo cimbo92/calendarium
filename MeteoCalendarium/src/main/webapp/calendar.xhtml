@@ -99,16 +99,16 @@
                     <p:dialog header="Users" widgetVar="dlg-users">
                         <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" columnClasses="label, value">
                             
-                             <p:selectManyMenu  value="#{scheduleViewPublic.prova1}" 
-                                              filter="true" filterMatchMode="contains" showCheckbox="true">
-                                 <f:selectItems value="#{scheduleViewPublic.prova2}" var="listUser" itemLabel="#{listUser}" itemValue="#{listUser.email}" />
-                            </p:selectManyMenu>
+                            <p:selectOneMenu  value="#{scheduleViewPublic.username}" var="user" 
+                                              filter="true" filterMatchMode="contains"  >
+                                <f:selectItems value="#{scheduleViewPublic.users}" var="listUser" itemLabel="#{listUser}" itemValue="#{listUser}" />                             
+                            </p:selectOneMenu>
                             
                             <p:commandButton value="Go" id="goToCalendar" actionListener="#{publicEventBean.nothing()}" action="#{scheduleViewPublic.loadCalendar()}" oncomplete="PF('publicCalendar').update();PF('dlg-pubcal').show();PF('publicCalendar').update();PF('dlg-users').hide()" process="@this" />
                         </h:panelGrid>
                     </p:dialog>
 
-                    <p:dialog header="Public Calendar" id="dialogpubcal" widgetVar="dlg-pubcal">
+                    <p:dialog header="Public Calendar of #{scheduleViewPublic.username}" id="dialogpubcal" widgetVar="dlg-pubcal">
                         <h:panelGrid id="panelpubcal" columnClasses="value" style ="margin : 0px auto">
                             <p:schedule id="pubcal" value="#{scheduleViewPublic.eventModel}"  widgetVar="publicCalendar" timeZone="GMT+2">
                                 <p:ajax event="eventSelect"  listener="#{publicEventBean.onEventSelect}" update="eventDetailsPublic" oncomplete="PF('eventDialogPublic').show();" />
@@ -203,7 +203,7 @@
 
         <style type="text/css">
             .value {
-                width: 900px;
+                width: 1000px;
             }
             
             

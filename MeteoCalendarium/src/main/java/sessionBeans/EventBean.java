@@ -93,7 +93,6 @@ public class EventBean implements Serializable {
     
     public EventBean(){}
     
-    
     public Event getEvent(){
          if (event == null) {
             event = new Event();      
