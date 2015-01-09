@@ -96,16 +96,15 @@
                     </p:dialog>
 
 
-                    <p:dialog header="utenti" widgetVar="utenti">
-                        <p:selectOneMenu  value="#{selectOneView.option}" 
+                    <p:dialog header="utenti" widgetVar="users">
+                        <p:selectOneMenu  value="#{scheduleViewPublic.username}" 
                                           filter="true" filterMatchMode="contains"  >
-                            <f:selectItems value="#{selectOneView.users}" />                             
+                            <f:selectItems value="#{scheduleViewPublic.users}" />                             
                         </p:selectOneMenu>
-                        <p:commandButton value="Go" id="goToCalendar" actionListener="#{scheduleViewPublic.loadCalendar(selectOneView.option)}" update="panelpubcal" oncomplete="PF('dlg-pubcal').show();PF('dlg-users').hide()" process="@this" />
-                        <p:commandButton value="Submit"  action="#{selectOneView.print()}"  />
+                        <p:commandButton value="Go" id="goToCalendar" actionListener="#{scheduleViewPublic.loadCalendar()}" update="panelpubcal" oncomplete="PF('dlg-pubcal').show();PF('dlg-users').hide()" process="@this" />
                         </p:dialog>
-   
                     
+                   
                         <p:dialog header="Public Calendar of #{scheduleViewPublic.username}" id="dialogpubcal" widgetVar="dlg-pubcal">
                             <h:panelGrid id="panelpubcal" columnClasses="value" style ="margin : 0px auto">
                                 <p:schedule id="pubcal" value="#{scheduleViewPublic.eventModel}"  widgetVar="publicCalendar" timeZone="GMT+2">

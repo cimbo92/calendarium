@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.Schedule;
 import javax.ejb.Stateful;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.faces.bean.ManagedProperty;
@@ -19,11 +21,9 @@ import managerBeans.EventManagerInterface;
 import managerBeans.UserManagerInterface;
 import org.primefaces.model.DefaultScheduleModel;
  
-@SessionScoped
+@RequestScoped
 @Named
-public class SelectOneView implements Serializable {
-
-    
+public class SelectOneView implements Serializable {   
      @EJB
     private UserManagerInterface um;
     
@@ -33,6 +33,13 @@ public class SelectOneView implements Serializable {
         return option;
     }
  
+    @Schedule(second = "/5", minute = "*", hour = "*", persistent = false)
+    public void prova()
+    {
+        System.out.println(option);
+    }
+    
+    
     public void setOption(String option) {
         this.option = option;
     }

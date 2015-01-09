@@ -71,8 +71,8 @@ private List<String> users =new ArrayList<>();
     this.username=user;
     }
     
-    public void loadCalendar(String name){
-        username="b@b.it";
+    public void loadCalendar(){
+
         List<Event> tempCalendar = em.loadPublicCalendar(username);
         for (Event tempCalendar1 : tempCalendar) {
            DefaultScheduleEvent temp = new DefaultScheduleEvent(tempCalendar1.getTitle(), tempCalendar1.getStartDate(), tempCalendar1.getEndDate());
