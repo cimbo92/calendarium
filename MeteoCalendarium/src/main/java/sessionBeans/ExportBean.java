@@ -18,6 +18,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
+import javax.swing.JFileChooser;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -160,8 +161,10 @@ public class ExportBean {
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(doc);
-		StreamResult result = new StreamResult(new File("C:\\Users\\alessandro\\Documents\\NetBeansProjects\\MeteoCalendarium\\MeteoCalendarium\\src\\main\\prova.xml"));
- 
+                   String DefaultFolder=new JFileChooser().getFileSystemView().getDefaultDirectory().toString();
+		File file= new File(DefaultFolder+"\\mycalendar.xml");
+             
+		StreamResult result = new StreamResult(file);
 		// Output to console for testing
 		// StreamResult result = new StreamResult(System.out);
  

@@ -19,6 +19,7 @@ import java.util.Date;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
+import javax.swing.JFileChooser;
 import javax.swing.text.Document;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -58,8 +59,8 @@ public class ImportBean {
         
        
         System.out.println("Import begin");
-        
-            file = new File("C:\\Users\\alessandro\\Documents\\NetBeansProjects\\MeteoCalendarium\\MeteoCalendarium\\src\\main\\import.xml");
+           String DefaultFolder=new JFileChooser().getFileSystemView().getDefaultDirectory().toString();
+	   file= new File(DefaultFolder+"\\mycalendar.xml");
           
         Timestamp help;
         try {
