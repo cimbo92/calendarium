@@ -72,13 +72,11 @@
                                     <h:outputText value="Title:" />
                                     <h:outputText value="#{eventWarning.title}"  />
 
-                                    <h:outputText value="Invitor:" />
-                                    <h:outputText value="#PROVA" />
+                                    <h:outputText value="It's possible to postpone the event at: " />
+                                    <h:outputText value="#{warningBean.getDate(eventWarning.title)}" />
 
                                     <f:facet name="footer">
-                                        <p:commandButton value="Accept" id="accept-inv" actionListener="#{invitationBean.acceptInvite(event)}" oncomplete="PF('dlg-invitations').hide();" process="@this">
-                                        </p:commandButton>
-                                        <p:commandButton value="Decline" id="decline-inv" actionListener="#{invitationBean.declineInvite(event)}" oncomplete="PF('dlg-invitations').hide();" process="@this">
+                                        <p:commandButton value="Modify" id="accept-inv" actionListener="#{warningBean.modifyOk(eventWarning)}" oncomplete="PF('dlg-invitations').hide();" process="@this">
                                         </p:commandButton>
                                     </f:facet>
                                 </p:panelGrid>

@@ -45,6 +45,8 @@ public class WarningBean {
         {
             searchSolution();
         }
+        else
+            System.out.println(" warning empty");
         
     }
     
@@ -53,7 +55,7 @@ public class WarningBean {
         
         solutions = bwnm.findSolution(warnings);
         if(!solutions.isEmpty())
-        System.out.println("Va: " + solutions.get(0).getDate());
+        System.out.println("Va: " + solutions.get(0).toString());
         
     }
 
@@ -90,6 +92,39 @@ public class WarningBean {
             }
         }
         em.modifyEvent(event);
+    }
+    public void modifyOk(Event event)
+    {
+        System.out.println("Evento modificato: " + event.getTitle());
+        long diff = event.getEndDate().getTime()-event.getStartDate().getTime();
+        Timestamp help;
+        boolean ok=false;
+        for(int i=0;i<warnings.size()&&!ok;i++)
+        {
+            if(warnings.get(i).getTitle().equalsIgnoreCase(event.getTitle()))
+                if(solutions.get(i)!=null)
+                {
+                     event.setStartDate(solutions.get(i));
+                     help=solutions.get(i);
+                     help.setTime(solutions.get(i).getTime()+diff);
+                     event.setEndDate(help);
+                     em.modifyEvent(event);
+                     ok=true;
+                }
+        }
+        
+        
+    }
+    
+    public String getDate(String title)
+    {
+        for(int i=0;i<warnings.size();i++)
+        {
+            if(warnings.get(i).getTitle().equalsIgnoreCase(title))
+                if(solutions.get(i)!=null)
+                    return solutions.get(i).toString();
+        }
+        return "no possible postpone in the next 10 days";
     }
     
     
