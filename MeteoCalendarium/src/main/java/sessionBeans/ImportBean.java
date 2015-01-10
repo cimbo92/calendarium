@@ -8,6 +8,7 @@ package sessionBeans;
 import entities.Event;
 import entities.Place;
 import entities.User;
+import entities.iDEvent;
 import java.io.File;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -19,6 +20,8 @@ import javax.swing.text.Document;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import managerBeans.EventManagerInterface;
+import managerBeans.IDEventManagerInterface;
+import managerBeans.UserManagerInterface;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -32,11 +35,15 @@ public class ImportBean {
     
     @EJB
     private EventManagerInterface em;
+    @EJB
+    private UserManagerInterface um;
+    @EJB
+    private IDEventManagerInterface idm;
     public ImportBean(){}
     
      public void imports() {
     
-        //removeEvent();
+        removeEvents();
         File file;
         Event event = new Event();
         
@@ -104,23 +111,35 @@ public class ImportBean {
                 Place place = new Place();
                 place.setCity(places.item(0).getTextContent());
                 event.setPlace(place);
-                System.out.println(event.getPlace().getCity());
-                System.out.println("pre creator");
+               
                 NodeList users = element.getElementsByTagName("creator");
                 User user = new User();
-                System.out.println(users.item(0).getTextContent());
+                
                 user.setEmail(users.item(0).getTextContent());
-                System.out.println("error post set email user");
+              
                 event.setCreator(user);
-                System.out.println("Within imports");
+              
+                
+                long id;
+            id=idm.findMax();
+            iDEvent idEv = new iDEvent();
+            idEv.setId(id);
+            event.setIdEvent(idEv);
+                
                 em.addEvent(event);
                 
                 
             }
         } catch (Exception e) {
-            System.out.println("Errore");
+            System.out.println("Exception");
         }
         
     }
+     public void removeEvents()
+     {
+         //prima elimini le preference e le userEvent, poi l'evento e il suo id
+         em.removeAllEvent(um.getLoggedUser());
+     
+     }
     }
 

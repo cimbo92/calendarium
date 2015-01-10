@@ -56,6 +56,12 @@ public class PreferenceManager implements PreferenceManagerInterface {
     
     return result; }
 
+    @Override
+    public void removePreferenceOfEvent(Event event) {
+        Query query1 = em.createQuery("S");
+    
+    }
+
     
     
     
