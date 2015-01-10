@@ -1,17 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><data>
-<event id="0">
-	<title>prova</title>
-	<description>descrizione</description>
-	<startDate>2015-01-10 01:15:26 00:55:33</startDate>
-	<endDate>2015-01-10 01:15:26 00:55:33</endDate>
-	<outdoor>1</outdoor>
-	<publicEvent>1</publicEvent>
-	<place>pordenone</place>
-	<creator>ale@ale.it</creator>
-	<preference>Clear</preference>
-	<preference>Clouds</preference>
-	<invitated>ciao@ciao.it</invitated>
-	<invitated>dio@dio.it</invitated>
-
-</event>
-</data>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><data><event id="entities.iDEvent[ id=34 ]"><title>prova</title><creator>ale@ale.it</creator><description>descrizione</description><place>pordenone</place><startDate>2015-01-10 01:15:26.0</startDate><endDate>2015-01-10 01:15:26.0</endDate><outdoor>false</outdoor><publicEvent>false</publicEvent><preference>Clear</preference><preference>Clouds</preference><invitated>ciao@ciao.it</invitated></event><event id="entities.iDEvent[ id=35 ]"><title>prova export</title><creator>ale@ale.it</creator><description>adadsdasdasdsa</description><place>porcia</place><startDate>2015-01-27 00:00:00.0</startDate><endDate>2015-01-27 00:00:00.0</endDate><outdoor>false</outdoor><publicEvent>false</publicEvent><invitated>ciao@ciao.it</invitated></event></data>
