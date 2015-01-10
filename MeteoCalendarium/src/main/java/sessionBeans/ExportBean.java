@@ -64,6 +64,14 @@ public class ExportBean {
     }
     
 	public void export() {
+            
+                   events = new ArrayList<>();
+        events = em.loadCalendar(um.getLoggedUser());
+        preferences = new ArrayList<>();
+        userInvited = new ArrayList<>();
+        System.out.println("Init export complete");
+  
+        
             System.out.println("Export begin");
             String help;
             //System.out.println("Evento " + events.get(0).getTitle());
@@ -161,9 +169,9 @@ public class ExportBean {
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(doc);
-                   String DefaultFolder=new JFileChooser().getFileSystemView().getDefaultDirectory().toString();
-		File file= new File(DefaultFolder+"\\mycalendar.xml");
-             
+                String DefaultFolder=new JFileChooser().getFileSystemView().getDefaultDirectory().toString();
+		File file= new File(DefaultFolder+"\\mycalendar2.xml");
+                
 		StreamResult result = new StreamResult(file);
 		// Output to console for testing
 		// StreamResult result = new StreamResult(System.out);
