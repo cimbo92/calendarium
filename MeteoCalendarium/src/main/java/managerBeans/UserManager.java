@@ -34,6 +34,7 @@ public class UserManager implements UserManagerInterface {
     public void save(User user) {
         user.setGroupName(Group.USER);
         em.persist(user);
+        
     }
 
     @Override

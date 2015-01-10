@@ -7,10 +7,7 @@ package managerBeans;
 
 import HelpClasses.OverlappingException;
 import entities.Event;
-import static entities.Event_.idEvent;
-import entities.Invitation;
-import entities.Place;
-import entities.Preference;
+
 import entities.User;
 import entities.UserEvent;
 import entities.iDEvent;
@@ -62,11 +59,18 @@ public class EventManager implements EventManagerInterface  {
     @Override
        public void modifyEvent(Event event) {
        
-        Query query1 =em
-                    .createQuery("UPDATE Event e SET e.startDate =:date WHERE e.idEvent= :id");
-            query1.setParameter("id",event.getIdEvent()).setParameter(("date"), event.getStartDate());
-            query1.executeUpdate();
-       }
+           
+         Query query = em.createQuery("UPDATE Event e Set e.title= :title ,e.description= :description , e.startDate= :startDate, e.endDate= :endDate ,e.publicEvent= :publicEvent ,e.outdoor= :outdoor ,e.place= :place WHERE e.idEvent= :idEvent").setParameter("idEvent", event.getIdEvent());
+      query.setParameter("title", event.getTitle());
+      query.setParameter("description", event.getDescription());
+       query.setParameter("startDate", event.getStartDate());
+        query.setParameter("endDate", event.getEndDate());
+         query.setParameter("publicEvent", event.isPublicEvent());
+          query.setParameter("outdoor", event.isOutdoor());
+           query.setParameter("place", event.getPlace());
+            query.executeUpdate();
+             
+    }
 
     @Override
     public boolean removeEvent(int idEvent) {
@@ -117,10 +121,10 @@ public class EventManager implements EventManagerInterface  {
     }
 
     
+    
+    
     @Override
     public boolean searchEventOverlapping(Event event) {
-        
-  
         
         Timestamp startDate = event.getStartDate();
         Timestamp endDate = event.getEndDate();
@@ -293,7 +297,7 @@ public class EventManager implements EventManagerInterface  {
     @Override
     public List<Event> findInvitatedEvent(User user) {
         
-    Query query = em.createQuery("SELECT ue.event FROM UserEvent ue WHERE ue.user = :user AND ue.creator=false").setParameter(("user"), user);
+    Query query = em.createQuery("SELECT ue.event FROM UserEvent ue WHERE ue.user = :user AND ue.creator=false and ue.view=false").setParameter(("user"), user);
     List<Event> tempSet = new ArrayList<>(query.getResultList());
 
   

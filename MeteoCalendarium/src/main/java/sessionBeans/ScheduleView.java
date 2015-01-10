@@ -44,7 +44,8 @@ public class ScheduleView implements Serializable {
 
     @EJB
     UserManagerInterface um;
-
+ 
+    
     @PostConstruct
     public void init() {
         eventModel = new DefaultScheduleModel();
@@ -57,17 +58,27 @@ public class ScheduleView implements Serializable {
             DefaultScheduleEvent temp;
             if (tempCalendar1.getCreator().getEmail().equals(um.getLoggedUser().getEmail())) {
                 temp = new DefaultScheduleEvent(tempCalendar1.getTitle(), tempCalendar1.getStartDate(), tempCalendar1.getEndDate(), "emp1");
-
             } else {
                 temp = new DefaultScheduleEvent(tempCalendar1.getTitle(), tempCalendar1.getStartDate(), tempCalendar1.getEndDate(), "emp2");
             }
             temp.setDescription(tempCalendar1.getIdEvent().getId().toString());
-            if (!eventModel.getEvents().contains(temp)) {
+            
+            boolean alreadyIn=false;
+            for(int i=0; i<eventModel.getEventCount();i++)
+            {
+                if(eventModel.getEvents().get(i).getDescription().equals(temp.getDescription()))
+                {
+                    alreadyIn=true;
+                }
+            }
+            
+            if (!alreadyIn) {
                 eventModel.addEvent(temp);
             } else {
                 eventModel.updateEvent(temp);
             }
         }
+        
     }
 
     public ScheduleModel getEventModel() {

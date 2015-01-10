@@ -19,9 +19,12 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.SessionBean;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import managerBeans.EventManagerInterface;
@@ -31,18 +34,17 @@ import managerBeans.OwmClientInterface;
 import managerBeans.PreferenceManagerInterface;
 import managerBeans.UserEventManagerInterface;
 import managerBeans.UserManagerInterface;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.ScheduleEvent;
-
 /**
  *
  * @author home
  */
+@SessionScoped
 @Named
-@RequestScoped
 public class EventBean implements Serializable {
-
 
     @EJB
     private PreferenceManagerInterface pm;    
@@ -66,13 +68,55 @@ public class EventBean implements Serializable {
     private List<Preference> preferences = new ArrayList<>();
     private List<String> invitated = new ArrayList<>();
     private Event event;
-
-    
+    private long savedId;
+    private boolean creating;
+    private boolean canEliminate;
     private Date startDate = new Date();
     private Date endDate = new Date();
    
     private UserEvent userEvent;
 
+
+       private boolean isOwnEvent;
+
+    public boolean isIsOwnEvent() {
+        return isOwnEvent;
+    }
+
+    public void setIsOwnEvent(boolean isOwnEvent) {
+        this.isOwnEvent = isOwnEvent;
+    }
+    
+        public long getSavedId() {
+        return savedId;
+    }
+
+    public void setSavedId(long savedId) {
+        this.savedId = savedId;
+    }
+    
+    public boolean isCanEliminate() {
+        return this.isOwnEvent&!this.creating;
+    }
+
+    public void setCanEliminate(boolean canEliminate) {
+        this.canEliminate = canEliminate;
+    }
+           
+    
+    public boolean isCreating() {
+        return creating;
+    }
+
+    public void setCreating(boolean creating) {
+        this.creating = creating;
+    }
+    
+    public boolean canEliminate()
+    {
+        return this.isOwnEvent&!this.creating;
+    }
+    
 
 
     public Date getStartDate() {
@@ -133,7 +177,41 @@ public class EventBean implements Serializable {
                   context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", e.getMessage()));
         }
     }
+    
+    
+    public void modify(){
+     FacesContext context = FacesContext.getCurrentInstance();
+     System.out.println("ciaoooo");
+        try{
+            
+            this.updateEvent();
+             context.addMessage(null, new FacesMessage("Successful","Event Created") );
+       }catch(OverlappingException e)
+        {
+                  context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", e.getMessage()));
+        }   
+       RequestContext request=  RequestContext.getCurrentInstance();
+      request.update("formcentral:schedule");
+    }
 
+    public void cancel(){
+        
+    }
+    
+    public void updateUserEvent(){
+        
+    }
+    
+    public void cancelUserEvent(){
+        
+}
+    
+    public void updateEvent() throws OverlappingException{
+        event.convertStartDate(startDate);
+        event.convertEndDate(endDate);
+            event.setCreator(um.getLoggedUser());
+            em.modifyEvent(event);
+    }
     public void addUserEvent(){
         
         userEvent=new UserEvent(event, um.getLoggedUser(), true);
@@ -144,7 +222,6 @@ public class EventBean implements Serializable {
             mailSender.sendMail(invitated1, "Invitation", userEvent.getEvent().toString());
         }
     }
-      
 
     public List<Preference> getPreferences() {
         return preferences;
@@ -192,9 +269,16 @@ public class EventBean implements Serializable {
 
     
      public void onEventSelect(SelectEvent selectEvent) {
-          DefaultScheduleEvent selectedEvent = (DefaultScheduleEvent) selectEvent.getObject(); 
+
+        
+         DefaultScheduleEvent selectedEvent = (DefaultScheduleEvent) selectEvent.getObject(); 
           event=em.loadSpecificEvent(selectedEvent.getDescription());
-         List<String> preferenzeEvento = pm.getPreferenceOfEvent(event);
+           creating= false;
+          this.isOwnEvent = selectedEvent.getStyleClass().equals("emp1");
+         event.getIdEvent().setId(Long.parseLong(selectedEvent.getDescription()));
+           creating= false;
+          
+          List<String> preferenzeEvento = pm.getPreferenceOfEvent(event);
               
         for (String preferenza : preferenzeEvento) {
             this.selectedPref.add(preferenza);
@@ -210,8 +294,12 @@ public class EventBean implements Serializable {
            
      DefaultScheduleEvent selectedEvent = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
     
-     this.setStartDate(selectedEvent.getStartDate());
-     this.setEndDate(selectedEvent.getStartDate());
+        creating= true;
+          isOwnEvent=true;
+     Date correction;
+     correction = new Date(selectedEvent.getStartDate().getTime() + (60 * 60000));
+     this.setStartDate(correction);
+     this.setEndDate(correction);
        }
     
      

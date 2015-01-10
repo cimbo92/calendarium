@@ -39,7 +39,7 @@
                             <p:commandButton value="Invitations" id="invitations" oncomplete="PF('dlg-invitations').show();" />
                             <p:commandButton value=" Utenti" id="utenti"  oncomplete="PF('dlg-users').show();"/>
                             <p:commandButton value="Settings" id="settings" onclick="" />
-                       <p:commandButton value="Export" id="export" onclick="#{exportBean.export()}" />
+                       <p:commandButton value="Export" id="export" onclick="" />
                         </f:facet>
                     </p:toolbar>
 
@@ -92,7 +92,7 @@
                                     <h:outputText value="#{event.title}"  />
 
                                     <h:outputText value="Invitor:" />
-                                    <h:outputText value="#PROVA" />
+                                    <h:outputText value="#{event.creator.email}" />
 
                                     <h:outputText value="Place:" />
                                     <h:outputText value="#{event.place.city}" />
@@ -114,49 +114,54 @@
                         </p:carousel> 
                     </p:dialog>
 
-                    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
-                        <h:panelGrid id="eventDetails" columns="2">
+                     <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
+                        <h:panelGrid  id="eventDetails" columns="2">
                             <h:outputLabel for="title" value="Title:" />
-                            <p:inputText id="title" value="#{eventBean.event.title}" required="true" />
+                            <p:inputText disabled="#{!eventBean.isOwnEvent}" id="title"  value="#{eventBean.event.title}" required="true"/>
 
                             <p:outputLabel for="startDate" value="From:" />
-                            <p:calendar id="startDate" value="#{eventBean.startDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+                            <p:calendar  disabled="#{!eventBean.isOwnEvent}" id="startDate" value="#{eventBean.startDate}" pattern="MM/dd/yyyy HH:mm:ss" />
 
                             <p:outputLabel for="endDate" value="To:" />
-                            <p:calendar id="endDate" value="#{eventBean.endDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+                            <p:calendar  disabled="#{!eventBean.isOwnEvent}" id="endDate" value="#{eventBean.endDate}" pattern="MM/dd/yyyy HH:mm:ss" />
 
                             <h:outputLabel for="place" value="Place:" />
-                            <p:inputText id="place" value="#{eventBean.event.place.city}" required="true" />
+                            <p:inputText  disabled="#{!eventBean.isOwnEvent}" id="place" value="#{eventBean.event.place.city}" required="true" />
 
                             <h:outputLabel for="description" value="Description:" />
-                            <p:inputText id="description" value="#{eventBean.event.description}" required="true" />
+                            <p:inputText disabled="#{!eventBean.isOwnEvent}" id="description" value="#{eventBean.event.description}" required="true" />
 
                             <p:outputLabel for="outdoor" value="In/Out"  />
-                            <p:selectOneRadio id="outdoor" value="#{eventBean.event.outdoor}">
+                            <p:selectOneRadio disabled="#{!eventBean.isOwnEvent}" id="outdoor" value="#{eventBean.event.outdoor}" >
                                 <f:selectItem itemLabel="Indoor" itemValue="false" />
                                 <f:selectItem itemLabel="Outdoor" itemValue="true" />
                             </p:selectOneRadio>
 
                             <p:outputLabel for="public" value="In/Out"  />
-                            <p:selectOneRadio id="public" value="#{eventBean.event.publicEvent}">
+                            <p:selectOneRadio  disabled="#{!eventBean.isOwnEvent}" id="public" value="#{eventBean.event.publicEvent}" >
                                 <f:selectItem itemLabel="Public" itemValue="true"/>
                                 <f:selectItem itemLabel="Private" itemValue="false" />
                             </p:selectOneRadio>
 
+                            <p:outputLabel for="description" value="Description:" />
+                            <p:inputTextarea disabled="#{!eventBean.isOwnEvent}" value="#{eventBean.event.description}" rows="6" cols="33" />
+ 
                             <h:outputText value="Preferences:" />
-                            <p:selectManyCheckbox id="grid" value="#{eventBean.selectedPref}" layout="grid" columns="3">
+                            <p:selectManyCheckbox  disabled="#{!eventBean.isOwnEvent}" id="grid" value="#{eventBean.selectedPref}" layout="grid" columns="3" >
                                 <f:selectItems value="#{eventBean.listPref()}" var="preference" itemLabel="#{listPref}" itemValue="#{listPref}" />
                             </p:selectManyCheckbox>
 
                             <p:outputLabel for="invites" value="Invites:" />
-                            <p:selectManyMenu id="invites" value="#{eventBean.invitated}" 
-                                              filter="true" filterMatchMode="contains" showCheckbox="true">
+                            <p:selectManyMenu  disabled="#{!eventBean.isOwnEvent}" id="invites" value="#{eventBean.invitated}" 
+                                              filter="true" filterMatchMode="contains" showCheckbox="true" >
                                 <f:selectItems value="#{eventBean.listUser()}" var="listUser" itemLabel="#{listUser}" itemValue="#{listUser}" />
                             </p:selectManyMenu>
 
-                            <p:commandButton type="reset" value="Reset" />
-                            <p:commandButton id="addButton" value="Save" actionListener="#{eventBean.create()}" action="#{scheduleView.loadCalendar()}" update="growl" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
-
+                            
+                           <p:commandButton id="modifyButton" value="Modify" actionListener="#{eventBean.modify()}" action="#{scheduleView.loadCalendar()}" rendered="#{!eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"  />
+                            <p:commandButton id="addButton" value="Save" actionListener="#{eventBean.create()}" action="#{scheduleView.loadCalendar()}"  rendered="#{eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />  
+                             <p:commandButton id="deleteButton" value="Delete" actionListener="#{eventBean.delete()}" action="#{scheduleView.loadCalendar()}" rendered="#{!eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />  
+                           
                         </h:panelGrid>
                     </p:dialog>
 
@@ -178,8 +183,11 @@
                             <p:outputLabel id="descriptionPublic" value="#{publicEventBean.event.description}"/>
 
                             <p:outputLabel for="outdoorPublic" value="In/Out"  />
-                            <p:outputLabel id="outdoorPublic" value="#{publicEventBean.outdoor}"/>
+                            <p:outputLabel id="outdoorPublic" value="#{publicEventBean.event.outdoor}"/>
 
+                             <p:outputLabel for="description" value="Description:" />
+                            <p:outputLabel value="#{eventBean.event.description}"/>
+                            
                             <p:outputLabel for="preferencePublic" value="Preferences"  />
                             <p:dataList id="preferencePublic" value="#{publicEventBean.preferences}" var="pref" type="ordered">
                                 #{pref}
@@ -196,6 +204,12 @@
             </p:layout>
         </h:form>
 
+   
+        <script>
+       
+        </script>
+        
+        
         <style type="text/css">
             .value {
                 width: 1000px;
@@ -211,10 +225,10 @@
             }
 
             .emp1 .fc-event-inner {
-                background: red;
+                background: greenyellow;
             }
             .emp2 .fc-event-inner {
-                background: green;
+                background: salmon;
             }
 
         </style>
