@@ -6,9 +6,11 @@
 package sessionBeans;
 
 import entities.Event;
+import entities.MainCondition;
 import entities.Place;
 import entities.Preference;
 import entities.User;
+import entities.UserEvent;
 import entities.iDEvent;
 import java.io.File;
 import java.sql.Timestamp;
@@ -23,6 +25,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import managerBeans.EventManagerInterface;
 import managerBeans.IDEventManagerInterface;
 import managerBeans.PreferenceManagerInterface;
+import managerBeans.UserEventManagerInterface;
 import managerBeans.UserManagerInterface;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -43,6 +46,8 @@ public class ImportBean {
     private IDEventManagerInterface idm;
     @EJB
     private PreferenceManagerInterface pm;
+    @EJB
+    private UserEventManagerInterface uem;
     public ImportBean(){}
     
      public void imports() {
@@ -127,17 +132,37 @@ public class ImportBean {
             iDEvent idEv = new iDEvent();
             idEv.setId(id);
             event.setIdEvent(idEv);
-            
+            em.addEvent(event);
             NodeList preferences = element.getElementsByTagName("preference");
             Preference pref;
+            MainCondition main;
             for(int k=0;k<preferences.getLength();k++)
             {
                 pref=new Preference();
                 pref.setEvent(event);
+                main=new MainCondition();
+                main.setCondition(preferences.item(k).getTextContent());
+                pref.setMain(main);
+                pm.addPreference(pref);
+            }
+            NodeList invites = element.getElementsByTagName("invitated");
+            UserEvent userEvent;
+            userEvent=new UserEvent(event, um.getLoggedUser(), true);
+                uem.addUserEvent(userEvent);
+            for(int j=0;j<invites.getLength();j++)
+            {
+                user=new User();
+                user=um.findByMail(invites.item(j).getTextContent());
+                if(user!=null){
+                userEvent=new UserEvent(event, user, false);
+                uem.addUserEvent(userEvent);
+                }
+                
             }
             
+            
                 
-                em.addEvent(event);
+              
                 
                 
                 
