@@ -130,9 +130,6 @@
                             <h:outputLabel for="place" value="Place:" />
                             <p:inputText  disabled="#{!eventBean.isOwnEvent}" id="place" value="#{eventBean.event.place.city}" required="true" />
 
-                            <h:outputLabel for="description" value="Description:" />
-                            <p:inputText disabled="#{!eventBean.isOwnEvent}" id="description" value="#{eventBean.event.description}" />
-
                             <p:outputLabel for="outdoor" value="In/Out"  />
                             <p:selectOneRadio disabled="#{!eventBean.isOwnEvent}" id="outdoor" value="#{eventBean.event.outdoor}" >
                                 <f:selectItem id="outdoorno" itemLabel="Indoor" itemValue="false" />
@@ -146,9 +143,7 @@
                                 <f:selectItem itemLabel="Private" itemValue="false" />
                             </p:selectOneRadio>
 
-                            <p:outputLabel for="description" value="Description:" />
-                            <p:inputTextarea disabled="#{!eventBean.isOwnEvent}" value="#{eventBean.event.description}" rows="6" cols="33" />
- 
+                      
                             <h:outputText value="Preferences:" />
                             <p:selectManyCheckbox disabled="#{!eventBean.canSelectPreferences}" id="grid" value="#{eventBean.selectedPref}" layout="grid" columns="3" >
                                 <f:selectItems value="#{eventBean.listPref()}" var="preference" itemLabel="#{listPref}" itemValue="#{listPref}" />
