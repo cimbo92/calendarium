@@ -72,7 +72,6 @@ public class ScheduleView implements Serializable {
                     alreadyIn=true;
                 }
            
-            
             }
              if (!alreadyIn) {
                 eventModel.addEvent(temp);
