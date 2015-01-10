@@ -40,7 +40,8 @@
                             <p:commandButton value="Invitations" id="invitations" oncomplete="PF('dlg-invitations').show();" />
                             <p:commandButton value=" Utenti" id="utenti"  oncomplete="PF('dlg-users').show();"/>
                             <p:commandButton value="Settings" id="settings" onclick="" />
-                       <p:commandButton value="Export" id="export" onclick="" />
+                            <p:commandButton value="Export" id="export"  actionListener="#{exportBean.export()}"/>
+                            <p:commandButton value="Import" id="import" actionListener="#{importBean.imports()}" />
                         </f:facet>
                     </p:toolbar>
 
