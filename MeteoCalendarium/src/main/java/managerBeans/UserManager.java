@@ -82,7 +82,9 @@ public class UserManager implements UserManagerInterface {
         query =em.createQuery( "SELECT u FROM User u WHERE u.email= :mail " ).setParameter("mail", mail);
         
         List<User> user =query.getResultList(); 
-       return user.get(0);
+        if(user.size()!=0)
+            return user.get(0);
+        return null;
         
     }
 }

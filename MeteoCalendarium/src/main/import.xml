@@ -8,5 +8,10 @@
 	<publicEvent>1</publicEvent>
 	<place>pordenone</place>
 	<creator>ale@ale.it</creator>
+	<preference>Clear</preference>
+	<preference>Clouds</preference>
+	<invitated>ciao@ciao.it</invitated>
+	<invitated>dio@dio.it</invitated>
+
 </event>
 </data>
