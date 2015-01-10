@@ -143,9 +143,7 @@
                                 <f:selectItem itemLabel="Private" itemValue="false" />
                             </p:selectOneRadio>
 
-                            <p:outputLabel for="description" value="Description:" />
-                            <p:inputTextarea disabled="#{!eventBean.isOwnEvent}" value="#{eventBean.event.description}" rows="6" cols="33" />
- 
+                      
                             <h:outputText value="Preferences:" />
                             <p:selectManyCheckbox disabled="#{!eventBean.canSelectPreferences}" id="grid" value="#{eventBean.selectedPref}" layout="grid" columns="3" >
                                 <f:selectItems value="#{eventBean.listPref()}" var="preference" itemLabel="#{listPref}" itemValue="#{listPref}" />
