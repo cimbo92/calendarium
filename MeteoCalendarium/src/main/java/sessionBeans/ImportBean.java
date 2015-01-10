@@ -7,6 +7,7 @@ package sessionBeans;
 
 import entities.Event;
 import entities.Place;
+import entities.Preference;
 import entities.User;
 import entities.iDEvent;
 import java.io.File;
@@ -21,6 +22,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import managerBeans.EventManagerInterface;
 import managerBeans.IDEventManagerInterface;
+import managerBeans.PreferenceManagerInterface;
 import managerBeans.UserManagerInterface;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -39,6 +41,8 @@ public class ImportBean {
     private UserManagerInterface um;
     @EJB
     private IDEventManagerInterface idm;
+    @EJB
+    private PreferenceManagerInterface pm;
     public ImportBean(){}
     
      public void imports() {
@@ -58,21 +62,19 @@ public class ImportBean {
 	DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 	    org.w3c.dom.Document doc = dBuilder.parse(file);
             doc.getDocumentElement().normalize();
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+            
             NodeList events = doc.getElementsByTagName("event");
-            System.out.println("Path: " +doc.getDocumentURI());
-            System.out.println("Events dim: " + events.getLength());
+            
             for (int i = 0; i < events.getLength(); i++) {
                 Element element = (Element) events.item(i);
                 NodeList titles = element.getElementsByTagName("title");
                 event.setTitle(titles.item(0).getTextContent());
-                System.out.println(event.getTitle());
+                
                 NodeList descriptions = element.getElementsByTagName("description");
                 event.setDescription(descriptions.item(0).getTextContent());
-                System.out.println(event.getDescription());
+                
                 NodeList startDates = element.getElementsByTagName("startDate");
-                System.out.println(startDates.getLength());
-                System.out.println(startDates.item(0).getTextContent());
+                
                 //next line gets error
                 SimpleDateFormat dateFormat = new SimpleDateFormat(
             "yyyy-MM-dd hh:mm:ss");
@@ -83,7 +85,7 @@ public class ImportBean {
                 
                 
                 
-                System.out.println("Errore post help");
+                
                 event.setStartDate(timestamp);
                 System.out.println(event.getStartDate().toString());
                 NodeList endDates = element.getElementsByTagName("endDate");
@@ -93,19 +95,19 @@ public class ImportBean {
 
      timestamp = new Timestamp(parsedTimeStamp.getTime());
                 event.setEndDate(timestamp);  
-                System.out.println(event.getEndDate().toString());
+               
                 NodeList outdoors = element.getElementsByTagName("outdoor");
                 if(outdoors.item(0).getTextContent().equalsIgnoreCase("1"))
                     event.setOutdoor(true);
                 else
                     event.setOutdoor(false);
-                System.out.println(event.isOutdoor() +"out");
+                
                 NodeList publics = element.getElementsByTagName("publicEvent");
                 if(publics.item(0).getTextContent().equalsIgnoreCase("1"))
                     event.setPublicEvent(true);
                 else
                     event.setPublicEvent(false);
-                System.out.println(event.isPublicEvent()+" public");
+               
                 
                 NodeList places = element.getElementsByTagName("place");
                 Place place = new Place();
@@ -125,8 +127,19 @@ public class ImportBean {
             iDEvent idEv = new iDEvent();
             idEv.setId(id);
             event.setIdEvent(idEv);
+            
+            NodeList preferences = element.getElementsByTagName("preference");
+            Preference pref;
+            for(int k=0;k<preferences.getLength();k++)
+            {
+                pref=new Preference();
+                pref.setEvent(event);
+            }
+            
                 
                 em.addEvent(event);
+                
+                
                 
                 
             }
