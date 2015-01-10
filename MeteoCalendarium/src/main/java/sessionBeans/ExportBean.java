@@ -150,7 +150,7 @@ public class ExportBean {
                 userInvited = uem.invitedUsersOfEvent(events.get(i));
                 for(int z=0;z<userInvited.size();z++)
                 {
-                    Element invit = doc.createElement("intitated");
+                    Element invit = doc.createElement("invitated");
                     invit.appendChild(doc.createTextNode(userInvited.get(z)));
                     event.appendChild(invit);
                 }
