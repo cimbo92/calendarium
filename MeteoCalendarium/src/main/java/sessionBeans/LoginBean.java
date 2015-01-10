@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
@@ -24,7 +25,7 @@ import managerBeans.UserManagerInterface;
  * @author home
  */
 @ManagedBean(name="loginBean")
-@RequestScoped
+@SessionScoped
 @Stateful
 public class LoginBean {
     
@@ -65,8 +66,8 @@ public class LoginBean {
 try {
     request.login(this.username, this.password);
         } catch (ServletException e) {
-            context.addMessage(null, new FacesMessage("Login failed."));
-            return "registrationAuthentication?faces-redirect=true";
+            context.addMessage(null, new FacesMessage("Login failed."));   
+            return "";
         }
         return "calendar?faces-redirect=true";
     }
@@ -79,6 +80,6 @@ try {
         } catch (ServletException e) {
             context.addMessage(null, new FacesMessage("Logout failed."));
         }
-        return "/index?faces-redirect=true";
+        return "registrationAuthentication?faces-redirect=true";
     }
 }

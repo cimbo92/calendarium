@@ -21,6 +21,7 @@
 
                         </f:facet>
                         <h:outputText value="Benvenuto: #{loginBean.name}" />
+                        <p:commandButton value="Logout" id="logout" action="#{loginBean.logout()}"/>
                     </p:panelGrid>
 
                 </p:layoutUnit>
@@ -224,10 +225,24 @@
                 background-image:url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/background.jpg'); 
             }
 
+            .emp1 {
+                border: 13px;
+                
+            }
+            
+            .emp2 {
+                border: 13px;
+                      background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/background.jpg');
+          
+            }
+            
             .emp1 .fc-event-inner {
+                
                 background: greenyellow;
+                background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/background.jpg');
             }
             .emp2 .fc-event-inner {
+                border: 3px;
                 background: salmon;
             }
 

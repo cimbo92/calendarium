@@ -52,8 +52,9 @@ public class ScheduleView implements Serializable {
         loadCalendar();
     }
 
-    public void loadCalendar() {
+    public String loadCalendar() {
         List<Event> tempCalendar = em.loadCalendar(um.getLoggedUser());
+        eventModel = new DefaultScheduleModel();
         for (Event tempCalendar1 : tempCalendar) {
             DefaultScheduleEvent temp;
             if (tempCalendar1.getCreator().getEmail().equals(um.getLoggedUser().getEmail())) {
@@ -70,14 +71,17 @@ public class ScheduleView implements Serializable {
                 {
                     alreadyIn=true;
                 }
-            }
+           
             
-            if (!alreadyIn) {
+            }
+             if (!alreadyIn) {
                 eventModel.addEvent(temp);
             } else {
                 eventModel.updateEvent(temp);
             }
         }
+        
+        return "calendar?faces-redirect=true";
         
     }
 

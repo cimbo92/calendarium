@@ -181,7 +181,6 @@ public class EventBean implements Serializable {
     
     public void modify(){
      FacesContext context = FacesContext.getCurrentInstance();
-     System.out.println("ciaoooo");
         try{
             
             this.updateEvent();
@@ -270,14 +269,14 @@ public class EventBean implements Serializable {
     
      public void onEventSelect(SelectEvent selectEvent) {
 
-        
          DefaultScheduleEvent selectedEvent = (DefaultScheduleEvent) selectEvent.getObject(); 
           event=em.loadSpecificEvent(selectedEvent.getDescription());
            creating= false;
           this.isOwnEvent = selectedEvent.getStyleClass().equals("emp1");
          event.getIdEvent().setId(Long.parseLong(selectedEvent.getDescription()));
            creating= false;
-          
+          this.startDate=selectedEvent.getStartDate();
+                  this.endDate=selectedEvent.getEndDate();
           List<String> preferenzeEvento = pm.getPreferenceOfEvent(event);
               
         for (String preferenza : preferenzeEvento) {
