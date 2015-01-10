@@ -190,6 +190,7 @@ public class EventBean implements Serializable {
             this.addEvent();
             this.save();
             this.addUserEvent();
+           
              context.addMessage(null, new FacesMessage("Successful","Event Created") );
        }catch(OverlappingException e)
         {
@@ -199,6 +200,8 @@ public class EventBean implements Serializable {
         {
            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Warning!","Are you Serious!? , Start Date after End Date"));
         }
+        
+         event=new Event();
     }
     
     
@@ -214,6 +217,7 @@ public class EventBean implements Serializable {
         }   
        RequestContext request=  RequestContext.getCurrentInstance();
       request.update("formcentral:schedule");
+         event=new Event();
     }
 
     public void cancel(){
@@ -231,9 +235,10 @@ public class EventBean implements Serializable {
     public void updateEvent() throws OverlappingException{
         event.convertStartDate(startDate);
         event.convertEndDate(endDate);
-            event.setCreator(um.getLoggedUser());
-            em.modifyEvent(event);
-    }
+        event.setCreator(um.getLoggedUser());
+        em.removeEvent(event);
+        this.create();
+        }
     public void addUserEvent(){
         
         userEvent=new UserEvent(event, um.getLoggedUser(), true);

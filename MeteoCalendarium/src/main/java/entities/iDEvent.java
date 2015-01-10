@@ -20,7 +20,7 @@ public class iDEvent implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id
-     Long id;
+     public Long id;
 
     public Long getId() {
         return id;

@@ -23,7 +23,7 @@ public interface EventManagerInterface {
     //TODO
     public void modifyEvent(Event event);
 
-    public boolean removeEvent(int idEvent);
+    public void removeEvent(Event event);
     
     public Event loadSpecificEvent(String idEvent);
     

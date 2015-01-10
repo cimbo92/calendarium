@@ -7,6 +7,7 @@ package managerBeans;
 
 import HelpClasses.OverlappingException;
 import entities.Event;
+import entities.Preference;
 
 import entities.User;
 import entities.UserEvent;
@@ -73,17 +74,15 @@ public class EventManager implements EventManagerInterface  {
     }
 
     @Override
-    public boolean removeEvent(int idEvent) {
+    public void removeEvent(Event event) {
         
-        try{
-            Event event = em.find(Event.class,idEvent);
-            
-            
-        }catch (Exception e){
-            
-        }
-        
-        return false;
+        Query query1 = em.createQuery("Select p.event From Preference p Where p.event in (Select e From Event e Where e.idEvent.id= :event)").setParameter(("event"), event.getIdEvent().getId());
+        //query1.executeUpdate();
+        List<Event> result = new ArrayList<>(query1.getResultList());
+        Query query2 = em.createQuery("Select ue From UserEvent ue  Where ue.event in (Select e From Event e Where e.idEvent.id= :event)").setParameter(("event"), event.getIdEvent().getId());
+        //query2.executeUpdate();
+        Query query3 = em.createQuery("Delete From Event e Where e.idEvent.id= :event").setParameter(("event"), event.getIdEvent().getId());
+        //query3.executeUpdate();
     }
 
     /**
@@ -367,5 +366,7 @@ public class EventManager implements EventManagerInterface  {
         query3.executeUpdate();
         System.out.println("Delete completed");
     }
+    
+    
     
 }
