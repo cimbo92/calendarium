@@ -52,7 +52,7 @@ public class ScheduleView implements Serializable {
         loadCalendar();
     }
 
-    public String loadCalendar() {
+    public void loadCalendar() {
         List<Event> tempCalendar = em.loadCalendar(um.getLoggedUser());
         eventModel = new DefaultScheduleModel();
         for (Event tempCalendar1 : tempCalendar) {
@@ -80,7 +80,6 @@ public class ScheduleView implements Serializable {
             }
         }
         
-        return "calendar?faces-redirect=true";
         
     }
 

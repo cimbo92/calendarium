@@ -5,6 +5,7 @@
  */
 package sessionBeans;
 
+import HelpClasses.InvalidDateException;
 import HelpClasses.OverlappingException;
 import entities.Event;
 import entities.MainCondition;
@@ -73,7 +74,16 @@ public class EventBean implements Serializable {
     private boolean canEliminate;
     private Date startDate = new Date();
     private Date endDate = new Date();
-   
+    private boolean canSelectPreferences;
+
+    public boolean isCanSelectPreferences() {
+        return this.event.isOutdoor()&this.isOwnEvent;
+    }
+
+    public void setCanSelectPreferences(boolean canSelectPreferences) {
+        this.canSelectPreferences = canSelectPreferences;
+    }
+    
     private UserEvent userEvent;
 
 
@@ -150,11 +160,15 @@ public class EventBean implements Serializable {
     }
     
     
-    public void addEvent() throws OverlappingException {
-        
+    public void addEvent() throws OverlappingException, InvalidDateException{
+         FacesContext context = FacesContext.getCurrentInstance();
+       
             event.convertStartDate(startDate);
             event.convertEndDate(endDate);
-             long id;
+            if(event.getStartDate().before(event.getEndDate()) || event.getStartDate().equals(event.getEndDate()) )
+            {
+                
+            long id;
             id=idm.findMax();
             iDEvent idEv = new iDEvent();
             idEv.setId(id);
@@ -162,6 +176,11 @@ public class EventBean implements Serializable {
             event.setCreator(um.getLoggedUser());
             em.addEvent(event);
        
+            }
+            else
+            {
+            throw new InvalidDateException();
+            }
     }
     
     public void create(){  
@@ -175,6 +194,10 @@ public class EventBean implements Serializable {
        }catch(OverlappingException e)
         {
                   context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", e.getMessage()));
+        }
+        catch(InvalidDateException e)
+        {
+           context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Warning!","Are you Serious!? , Start Date after End Date"));
         }
     }
     

@@ -15,6 +15,7 @@ import javax.ejb.EJB;
 import javax.ejb.SessionBean;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.spi.Bean;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import managerBeans.EventManagerInterface;
@@ -91,7 +92,9 @@ public class ScheduleViewPublic implements Serializable {
            {
                eventModel.updateEvent(temp);
            } 
-       }             
+           
+       }   
+     
      }	
     
     public ScheduleModel getEventModel() {

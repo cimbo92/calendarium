@@ -130,12 +130,13 @@
                             <p:inputText  disabled="#{!eventBean.isOwnEvent}" id="place" value="#{eventBean.event.place.city}" required="true" />
 
                             <h:outputLabel for="description" value="Description:" />
-                            <p:inputText disabled="#{!eventBean.isOwnEvent}" id="description" value="#{eventBean.event.description}" required="true" />
+                            <p:inputText disabled="#{!eventBean.isOwnEvent}" id="description" value="#{eventBean.event.description}" />
 
                             <p:outputLabel for="outdoor" value="In/Out"  />
                             <p:selectOneRadio disabled="#{!eventBean.isOwnEvent}" id="outdoor" value="#{eventBean.event.outdoor}" >
-                                <f:selectItem itemLabel="Indoor" itemValue="false" />
-                                <f:selectItem itemLabel="Outdoor" itemValue="true" />
+                                <f:selectItem id="outdoorno" itemLabel="Indoor" itemValue="false" />
+                                <f:selectItem id="outdooryes" itemLabel="Outdoor" itemValue="true" />
+                                <p:ajax update="grid" />
                             </p:selectOneRadio>
 
                             <p:outputLabel for="public" value="In/Out"  />
@@ -148,7 +149,7 @@
                             <p:inputTextarea disabled="#{!eventBean.isOwnEvent}" value="#{eventBean.event.description}" rows="6" cols="33" />
  
                             <h:outputText value="Preferences:" />
-                            <p:selectManyCheckbox  disabled="#{!eventBean.isOwnEvent}" id="grid" value="#{eventBean.selectedPref}" layout="grid" columns="3" >
+                            <p:selectManyCheckbox disabled="#{!eventBean.canSelectPreferences}" id="grid" value="#{eventBean.selectedPref}" layout="grid" columns="3" >
                                 <f:selectItems value="#{eventBean.listPref()}" var="preference" itemLabel="#{listPref}" itemValue="#{listPref}" />
                             </p:selectManyCheckbox>
 
@@ -245,6 +246,8 @@
             }
 
         </style>
+        
+      
     </h:body>
 </html>
 
