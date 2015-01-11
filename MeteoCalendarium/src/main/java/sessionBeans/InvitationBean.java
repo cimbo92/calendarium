@@ -14,6 +14,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -60,7 +61,12 @@ public class InvitationBean implements Serializable {
     }
     
     public void acceptInvite(Event event) {
+          FacesContext context = FacesContext.getCurrentInstance();
        UserEvent ue =uem.getUserEventofUser(event, um.getLoggedUser());
+      
+         
+       
+       
      uem.modifyUserEvent(ue,true);
      invites.remove(event);
     }
