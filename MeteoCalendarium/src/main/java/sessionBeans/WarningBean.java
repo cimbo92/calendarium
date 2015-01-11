@@ -5,7 +5,9 @@
  */
 package sessionBeans;
 
+import HelpClasses.OverlappingException;
 import entities.Event;
+import entities.Preference;
 import entities.UserEvent;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -16,6 +18,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import managerBeans.BadWeatherNotificationManagerInterface;
 import managerBeans.EventManagerInterface;
+import managerBeans.PreferenceManagerInterface;
+import managerBeans.UserEventManagerInterface;
 import managerBeans.UserManagerInterface;
 
 /**
@@ -32,6 +36,10 @@ public class WarningBean {
     UserManagerInterface um;
     @EJB
     EventManagerInterface em;
+    @EJB
+    PreferenceManagerInterface pm;
+    @EJB
+    UserEventManagerInterface uem;
     
     private List<Event> warnings;
     private List<Timestamp> solutions;
@@ -47,7 +55,7 @@ public class WarningBean {
         }
         else
             System.out.println(" warning empty");
-        
+         
     }
     
     public void searchSolution()
@@ -92,9 +100,14 @@ public class WarningBean {
         }
         em.modifyEvent(event);
     }
-    public void modifyOk(Event event)
+    public void modifyOk(Event event, EventBean eb) throws OverlappingException
     {
+        List<String> preferenceEvent = new ArrayList<>();
+        preferenceEvent= pm.getPreferenceOfEvent(event);
+        List<String> userEvent = new ArrayList<>();
+        userEvent = uem.invitedUsersOfEvent(event);
         
+        em.removeEvent(event);
         long diff = event.getEndDate().getTime()-event.getStartDate().getTime();
         System.out.println("Evento modificato: " + event.getTitle() + "diff: " + diff);
         Timestamp help;
@@ -111,9 +124,14 @@ public class WarningBean {
                      help.setTime(solutions.get(i).getTime()+diff);
                      event.setEndDate(help);
                      System.out.println("start "+event.getStartDate()+"end "+event.getEndDate());
-                     em.modifyEvent(event);
+                     //em.modifyEvent(event);
+                    // em.(event);
+                     eb.modifyFromWarning(event, preferenceEvent, userEvent);
+                     
                      ok=true;
+                     warnings.remove(i);
                 }
+            
         }
         
         

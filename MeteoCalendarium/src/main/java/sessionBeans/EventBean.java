@@ -252,6 +252,21 @@ public class EventBean implements Serializable {
         }
     }
 
+    public void modifyFromWarning(Event event, List<String> pref, List<String> userEvent) throws OverlappingException
+    {
+        this.event=event;
+        this.invitated = userEvent;
+        this.selectedPref=pref;
+        preferences = new ArrayList<>();
+        em.addEvent(event);
+        this.save();
+        this.addUserEvent();
+        this.event = new Event();
+        invitated = new ArrayList<>();
+        selectedPref  = new ArrayList<>();
+        preferences = new ArrayList<>();
+    }
+    
     public List<Preference> getPreferences() {
         return preferences;
     }
