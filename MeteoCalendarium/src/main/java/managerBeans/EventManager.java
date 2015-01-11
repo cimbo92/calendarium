@@ -60,7 +60,6 @@ public class EventManager implements EventManagerInterface  {
     @Override
        public void modifyEvent(Event event) {
        
-           
          Query query = em.createQuery("UPDATE Event e Set e.title= :title ,e.description= :description , e.startDate= :startDate, e.endDate= :endDate ,e.publicEvent= :publicEvent ,e.outdoor= :outdoor ,e.place= :place WHERE e.idEvent= :idEvent").setParameter("idEvent", event.getIdEvent());
       query.setParameter("title", event.getTitle());
       query.setParameter("description", event.getDescription());

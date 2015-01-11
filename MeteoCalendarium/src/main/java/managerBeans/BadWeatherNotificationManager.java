@@ -9,6 +9,7 @@ import entities.BadWeatherNotification;
 import entities.Event;
 import entities.Forecast;
 import entities.MainCondition;
+import entities.Preference;
 import entities.User;
 import java.security.Principal;
 import java.sql.Timestamp;
@@ -52,9 +53,45 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
     @Override
     public List<Event> findWarnings(User creator) {
         
-        Query query1 = em.createQuery("Select distinct e From Event e, UserEvent ue, Preference p, Forecast f Where ue.event=e and ue.creator=1 and e.outdoor=1 and e.creator.email= :mail and p.event=e and f.date between e.startDate and e.endDate and f.mainCondition not in (Select pr.main From Preference pr Where pr.event=e)").setParameter("mail", creator.getEmail());
+        //Query query1 = em.createQuery("Select distinct e From Event e, UserEvent ue, Preference p, Forecast f Where ue.event=e and ue.creator=1 and e.outdoor=1 and e.creator.email= :mail and p.event=e and f.place=e.place and f.date between e.startDate and e.endDate and f.mainCondition not in (Select pr.main From Preference pr Where pr.event=e)").setParameter("mail", creator.getEmail());
+        Query query1 = em.createQuery("Select distinct e From Event e, UserEvent ue, Preference p, Forecast f Where ue.event=e and ue.creator=1 and e.outdoor=1 and e.creator.email= :mail and p.event=e and f.place=e.place and f.date between e.startDate and e.endDate ").setParameter("mail", creator.getEmail());
         List<Event> eventWarning = new ArrayList<>(query1.getResultList());
-    
+        List<MainCondition> pref = new ArrayList<>();
+        List<MainCondition> forec = new ArrayList<>();
+        boolean warn, pres;
+        for(int i=0;i<eventWarning.size();i++)
+        {
+            warn=false;
+            Query queryMain = em.createQuery("Select distinct p.main From Preference p where p.event.idEvent = :id").setParameter(("id"), eventWarning.get(i).getIdEvent());
+            pref= queryMain.getResultList();
+            Query fore = em.createQuery("Select f.mainCondition From Forecast f where f.place= :city and f.date between :start and :end").setParameter("city", eventWarning.get(i).getPlace()).setParameter("start", eventWarning.get(i).getStartDate()).setParameter("end", eventWarning.get(i).getEndDate());
+            forec = fore.getResultList();
+            
+            for(int k=0;k<forec.size()&&!warn;k++)
+            {
+                pres=false;
+                for(int j=0;j<pref.size();j++)
+                {
+                    
+                    if(forec.get(k).getCondition().equalsIgnoreCase(pref.get(j).getCondition()))
+                    {
+                        pres=true;
+                    }
+                    
+                }
+                if(pres==false)
+                {
+                    warn=true;
+                }
+            }
+                
+            if(!warn)
+            {
+                eventWarning.remove(i);
+            }
+        }
+        
+        
     
     
     if(!eventWarning.isEmpty())
@@ -97,11 +134,11 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
             
             queryForecast = em.createQuery("Select  distinct f From Forecast f where f.place= :place and f.date > :startDate").setParameter(("place"), eventWarning.get(i).getPlace()).setParameter("startDate", eventWarning.get(i).getStartDate());
             forecast = queryForecast.getResultList();
-            System.out.println("Forecast : " + forecast.size());
+            System.out.println("Forecast : " + forecast.size() + " type: " + forecast.get(0).getMainCondition().getCondition());
             
             queryMain = em.createQuery("Select distinct p.main From Preference p where p.event.idEvent = :id").setParameter(("id"), eventWarning.get(i).getIdEvent());
             condition=queryMain.getResultList();
-            System.out.println("condition : " + condition.get(0));
+            System.out.println("condition : " + condition.get(0).getCondition());
             if(forecast.isEmpty())
             {
                 daySuggest.add(null);
@@ -156,7 +193,7 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
         event.setStartDate(start);
         Timestamp end;
         System.out.println(start.toString());
-        end=start;
+        end=new Timestamp(0);
         System.out.println("End = start");
         end.setTime(start.getTime()+day);
         System.out.println(end.toString());
