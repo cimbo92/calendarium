@@ -276,6 +276,7 @@ public class EventBean implements Serializable {
             preferences.add(new Preference(event,selectedPref.get(i)));
             pm.addPreference(preferences.get(i));
         }
+        preferences = new ArrayList<>();
     }
     
     public List<String> listPref ()
@@ -325,6 +326,7 @@ public class EventBean implements Serializable {
          event = new Event();
          selectedPref = new ArrayList<>();
         invitated = new ArrayList<>();
+        preferences= new ArrayList<>();
         creating= true;
         isOwnEvent=true;
      Date correction;
