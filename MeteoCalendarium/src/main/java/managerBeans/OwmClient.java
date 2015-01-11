@@ -293,8 +293,10 @@ public class OwmClient implements OwmClientInterface{
         
         
         for(Forecast f : listForecastInDb){
-            if((f.getDate().compareTo(now) < 0) || (f.getDate().compareTo(now) == 0 )){
-                System.out.println("Sto rimuovendo il forecast: "+f.getPlace().getCity()+" "+f.getDate());
+            if(  (f.getDate().getYear() < now.getYear()) ||
+                 (f.getDate().getMonth() < now.getMonth()) ||
+                 (f.getDate().getDate() < now.getDate()) ){
+                System.out.println("Sto rimuovendo il forecast: "+f.getPlace().getCity()+" "+f.getDate()+now);
                 entityManager.remove(entityManager.find(Forecast.class, f.getId()));
             }
         }
@@ -318,7 +320,8 @@ public class OwmClient implements OwmClientInterface{
                 List<ForecastWeatherData> list = risposta.getForecasts();
                 for(ForecastWeatherData fwd : list){
                     if(!alreadyIn(fwd,p.getCity())){
-                        System.out.println("Sto aggiungendo il forecast : "+p.getCity()+" "+fwd.getCalcDateTime());
+                        Timestamp t = new Timestamp(fwd.getCalcDateTime());
+                        System.out.println("Sto aggiungendo/aggiornando il forecast : "+p.getCity()+" "+t);
                         Forecast f = new Forecast();
                         //Recupero nel database la main condition associata
                         MainCondition mc = new MainCondition();
@@ -365,7 +368,12 @@ public class OwmClient implements OwmClientInterface{
         
         
         for(Forecast f :listForecastInDb){
-            if(f.getPlace().getCity().equals(city) && f.getDate().getYear() == date.getYear() && f.getDate().getMonth() == date.getMonth() && f.getDate().getDate() == date.getDate() ){
+            if(f.getPlace().getCity().equals(city) && f.getDate().getYear() == date.getYear() && f.getDate().getMonth() == date.getMonth() && f.getDate().getDate() == date.getDate()){
+               if(  !(f.getMainCondition().getCondition().equals(fwd.getWeatherConditions().get(0).getMain()))  ){
+                     entityManager.remove(entityManager.find(Forecast.class, f.getId()));
+                     return false;
+               }
+                 
                 return true;
             }
         }
