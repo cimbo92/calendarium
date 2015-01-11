@@ -39,12 +39,16 @@
                             <p:commandButton value="Warnings" id="warn"  onclick="PF('dlg-warnings').show();"/>
                             <p:commandButton value="Invitations" id="invitations" oncomplete="PF('dlg-invitations').show();" />
                             <p:commandButton value=" Utenti" id="utenti"  oncomplete="PF('dlg-users').show();"/>
-                            <p:commandButton value="Settings" id="settings" onclick="" />
-                            <p:commandButton value="Export" id="export"  actionListener="#{exportBean.export()}"/>
-                            <p:commandButton value="Import" id="import" actionListener="#{importBean.imports()}" />
+                            <p:commandButton value="Settings" id="settings" onclick="PF('dlg-settings').show();" />                 
                         </f:facet>
                     </p:toolbar>
 
+                    
+                    <p:overlayPanel id="dlg-settings" for="settings" hideEffect="fade">
+         <p:commandButton value="Export" id="export"  actionListener="#{exportBean.export()}"/>
+                            <p:commandButton value="Import" id="import" actionListener="#{importBean.imports()}" />
+    </p:overlayPanel>
+                    
                     <p:dialog header="utenti" widgetVar="dlg-users">
                         <p:selectOneMenu  value="#{scheduleViewPublic.username}" 
                                           filter="true" filterMatchMode="contains"  >
