@@ -54,8 +54,7 @@ public class WarningBean {
     {
         
         solutions = bwnm.findSolution(warnings);
-        if(!solutions.isEmpty())
-        System.out.println("Va: " + solutions.get(0).toString());
+        
         
     }
 
@@ -95,8 +94,9 @@ public class WarningBean {
     }
     public void modifyOk(Event event)
     {
-        System.out.println("Evento modificato: " + event.getTitle());
+        
         long diff = event.getEndDate().getTime()-event.getStartDate().getTime();
+        System.out.println("Evento modificato: " + event.getTitle() + "diff: " + diff);
         Timestamp help;
         boolean ok=false;
         for(int i=0;i<warnings.size()&&!ok;i++)
@@ -105,9 +105,12 @@ public class WarningBean {
                 if(solutions.get(i)!=null)
                 {
                      event.setStartDate(solutions.get(i));
-                     help=solutions.get(i);
+                     System.out.println(event.getStartDate());
+                     help=new Timestamp(0);
+                     
                      help.setTime(solutions.get(i).getTime()+diff);
                      event.setEndDate(help);
+                     System.out.println("start "+event.getStartDate()+"end "+event.getEndDate());
                      em.modifyEvent(event);
                      ok=true;
                 }
