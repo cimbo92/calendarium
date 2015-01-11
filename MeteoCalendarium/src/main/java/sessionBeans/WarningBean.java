@@ -81,25 +81,7 @@ public class WarningBean {
     public void setWarnings(List<Event> warnings) {
         this.warnings = warnings;
     }
-    
-    public void modify(Event event) {
-       
-        System.out.println("Evento modificato: " + event.getTitle());
-        int year, month, day;
-        int index=-1;
-        System.out.println("Dim: " + warnings.size() + "  " + solutions.size());
-        for(int i=0;i<warnings.size()&&(index!=-1);i++)
-        {
-            if(event.getIdEvent()==warnings.get(i).getIdEvent())
-            {
-                index=i;
-                event.setStartDate(solutions.get(i));
-                System.out.println("Data nuova: " + solutions.get(i));
-                
-            }
-        }
-        em.modifyEvent(event);
-    }
+   
     public void modifyOk(Event event, EventBean eb) throws OverlappingException
     {
         List<String> preferenceEvent = new ArrayList<>();

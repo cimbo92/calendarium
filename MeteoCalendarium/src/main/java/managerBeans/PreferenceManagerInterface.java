@@ -22,7 +22,5 @@ public interface PreferenceManagerInterface {
     public void addPreference(Preference get);
     
     public List<String> getPreferenceOfEvent(Event event);
-    
-    public void removePreferenceOfEvent(Event event);
-            
+           
 }

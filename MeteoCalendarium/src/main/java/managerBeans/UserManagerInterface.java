@@ -22,12 +22,9 @@ public interface UserManagerInterface {
      
      public User getLoggedUser();
      
-     public User getUser(String idUser);
-     
      public User findByMail(String mail);
      
      public List<String> getListUsers();
              
-         public List<User> userList();
 
 }

@@ -5,7 +5,7 @@
  */
 package sessionBeans;
 
-import HelpClasses.PreferenceHelp;
+
 import entities.Event;
 import entities.MainCondition;
 import entities.Preference;

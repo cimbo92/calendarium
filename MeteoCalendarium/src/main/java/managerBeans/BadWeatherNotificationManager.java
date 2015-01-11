@@ -5,7 +5,7 @@
  */
 package managerBeans;
 
-import entities.BadWeatherNotification;
+
 import entities.Event;
 import entities.Forecast;
 import entities.MainCondition;
@@ -40,15 +40,7 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
     @EJB
     private EventManagerInterface emi;
     
-    @Override
-    public List<BadWeatherNotification> searchByDate(String date) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<BadWeatherNotification> getAllUserBadWeatherNotification(User creator) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }   
+       
 
     @Override
     public List<Event> findWarnings(User creator) {

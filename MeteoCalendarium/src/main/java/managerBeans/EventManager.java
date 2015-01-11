@@ -57,21 +57,6 @@ public class EventManager implements EventManagerInterface  {
         
   
     }
-    
-    @Override
-       public void modifyEvent(Event event) {
-       
-         Query query = em.createQuery("UPDATE Event e Set e.title= :title ,e.description= :description , e.startDate= :startDate, e.endDate= :endDate ,e.publicEvent= :publicEvent ,e.outdoor= :outdoor ,e.place= :place WHERE e.idEvent= :idEvent").setParameter("idEvent", event.getIdEvent());
-      query.setParameter("title", event.getTitle());
-      query.setParameter("description", event.getDescription());
-       query.setParameter("startDate", event.getStartDate());
-        query.setParameter("endDate", event.getEndDate());
-         query.setParameter("publicEvent", event.isPublicEvent());
-          query.setParameter("outdoor", event.isOutdoor());
-           query.setParameter("place", event.getPlace());
-            query.executeUpdate();
-             
-    }
 
     @Override
     public void removeEvent(Event event) {
@@ -103,21 +88,6 @@ public class EventManager implements EventManagerInterface  {
                   
                   result.get(0).setIdEvent(result2.get(0));
        return result.get(0);    
-    }
-
-    @Override
-    public List<Event> getAllUserEvent(String idUser) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Event> searchEventIndoorUser(String idUser) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Event> searchOutdoorEvent(String idUser) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     
@@ -264,35 +234,6 @@ public class EventManager implements EventManagerInterface  {
       //  return startFirst <= startSecond && endFirst > startSecond;
     }
 
-    @Override
-    public List<User> getInvitedUsers(Event event) {
-       
-        /*
-        
-        List<Invitation> listInvitation = null;
-        List<User> listUser = null;
-        
-        
-      try{
-        Query query = em.createQuery("SELECT i " +
-                                                                                        "FROM Invitation i JOIN i.event e " +
-                                                                                        "WHERE e.idEvent = : idEvent");
-        
-        listInvitation = (List<Invitation>) (Invitation) query.setParameter("idEvent", event.getIdEvent()).getResultList();
-           
-    }catch (Exception e){
-        System.out.println("Errore nella query getInvitedUsers");
-    }
-      
-      for(Invitation i : listInvitation){
-          listUser.add(i.getOwner());
-      }
-     
-      return listUser;
-                
-                */
-        return null;
-    }
 
     @Override
     public List<Event> findInvitatedEvent(User user) {
