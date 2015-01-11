@@ -190,7 +190,6 @@ public class EventBean implements Serializable {
             this.addEvent();
             this.save();
             this.addUserEvent();
-           
              context.addMessage(null, new FacesMessage("Successful","Event Created") );
        }catch(OverlappingException e)
         {
@@ -221,7 +220,13 @@ public class EventBean implements Serializable {
     }
 
     public void cancel(){
-        
+        FacesContext context = FacesContext.getCurrentInstance();
+     
+         em.removeEvent(event);
+          RequestContext request=  RequestContext.getCurrentInstance();
+          
+      request.update("formcentral:schedule");
+      context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!","Event delete completed"));
     }
     
     public void updateUserEvent(){
@@ -233,9 +238,6 @@ public class EventBean implements Serializable {
 }
     
     public void updateEvent() throws OverlappingException{
-        event.convertStartDate(startDate);
-        event.convertEndDate(endDate);
-        event.setCreator(um.getLoggedUser());
         em.removeEvent(event);
         this.create();
         }
@@ -320,9 +322,11 @@ public class EventBean implements Serializable {
        public void onDateSelect(SelectEvent selectEvent) {
            
      DefaultScheduleEvent selectedEvent = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
-    
+         event = new Event();
+         selectedPref = new ArrayList<>();
+        invitated = new ArrayList<>();
         creating= true;
-          isOwnEvent=true;
+        isOwnEvent=true;
      Date correction;
      correction = new Date(selectedEvent.getStartDate().getTime() + (60 * 60000));
      this.setStartDate(correction);

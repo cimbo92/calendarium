@@ -7,6 +7,7 @@ package managerBeans;
 
 import entities.Event;
 import entities.User;
+import entities.iDEvent;
 import java.security.Principal;
 import java.util.List;
 import javax.ejb.Remote;
@@ -47,7 +48,7 @@ public class IDEventManager implements IDEventManagerInterface {
         return id.get(0)+1;
         }
         
-        
+     
     }
     
     

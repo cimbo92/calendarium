@@ -5,6 +5,7 @@
  */
 package managerBeans;
 
+import entities.iDEvent;
 import javax.ejb.Remote;
 
 /**
@@ -14,4 +15,6 @@ import javax.ejb.Remote;
 @Remote
 public interface IDEventManagerInterface {
     public Long findMax();
+
+   
 }

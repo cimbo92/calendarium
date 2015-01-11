@@ -45,7 +45,6 @@
                         </f:facet>
                     </p:toolbar>
 
-
                     <p:dialog header="utenti" widgetVar="dlg-users">
                         <p:selectOneMenu  value="#{scheduleViewPublic.username}" 
                                           filter="true" filterMatchMode="contains"  >
@@ -53,7 +52,6 @@
                         </p:selectOneMenu>
                         <p:commandButton value="Go" id="goToCalendar" actionListener="#{scheduleViewPublic.loadCalendar()}" update="panelpubcal" process="@parent" oncomplete="PF('dlg-pubcal').show();PF('dlg-users').hide()" />
                     </p:dialog>
-
 
                     <p:dialog header="Public Calendar of #{scheduleViewPublic.username}" id="dialogpubcal" widgetVar="dlg-pubcal">
                         <h:panelGrid id="panelpubcal" columnClasses="value" style ="margin : 0px auto">
@@ -63,18 +61,14 @@
                         </h:panelGrid>
                     </p:dialog>
 
-
-
                     <p:dialog header="Warnings" widgetVar="dlg-warnings" id="inv-dialogW" width="800px" height="300px" resizable="false">
                         <p:carousel value="#{warningBean.warnings}" var="eventWarning" numVisible="1" itemStyle="height:200px;width:750px;" effect="easeInStrong" headerText="Warning" style="margin-bottom:0;">
                             <p:tab>
                                 <p:panelGrid columns="2" columnClasses="label,value">
                                     <h:outputText value="Title:" />
                                     <h:outputText value="#{eventWarning.title}"  />
-
                                     <h:outputText value="It's possible to postpone the event at: " />
                                     <h:outputText value="#{warningBean.getDate(eventWarning.title)}" />
-
                                     <f:facet name="footer">
                                         <p:commandButton value="Modify" id="accept-inv" actionListener="#{warningBean.modifyOk(eventWarning)}" oncomplete="PF('dlg-invitations').hide();" process="@this">
                                         </p:commandButton>
@@ -158,7 +152,7 @@
                             
                            <p:commandButton id="modifyButton" value="Modify" actionListener="#{eventBean.modify()}" action="#{scheduleView.loadCalendar()}" rendered="#{!eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"  />
                             <p:commandButton id="addButton" value="Save" actionListener="#{eventBean.create()}" action="#{scheduleView.loadCalendar()}"  rendered="#{eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />  
-                             <p:commandButton id="deleteButton" value="Delete" actionListener="#{eventBean.delete()}" action="#{scheduleView.loadCalendar()}" rendered="#{!eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />  
+                             <p:commandButton id="deleteButton" value="Delete" actionListener="#{eventBean.cancel()}" action="#{scheduleView.loadCalendar()}" rendered="#{!eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />  
                            
                         </h:panelGrid>
                     </p:dialog>

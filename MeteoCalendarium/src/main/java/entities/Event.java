@@ -15,6 +15,9 @@ import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Date;
 import static javax.persistence.CascadeType.REMOVE;
+import javax.persistence.Column;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 /**
@@ -29,8 +32,8 @@ public class Event implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @OneToOne(targetEntity = iDEvent.class, optional = false, cascade={CascadeType.PERSIST},fetch=FetchType.LAZY)
-    private iDEvent idEvent;
+    @OneToOne
+   private iDEvent idEvent;
     
     @NotNull(message = "May not be empty")
     @ManyToOne(targetEntity = User.class, optional = false)
@@ -141,8 +144,6 @@ public class Event implements Serializable {
         this.outdoor = outdoor;
     }
     
- 
-
     @Override
     public String toString(){
         return title + "\n" + "Creator: "+creator+"\n"+"Title: "+title+"\n"+"Description: "+description+"\n"+"Place: "+place.getCity()+"\n"+"Starting from: "+startDate+"\n"+"To: "+endDate+"\n"+"OutDoor: "+outdoor+"\n";
