@@ -47,7 +47,6 @@ public class ScheduleViewPublic implements Serializable {
 
     private String username;
 
-    
     public String getUsername() {
         return username;
     }
@@ -95,7 +94,7 @@ public class ScheduleViewPublic implements Serializable {
            
        }   
      
-     }	
+    }	
     
     public ScheduleModel getEventModel() {
         return eventModel;

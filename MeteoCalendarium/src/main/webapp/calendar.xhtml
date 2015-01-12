@@ -39,16 +39,18 @@
                             <p:commandButton value="Warnings" id="warn"  onclick="PF('dlg-warnings').show();"/>
                             <p:commandButton value="Invitations" id="invitations" oncomplete="PF('dlg-invitations').show();" />
                             <p:commandButton value=" Utenti" id="utenti"  oncomplete="PF('dlg-users').show();"/>
-                            <p:commandButton value="Settings" id="settings" onclick="PF('dlg-settings').show();" />                 
+                            <p:commandButton value="Settings" id="settings" oncomplete="PF('dlg-settings').show();" />                 
                         </f:facet>
                     </p:toolbar>
 
-                    
-                    <p:overlayPanel id="dlg-settings" for="settings" hideEffect="fade">
-         <p:commandButton value="Export" id="export"  actionListener="#{exportBean.export()}"/>
-                            <p:commandButton value="Import" id="import" actionListener="#{importBean.imports()}" />
-    </p:overlayPanel>
-                    
+
+                    <p:dialog  widgetVar="dlg-settings">
+                           <h:panelGrid id="panelsetting" columnClasses="value">              
+                        <p:commandButton value="Export" id="export"  action="#{exportBean.export()}"/>
+                        <p:commandButton value="Import" id="import" action="#{importBean.imports()}" />
+                           </h:panelGrid>
+                    </p:dialog>
+
                     <p:dialog header="utenti" widgetVar="dlg-users">
                         <p:selectOneMenu  value="#{scheduleViewPublic.username}" 
                                           filter="true" filterMatchMode="contains"  >
@@ -71,10 +73,10 @@
                                 <p:panelGrid columns="2" columnClasses="label,value">
                                     <h:outputText value="Title:" />
                                     <h:outputText value="#{eventWarning.title}"  />
-                                    <h:outputText value="It's possible to postpone the event at: " />
-                                    <h:outputText value="#{warningBean.getDate(eventWarning.title)}" />
+                                    <h:outputText rendered="#{warningBean.enableModify}" value="It's possible to postpone the event at: " />
+                                    <h:outputText rendered="#{warningBean.enableModify}" value="#{warningBean.getDate(eventWarning.title)}" />
                                     <f:facet name="footer">
-                                        <p:commandButton value="Modify" id="accept-inv" actionListener="#{warningBean.modifyOk(eventWarning, eventBean)}" oncomplete="PF('dlg-warnings').hide();" process="@this">
+                                        <p:commandButton value="Modify" rendered="#{warningBean.enableModify}" id="accept-inv" action="#{warningBean.modifyOk(eventWarning, eventBean)}" oncomplete="PF('dlg-warnings').hide();" process="@this">
                                         </p:commandButton>
                                     </f:facet>
                                 </p:panelGrid>
@@ -102,9 +104,9 @@
                                     <h:outputText value="#{event.description}" />
 
                                     <f:facet name="footer">
-                                        <p:commandButton value="Accept" id="accept-inv" actionListener="#{invitationBean.acceptInvite(event)}" action="#{scheduleView.loadCalendar()}" oncomplete="PF('dlg-invitations').hide();PF('myschedule').update();" process="@this" />
+                                        <p:commandButton value="Accept" rendered="#{invitationBean.enableInvitation}" id="accept-inv" action="#{invitationBean.acceptInvite(event)}" actionListener="#{scheduleView.loadCalendar()}" oncomplete="PF('dlg-invitations').hide();PF('myschedule').update();"  />
 
-                                        <p:commandButton value="Decline" id="decline-inv" actionListener="#{invitationBean.declineInvite(event)}" oncomplete="PF('dlg-invitations').hide();PF('myschedule').update()" process="@this"/>
+                                        <p:commandButton value="Decline"  rendered="#{invitationBean.enableInvitation}" id="decline-inv" action="#{invitationBean.declineInvite(event)}" oncomplete="PF('dlg-invitations').hide();PF('myschedule').update()" />
 
                                     </f:facet>
                                 </p:panelGrid>
@@ -112,7 +114,7 @@
                         </p:carousel> 
                     </p:dialog>
 
-                     <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
+                    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
                         <h:panelGrid  id="eventDetails" columns="2">
                             <h:outputLabel for="title" value="Title:" />
                             <p:inputText disabled="#{!eventBean.isOwnEvent}" id="title"  value="#{eventBean.event.title}" required="true"/>
@@ -141,7 +143,7 @@
 
                             <p:outputLabel for="description" value="Description:" />
                             <p:inputTextarea id="description" disabled="#{!eventBean.isOwnEvent}" value="#{eventBean.event.description}" rows="6" cols="33" />
- 
+
                             <h:outputText value="Preferences:" />
                             <p:selectManyCheckbox disabled="#{!eventBean.canSelectPreferences}" id="grid" value="#{eventBean.selectedPref}" layout="grid" columns="3" >
                                 <f:selectItems value="#{eventBean.listPref()}" var="preference" itemLabel="#{listPref}" itemValue="#{listPref}" />
@@ -149,15 +151,15 @@
 
                             <p:outputLabel for="invites" value="Invites:" />
                             <p:selectManyMenu  disabled="#{!eventBean.isOwnEvent}" id="invites" value="#{eventBean.invitated}" 
-                                              filter="true" filterMatchMode="contains" showCheckbox="true" >
+                                               filter="true" filterMatchMode="contains" showCheckbox="true" >
                                 <f:selectItems value="#{eventBean.listUser()}" var="listUser" itemLabel="#{listUser}" itemValue="#{listUser}" />
                             </p:selectManyMenu>
 
-                            
-                           <p:commandButton id="modifyButton" value="Modify" actionListener="#{eventBean.modify()}" action="#{scheduleView.loadCalendar()}" rendered="#{!eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"  />
+
+                            <p:commandButton id="modifyButton" value="Modify" actionListener="#{eventBean.modify()}" action="#{scheduleView.loadCalendar()}" rendered="#{!eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"  />
                             <p:commandButton id="addButton" value="Save" actionListener="#{eventBean.create()}" action="#{scheduleView.loadCalendar()}"  rendered="#{eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />  
-                             <p:commandButton id="deleteButton" value="Delete" actionListener="#{eventBean.cancel()}" action="#{scheduleView.loadCalendar()}" rendered="#{!eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />  
-                           
+                            <p:commandButton id="deleteButton" value="Delete" actionListener="#{eventBean.cancel()}" action="#{scheduleView.loadCalendar()}" rendered="#{!eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />  
+
                         </h:panelGrid>
                     </p:dialog>
 
@@ -181,7 +183,7 @@
                             <p:outputLabel for="outdoorPublic" value="In/Out"  />
                             <p:outputLabel id="outdoorPublic" value="#{publicEventBean.event.outdoor}"/>
 
-                            
+
                             <p:outputLabel for="preferencePublic" value="Preferences"  />
                             <p:dataList id="preferencePublic" value="#{publicEventBean.preferences}" var="pref" type="ordered">
                                 #{pref}
@@ -198,12 +200,12 @@
             </p:layout>
         </h:form>
 
-   
+
         <script>
-       
+
         </script>
-        
-        
+
+
         <style type="text/css">
             .value {
                 width: 1000px;
@@ -220,26 +222,26 @@
 
             .emp1 {
                 border: 13px;
-                
+
             }
-            
+
             .emp2 {
                 border: 13px;
-           
+
             }
-            
+
             .emp1 .fc-event-inner {             
                 background: greenyellow;
-                      background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/ownSun.jpg');
-           }
+                background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/ownSun.jpg');
+            }
             .emp2 .fc-event-inner {
                 border: 3px;
                 background: salmon;
             }
 
         </style>
-        
-      
+
+
     </h:body>
 </html>
 

@@ -42,6 +42,16 @@ public class InvitationBean implements Serializable {
 
     private Event selectedEvent;
 
+    private boolean enableInvitation=false;
+
+    public boolean isEnableInvitation() {
+        return enableInvitation;
+    }
+
+    public void setEnableInvitation(boolean enableInvitation) {
+        this.enableInvitation = enableInvitation;
+    }
+    
     @PostConstruct
     public void init() {
         invites = new ArrayList<>();
@@ -51,30 +61,31 @@ public class InvitationBean implements Serializable {
     
     public void loadInvites()
     {
+        
              invites = em.findInvitatedEvent(um.getLoggedUser());
+             enableInvitation=true;
              if(invites.isEmpty())
              {
+              enableInvitation=false;
                  Event noInvitation = new Event();
                  noInvitation.setTitle("No Invitation");
                  invites.add(noInvitation);
              }
     }
     
-    public void acceptInvite(Event event) {
-          FacesContext context = FacesContext.getCurrentInstance();
-       UserEvent ue =uem.getUserEventofUser(event, um.getLoggedUser());
-      
-         
-       
-       
+    public String acceptInvite(Event event) {
+     FacesContext context = FacesContext.getCurrentInstance();
+     UserEvent ue =uem.getUserEventofUser(event, um.getLoggedUser());  
      uem.modifyUserEvent(ue,true);
      invites.remove(event);
+      return "calendar?faces-redirect=true";
     }
-
-    public void declineInvite(Event event) {
+    
+    public String declineInvite(Event event) {
     UserEvent ue =uem.getUserEventofUser(event, um.getLoggedUser());
     uem.modifyUserEvent(ue,false);
     invites.remove(event);
+     return "calendar?faces-redirect=true";
     }
 
     public List<Event> getInvites() {

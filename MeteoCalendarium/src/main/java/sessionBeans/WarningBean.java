@@ -43,7 +43,16 @@ public class WarningBean {
     
     private List<Event> warnings;
     private List<Timestamp> solutions;
+    private boolean enableModify=false;
 
+    
+    public boolean isEnableModify() {
+        return enableModify;
+    }
+
+    public void setEnableModify(boolean enableModify) {
+        this.enableModify = enableModify;
+    }
     
      @PostConstruct
     public void init() {
@@ -52,18 +61,21 @@ public class WarningBean {
         if(!warnings.isEmpty())
         {
             searchSolution();
+            enableModify = true;
         }
         else
-            System.out.println(" warning empty");
-         
+        {
+            enableModify = false;
+            Event noWarning = new Event();
+            noWarning.setTitle("No Warnings");
+            warnings.add(noWarning);
+        }
     }
     
     public void searchSolution()
-    {
-        
+    {        
         solutions = bwnm.findSolution(warnings);
-        
-        
+
     }
 
     public List<Timestamp> getSolutions() {
@@ -82,7 +94,7 @@ public class WarningBean {
         this.warnings = warnings;
     }
    
-    public void modifyOk(Event event, EventBean eb) throws OverlappingException
+    public String modifyOk(Event event, EventBean eb) throws OverlappingException
     {
         List<String> preferenceEvent = new ArrayList<>();
         preferenceEvent= pm.getPreferenceOfEvent(event);
@@ -94,7 +106,7 @@ public class WarningBean {
         System.out.println("Evento modificato: " + event.getTitle() + "diff: " + diff);
         Timestamp help;
         boolean ok=false;
-        for(int i=0;i<warnings.size()&&!ok;i++)
+        for(int i=0;i<warnings.size()&&!ok ;i++)
         {
             if(warnings.get(i).getTitle().equalsIgnoreCase(event.getTitle()))
                 if(solutions.get(i)!=null)
@@ -106,16 +118,13 @@ public class WarningBean {
                      help.setTime(solutions.get(i).getTime()+diff);
                      event.setEndDate(help);
                      System.out.println("start "+event.getStartDate()+"end "+event.getEndDate());
-                     //em.modifyEvent(event);
-                    // em.(event);
                      eb.modifyFromWarning(event, preferenceEvent, userEvent);
-                     
                      ok=true;
                      warnings.remove(i);
                 }
             
         }
-        
+              return "calendar?faces-redirect=true";
         
     }
     
