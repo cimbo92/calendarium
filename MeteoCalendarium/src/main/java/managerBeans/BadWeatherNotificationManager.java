@@ -45,8 +45,7 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
     @Override
     public List<Event> findWarnings(User creator) {
         
-        //Query query1 = em.createQuery("Select distinct e From Event e, UserEvent ue, Preference p, Forecast f Where ue.event=e and ue.creator=1 and e.outdoor=1 and e.creator.email= :mail and p.event=e and f.place=e.place and f.date between e.startDate and e.endDate and f.mainCondition not in (Select pr.main From Preference pr Where pr.event=e)").setParameter("mail", creator.getEmail());
-        Query query1 = em.createQuery("Select distinct e From Event e, UserEvent ue, Preference p, Forecast f Where ue.event=e and ue.creator=1 and e.outdoor=1 and e.creator.email= :mail and p.event=e and f.place=e.place and f.date between e.startDate and e.endDate ").setParameter("mail", creator.getEmail());
+         /*Query query1 = em.createQuery("Select distinct e From Event e, UserEvent ue, Preference p, Forecast f Where ue.event=e and ue.creator=1 and e.outdoor=1 and e.creator.email= :mail and p.event=e and f.place=e.place and f.date between e.startDate and e.endDate ").setParameter("mail", creator.getEmail());
         List<Event> eventWarning = new ArrayList<>(query1.getResultList());
         List<MainCondition> pref = new ArrayList<>();
         List<MainCondition> forec = new ArrayList<>();
@@ -81,10 +80,10 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
             {
                 eventWarning.remove(i);
             }
-        }
+        }*/
         
-        
-    
+        Query query1 = em.createQuery("Select distinct e From Event e, UserEvent ue, Preference p, Forecast f Where ue.event=e and ue.creator=1 and e.outdoor=1 and e.creator.email= :mail and p.event=e and f.place=e.place and f.date between e.startDate and e.endDate and f.mainCondition not in (Select pr.main From Preference pr where pr.event=e) ").setParameter("mail", creator.getEmail());
+    List<Event> eventWarning=query1.getResultList();
     
     if(!eventWarning.isEmpty())
         System.out.println("Primo evento con warning: " + eventWarning.get(0).getTitle());
@@ -143,8 +142,10 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
                    {
                        if(daysOk==0)
                        {
-                           if(!checkOverlapping(forecast.get(j).getDate(), dayy, eventWarning.get(i).getStartDate(), eventWarning.get(i).getEndDate()))
+                           
+                           if(!checkOverlapping(forecast.get(j).getDate(), dayy, eventWarning.get(i).getStartDate(), eventWarning.get(i).getEndDate(), eventWarning.get(i).getCreator()))
                            {
+                               System.out.println("no overlapping");
                                help=forecast.get(j).getDate();
                                help.setHours(eventWarning.get(i).getStartDate().getHours());
                                help.setMinutes(eventWarning.get(i).getStartDate().getMinutes());
@@ -176,7 +177,7 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
         return daySuggest;
     
     }
-    public boolean checkOverlapping(Timestamp start, long day, Timestamp oldStart, Timestamp oldEnd)
+    public boolean checkOverlapping(Timestamp start, long day, Timestamp oldStart, Timestamp oldEnd, User creator)
     {
         Event event = new Event();
         start.setHours(oldStart.getHours());
@@ -190,9 +191,9 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
         end.setTime(start.getTime()+day);
         System.out.println(end.toString());
         event.setEndDate(end);
-        System.out.println("Dentro il check overlapping");
-        return emi.searchEventOverlapping(event,event.getCreator());
+        event.setCreator(creator);
         
-                }
+        return emi.searchEventOverlapping(event,event.getCreator());
+        }
     }
 
