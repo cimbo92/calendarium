@@ -35,6 +35,23 @@ public class WarningManagerChecker implements WarningManagerCheckerInterface {
     @EJB
     private UserEventManagerInterface uem;
     
+    @Schedule(second = "0", minute = "0", hour = "0", persistent = false)
+    private void warningEvery12Hours(){
+        
+         List<User> users = uem.getUsersCreator();
+         Iterator<User> ite = users.iterator();
+        while(ite.hasNext()){
+            User u = ite.next();
+            List<Event> eventWarning = bm.findWarnings(u);
+            
+            for(Event e : eventWarning){
+                    ms.sendMail(u.getEmail(),"Warning: "+e.getTitle(),"Message to notify a forecast change(12h). For more info check on your personal page. \nStaff MeteoCalendarium");  
+                }
+        }
+        
+        
+    }
+    
      @Schedule(second = "30", minute = "*", hour = "*", persistent = false)
     private void threeDaysWarning(){
         
