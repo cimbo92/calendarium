@@ -207,9 +207,7 @@ public class EventBean implements Serializable {
     public void modify(){
      FacesContext context = FacesContext.getCurrentInstance();
         try{
-            
-            this.updateEvent();
-             context.addMessage(null, new FacesMessage("Successful","Event Created") );
+            this.updateEvent(); 
        }catch(OverlappingException e)
         {
                   context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", e.getMessage()));
@@ -229,14 +227,7 @@ public class EventBean implements Serializable {
       context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!","Event delete completed"));
     }
     
-    public void updateUserEvent(){
-        
-    }
-    
-    public void cancelUserEvent(){
-        
-}
-    
+
     public void updateEvent() throws OverlappingException{
         em.removeEvent(event);
         this.create();

@@ -28,5 +28,5 @@ public interface UserEventManagerInterface {
     
     public List<String> invitedUsersOfEvent(Event event);
 
-    
+    public void deleteUserEvent(Event event);
 }

@@ -25,7 +25,7 @@ import managerBeans.UserManagerInterface;
  * @author home
  */
 @ManagedBean(name="loginBean")
-@SessionScoped
+@RequestScoped
 @Stateful
 public class LoginBean {
     
