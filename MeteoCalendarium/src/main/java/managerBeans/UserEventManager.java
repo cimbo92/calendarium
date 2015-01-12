@@ -86,5 +86,21 @@ public class UserEventManager implements UserEventManagerInterface {
         Query query2 = em.createQuery("Delete From UserEvent ue Where ue.event.idEvent.id= :event").setParameter(("event"), event.getIdEvent().getId());
         query2.executeUpdate();
      }
+
+    @Override
+    public List<User> getUsersCreator() {
+        
+        Query query = em.createQuery("Select distinct ue.user From UserEvent ue Where ue.creator=1");
+        return query.getResultList();
+    
+    }
+
+    @Override
+    public List<User> getInvitedWhoAccepted(Event event) {
+    
+        Query query = em.createQuery("Select ue.user From UserEvent ue Where ue.event.idEvent = :event and ue.accepted=1").setParameter("event", event.getIdEvent());
+        return query.getResultList();
+    
+    }
     
 }

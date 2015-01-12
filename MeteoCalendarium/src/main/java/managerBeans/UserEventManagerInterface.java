@@ -29,4 +29,8 @@ public interface UserEventManagerInterface {
     public List<String> invitedUsersOfEvent(Event event);
 
     public void deleteUserEvent(Event event);
+    
+    public List<User> getUsersCreator();
+    
+    public List<User> getInvitedWhoAccepted(Event event);
 }
