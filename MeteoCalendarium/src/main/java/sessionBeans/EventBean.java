@@ -238,6 +238,7 @@ public class EventBean implements Serializable {
     
     public void decline(){
         UserEvent ue =uem.getUserEventofUser(event, um.getLoggedUser());
+        ue.setView(false);
         uem.modifyUserEvent(ue, false);
     }
 
