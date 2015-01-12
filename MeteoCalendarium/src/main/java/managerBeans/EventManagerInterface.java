@@ -25,9 +25,9 @@ public interface EventManagerInterface {
     
     public Event loadSpecificEvent(String idEvent);
     
-    public boolean searchEventOverlapping(Event event);
+    public boolean searchEventOverlapping(Event event,User user);
 
-    public void addEvent(Event event) throws OverlappingException;;
+    public void addEvent(Event event, User user) throws OverlappingException;;
     
     public List<Event> findInvitatedEvent(User user);
     

@@ -174,7 +174,7 @@ public class EventBean implements Serializable {
             idEv.setId(id);
             event.setIdEvent(idEv);
             event.setCreator(um.getLoggedUser());
-            em.addEvent(event);
+            em.addEvent(event,um.getLoggedUser());
        
             }
             else
@@ -258,7 +258,7 @@ public class EventBean implements Serializable {
         this.invitated = userEvent;
         this.selectedPref=pref;
         preferences = new ArrayList<>();
-        em.addEvent(event);
+        em.addEvent(event,um.getLoggedUser());
         this.save();
         this.addUserEvent();
         this.event = new Event();

@@ -40,12 +40,12 @@ public class EventManager implements EventManagerInterface  {
     Principal principal;
     
     @Override
-    public void addEvent(Event event) throws OverlappingException  {
+    public void addEvent(Event event, User user) throws OverlappingException  {
         
         
         
         
-        if(this.searchEventOverlapping(event))
+        if(this.searchEventOverlapping(event,user))
         {
             throw new OverlappingException();
         }else{
@@ -94,7 +94,7 @@ public class EventManager implements EventManagerInterface  {
     
     
     @Override
-    public boolean searchEventOverlapping(Event event) {
+    public boolean searchEventOverlapping(Event event,User user) {
         
         Timestamp startDate = event.getStartDate();
         Timestamp endDate = event.getEndDate();
@@ -112,7 +112,7 @@ public class EventManager implements EventManagerInterface  {
                                                         + "WHERE u.email =:idUser");
                         
                   //ListEvent contiene gli eventi creati dall'utente
-                  listEvent = (List<Event>) query.setParameter("idUser", principal.getName()).getResultList();
+                  listEvent = (List<Event>) query.setParameter("idUser", user.getEmail()).getResultList();
             
                  
 
@@ -152,7 +152,7 @@ public class EventManager implements EventManagerInterface  {
                                                         + "FROM UserEvent ue JOIN ue.user u "
                                                         + "WHERE (u.email =:idUser AND ue.accepted = true)");
             
-            listUserEvent = (List<UserEvent>) query.setParameter("idUser",principal.getName()).getResultList();
+            listUserEvent = (List<UserEvent>) query.setParameter("idUser",user.getEmail()).getResultList();
             
             //Dalle lista di inviti aggiungo alla lista di eventi da controllare
             //quelli in cui l'utente abbia accettato un invito!
