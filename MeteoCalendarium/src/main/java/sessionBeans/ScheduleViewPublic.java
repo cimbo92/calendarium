@@ -74,7 +74,7 @@ public class ScheduleViewPublic implements Serializable {
     @PostConstruct
     public void init() {
         eventModel = new DefaultScheduleModel();   
-        users =  um.getListUsers();  
+        users =  um.getListUsersPublic();  
     }
     
     public void loadCalendar(){

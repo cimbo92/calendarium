@@ -14,7 +14,7 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface IDEventManagerInterface {
-    public Long findMax();
+    public Long findFirstFreeID();
 
    
 }

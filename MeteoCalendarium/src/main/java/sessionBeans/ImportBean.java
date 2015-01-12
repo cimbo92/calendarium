@@ -136,7 +136,7 @@ public class ImportBean {
               
                 
                 long id;
-            id=idm.findMax();
+            id=idm.findFirstFreeID();
             iDEvent idEv = new iDEvent();
             idEv.setId(id);
             event.setIdEvent(idEv);

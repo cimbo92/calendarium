@@ -33,22 +33,26 @@ public class IDEventManager implements IDEventManagerInterface {
     Principal principal;
     
     @Override
-    public Long findMax(){
+    public Long findFirstFreeID(){
 
         Query query;
-        query =em.createQuery( "SELECT MAX(i.id) FROM iDEvent i" );
+        query =em.createQuery( "SELECT id.id From iDEvent id order by id.id" );
         
         List<Long> id =query.getResultList(); 
-        if(id.get(0)==null)
+       
+        if(id.size()==0)
         {
             return Long.parseLong("1");
         }
-        else
-        {
-        return id.get(0)+1;
-        }
         
-     
+        for(int i=0;i<id.size()-1;i++)
+        {
+            if(id.get(i+1)!=id.get(i)+1)
+            {
+                return id.get(i)+1;
+            }
+        }
+        return id.get(id.size()-1)+1;        
     }
     
     

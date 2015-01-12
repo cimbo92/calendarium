@@ -78,15 +78,6 @@ public class UserEventManager implements UserEventManagerInterface {
     
     List<String> ritorno = new ArrayList<>();
 
-        for (UserEvent result1 : result) {
-            query =em.createQuery( "SELECT ue.user.email FROM UserEvent ue WHERE ue.idUserEvent= :id" ).setParameter("id", result1.getIdUserEvent());
-            List<String> temp = new ArrayList<>(query.getResultList());
-            ritorno.add(temp.get(0));
-        }
-
-    
-    
-    
             return ritorno;
     }
 
