@@ -34,8 +34,6 @@ public interface EventManagerInterface {
      public List<Event> loadCalendar(User user);
      
      public List<Event> loadPublicCalendar(String username);
-   
-     public List<Event> loadPublicCalendar(User user);
      
      public void removeAllEvent(User user);
      

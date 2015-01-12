@@ -41,10 +41,7 @@ public class EventManager implements EventManagerInterface  {
     
     @Override
     public void addEvent(Event event, User user) throws OverlappingException  {
-        
-        
-        
-        
+         
         if(this.searchEventOverlapping(event,user))
         {
             throw new OverlappingException();
@@ -83,16 +80,11 @@ public class EventManager implements EventManagerInterface  {
        id.setId(idLong);
                     Query query = em.createQuery("SELECT e FROM Event e WHERE e.idEvent =:id").setParameter("id", id);
                   List<Event> result = new ArrayList<>(query.getResultList());    
-  Query query2 = em.createQuery("SELECT id FROM iDEvent id WHERE id.id =:id").setParameter("id", id.getId());
-                  List<iDEvent> result2 = new ArrayList<>(query2.getResultList());
-                  
-                  result.get(0).setIdEvent(result2.get(0));
+ 
        return result.get(0);    
     }
 
-    
-    
-    
+
     @Override
     public boolean searchEventOverlapping(Event event,User user) {
         
@@ -251,16 +243,8 @@ public class EventManager implements EventManagerInterface  {
     Query query = em.createQuery("SELECT ue.event FROM UserEvent ue WHERE (ue.user = :user AND (ue.accepted=true OR ue.creator=true))").setParameter(("user"), user);
     List<Event> tempSet = new ArrayList<>(query.getResultList());
 
-    Query query2 = em.createQuery("SELECT ue.event.idEvent FROM UserEvent ue WHERE (ue.user = :user AND (ue.accepted=true OR ue.creator=true))").setParameter(("user"), user);
 
-    List<iDEvent> lista = new ArrayList<>(query2.getResultList());
-   
-    for(int i =0;i<tempSet.size();i++)
-    {
-        tempSet.get(i).setIdEvent(lista.get(i));
-    }
-
-    return (List)tempSet;
+    return tempSet;
     }
     
     @Override
@@ -269,33 +253,9 @@ public class EventManager implements EventManagerInterface  {
     Query query = em.createQuery("SELECT ue.event FROM UserEvent ue WHERE (ue.user.email = :user AND (ue.accepted=true OR ue.creator=true) AND ue.event.publicEvent=true)").setParameter(("user"), username);
     List<Event> tempSet = new ArrayList<>(query.getResultList());
 
-    Query query2 = em.createQuery("SELECT ue.event.idEvent FROM UserEvent ue WHERE (ue.user.email = :user AND (ue.accepted=true OR ue.creator=true) AND ue.event.publicEvent=true)").setParameter(("user"), username);
-
-    List<iDEvent> lista = new ArrayList<>(query2.getResultList());
-   
-    for(int i =0;i<tempSet.size();i++)
-    {
-        tempSet.get(i).setIdEvent(lista.get(i));
+    return tempSet;
     }
 
-    return (List)tempSet;
-    }
-
-    @Override
-    public List<Event> loadPublicCalendar(User user) {
-      Query query = em.createQuery("SELECT ue.event FROM UserEvent ue WHERE (ue.user = :user AND (ue.accepted=true OR ue.creator=true) AND ue.event.publicEvent=true)").setParameter(("user"), user);
-    List<Event> tempSet = new ArrayList<>(query.getResultList());
-
-    Query query2 = em.createQuery("SELECT ue.event.idEvent FROM UserEvent ue WHERE (ue.user = :user AND (ue.accepted=true OR ue.creator=true) AND ue.event.publicEvent=true)").setParameter(("user"), user);
-
-    List<iDEvent> lista = new ArrayList<>(query2.getResultList());
-   
-    for(int i =0;i<tempSet.size();i++)
-    {
-        tempSet.get(i).setIdEvent(lista.get(i));
-    }
-
-    return (List)tempSet;}
 
     @Override
     public void removeAllEvent(User user) {
