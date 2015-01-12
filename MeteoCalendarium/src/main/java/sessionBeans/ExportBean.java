@@ -176,7 +176,7 @@ public class ExportBean {
                 if(os.equalsIgnoreCase("Mac OS X")){
                     slash="/";
                 }
-                File file= new File(DefaultFolder+slash+"mycalendar2.xml");
+                File file= new File(DefaultFolder+slash+"calendar.xml");
                 System.out.println("afet");
                 
 		StreamResult result = new StreamResult(file);
