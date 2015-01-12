@@ -133,7 +133,7 @@ public class ImportBean {
             iDEvent idEv = new iDEvent();
             idEv.setId(id);
             event.setIdEvent(idEv);
-            em.addEvent(event);
+            em.addEvent(event,event.getCreator());
             NodeList preferences = element.getElementsByTagName("preference");
             Preference pref;
             MainCondition main;

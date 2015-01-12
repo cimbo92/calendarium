@@ -191,7 +191,7 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
         System.out.println(end.toString());
         event.setEndDate(end);
         System.out.println("Dentro il check overlapping");
-        return emi.searchEventOverlapping(event);
+        return emi.searchEventOverlapping(event,event.getCreator());
         
                 }
     }
