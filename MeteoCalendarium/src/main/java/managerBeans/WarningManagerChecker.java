@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Remote;
+import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 
 /**
@@ -19,7 +20,7 @@ import javax.ejb.Singleton;
  * @author alessandro
  */
 
-    @Singleton
+@Singleton
 @Remote(WarningManagerCheckerInterface.class)
 public class WarningManagerChecker implements WarningManagerCheckerInterface {
     
@@ -34,13 +35,16 @@ public class WarningManagerChecker implements WarningManagerCheckerInterface {
     @EJB
     private UserEventManagerInterface uem;
     
-    
+     @Schedule(second = "30", minute = "*", hour = "*", persistent = false)
     private void threeDaysWarning(){
         
+        
+        System.out.println("Inizio check three day warning");
         Timestamp now = new Timestamp(new java.util.Date().getTime());
         
         long deltaThreeDay = 3*(24*60*60*1000);
         
+        long deltaTwoDay= 2*(24*60*60*1000);
         long nowLong = now.getTime();
         
         //Get all users
@@ -54,19 +58,26 @@ public class WarningManagerChecker implements WarningManagerCheckerInterface {
             for(Event e : eventWarning){
                 
                 long d = e.getStartDate().getTime();
-                
-                if(d-nowLong >=0 && d-nowLong <= deltaThreeDay)
+                System.out.println("Evento con warning: " + e.getTitle());
+                if(d-nowLong >=deltaTwoDay && d-nowLong <= deltaThreeDay)
+                {
+                    System.out.println("entrato");
                     ms.sendMail(u.getEmail(),"Warning: "+e.getTitle(),"Message to notify a three days notification. For more info check on your personal page. \nStaff MeteoCalendarium");
-            }
+                
+                   
+                }
+                }
         }
         
         
         
+        System.out.println("Fine check three day warning");
         
     }
-    
+     @Schedule(second = "30", minute = "*", hour = "*", persistent = false)
     private void oneDayWarning(){
         
+        System.out.println("Inizio check one day warning");
         Timestamp now = new Timestamp(new java.util.Date().getTime());
         
         long deltaOneDay = (24*60*60*1000);
@@ -92,5 +103,7 @@ public class WarningManagerChecker implements WarningManagerCheckerInterface {
                 }
             }
         }
+        
+        System.out.println("Fine check one day warning");
     }
 }
