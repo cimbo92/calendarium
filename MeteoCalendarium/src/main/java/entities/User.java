@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package entities;
 
 import java.io.Serializable;
@@ -25,7 +25,7 @@ import javax.validation.constraints.Pattern;
 public class User implements Serializable {
     
     private static final long serialVersionUID = 1L;
-
+    
     @Id
     @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
             message = "invalid email")
@@ -35,11 +35,13 @@ public class User implements Serializable {
     private String password;
     @NotNull(message = "May not be empty")
     private String groupName;
-
+    @NotNull
+    private boolean publicCalendar = true;
+    
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
-
+    
     public String getGroupName() {
         return groupName;
     }
@@ -47,17 +49,17 @@ public class User implements Serializable {
     public String getEmail() {
         return email;
     }
-
+    
     public void setEmail(String email) {
         this.email = email;
     }
-
+    
     public String getPassword() {
         return password;
     }
-
+    
     public void setPassword(String password) {
-         try {
+        try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(password.getBytes("UTF-8"));
             BigInteger bigInt = new BigInteger(1, hash);
@@ -72,8 +74,16 @@ public class User implements Serializable {
         }
     }
     
+    public boolean isPublicCalendar() {
+        return publicCalendar;
+    }
+    
+    public void setPublicCalendar(boolean publicCalendar) {
+        this.publicCalendar = publicCalendar;
+    }
+    
     @Override
     public String toString(){
         return email;
-    }   
+    }
 }

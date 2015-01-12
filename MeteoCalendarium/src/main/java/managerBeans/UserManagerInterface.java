@@ -25,6 +25,8 @@ public interface UserManagerInterface {
      public User findByMail(String mail);
      
      public List<String> getListUsers();
+     
+     public void setCalendar(boolean status, User user);
              
 
 }
