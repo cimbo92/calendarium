@@ -89,5 +89,11 @@ public class UserEventManager implements UserEventManagerInterface {
     
             return ritorno;
     }
+
+    @Override
+    public void deleteUserEvent(Event event) {
+        Query query2 = em.createQuery("Delete From UserEvent ue Where ue.event.idEvent.id= :event").setParameter(("event"), event.getIdEvent().getId());
+        query2.executeUpdate();
+     }
     
 }

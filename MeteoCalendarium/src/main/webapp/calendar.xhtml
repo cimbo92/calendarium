@@ -10,7 +10,7 @@
     <h:body>
 
 
-        <h:form id="formcentral">
+        <h:form id="formcentral"> 
             <p:growl id="growl" showDetail="true"/>       
 
             <p:layout style="min-width:390px;min-height:890px; ">
@@ -85,8 +85,11 @@
                     </p:dialog>
 
                     <p:dialog header="Invitations" widgetVar="dlg-invitations" id="inv-dialog" width="800px" height="300px" resizable="false">
-                        <p:carousel value="#{invitationBean.invites}" var="event" numVisible="1" itemStyle="height:200px;width:750px;" effect="easeInStrong" headerText="Invitation" style="margin-bottom:0;">
-                            <p:tab>
+                      
+                        <p:carousel id="carouselwatning" value="#{invitationBean.invites}" var="event" numVisible="1" itemStyle="height:200px;width:750px;" effect="easeInStrong" headerText="Invitation" style="margin-bottom:0;">
+                     
+                            <p:tab> 
+
                                 <p:panelGrid columns="2" columnClasses="label,value">
                                     <h:outputText value="Title:" />
                                     <h:outputText value="#{event.title}"  />
@@ -103,12 +106,11 @@
                                     <h:outputText value="Description:"/>
                                     <h:outputText value="#{event.description}" />
 
-                                    <f:facet name="footer">
-                                        <p:commandButton value="Accept" rendered="#{invitationBean.enableInvitation}" id="accept-inv" action="#{invitationBean.acceptInvite(event)}" actionListener="#{scheduleView.loadCalendar()}" oncomplete="PF('dlg-invitations').hide();PF('myschedule').update();"  />
+                                   
+                                        <p:commandButton value="Accept" rendered="#{invitationBean.enableInvitation}" id="accept-inv" update=":formcentral:growl,:formcentral:schedule" action="#{invitationBean.acceptInvite(event)}" actionListener="#{scheduleView.loadCalendar()}" oncomplete="PF('myschedule').update();"  />
+                                        <p:commandButton value="Decline"  rendered="#{invitationBean.enableInvitation}" id="decline-inv"  update=":formcentral:inv-dialog"  action="#{invitationBean.declineInvite(event)}" oncomplete="PF('myschedule').update()" />
 
-                                        <p:commandButton value="Decline"  rendered="#{invitationBean.enableInvitation}" id="decline-inv" action="#{invitationBean.declineInvite(event)}" oncomplete="PF('dlg-invitations').hide();PF('myschedule').update()" />
-
-                                    </f:facet>
+                                   
                                 </p:panelGrid>
                             </p:tab>
                         </p:carousel> 

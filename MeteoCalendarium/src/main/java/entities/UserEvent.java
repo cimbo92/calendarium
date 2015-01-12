@@ -31,7 +31,7 @@ public class UserEvent implements Serializable{
         @ManyToOne(targetEntity = Event.class, optional = false,fetch=FetchType.LAZY)
         private Event event;
         
-        @ManyToOne(targetEntity = User.class, optional = false,fetch=FetchType.LAZY)
+        @ManyToOne(targetEntity = User.class, optional = false,fetch=FetchType.EAGER)
         private User user;
         
         public boolean creator;

@@ -14,6 +14,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -73,19 +74,35 @@ public class InvitationBean implements Serializable {
              }
     }
     
-    public String acceptInvite(Event event) {
+    public String acceptInvite(Event event) throws InterruptedException {
      FacesContext context = FacesContext.getCurrentInstance();
-     UserEvent ue =uem.getUserEventofUser(event, um.getLoggedUser());  
+    
+     UserEvent ue =uem.getUserEventofUser(event, um.getLoggedUser());
+     if(!em.searchEventOverlapping(event, um.getLoggedUser()))
+     {
      uem.modifyUserEvent(ue,true);
      invites.remove(event);
-      return "calendar?faces-redirect=true";
+     return "calendar?faces-redirect=true";
+     }else
+     {
+     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Found Overlapping , Impossible to Accept",null));
+     return "";
+     }
+        
     }
     
-    public String declineInvite(Event event) {
+    public void declineInvite(Event event) {
     UserEvent ue =uem.getUserEventofUser(event, um.getLoggedUser());
     uem.modifyUserEvent(ue,false);
     invites.remove(event);
-     return "calendar?faces-redirect=true";
+    if(invites.isEmpty())
+    {
+          enableInvitation=false;
+                 Event noInvitation = new Event();
+                 noInvitation.setTitle("No Invitation");
+                 invites.add(noInvitation);
+    }
+    
     }
 
     public List<Event> getInvites() {
