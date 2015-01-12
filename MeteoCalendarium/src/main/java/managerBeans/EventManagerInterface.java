@@ -38,6 +38,8 @@ public interface EventManagerInterface {
      public List<Event> loadPublicCalendar(User user);
      
      public void removeAllEvent(User user);
+     
+     public List<Event> getEventsCreated(User user);
    
      
 }

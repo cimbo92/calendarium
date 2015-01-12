@@ -308,6 +308,13 @@ public class EventManager implements EventManagerInterface  {
         query3.executeUpdate();
         System.out.println("Delete completed");
     }
+
+    @Override
+    public List<Event> getEventsCreated(User user) {
+        
+        Query query = em.createQuery("Select e From Event e Where e.creator.email= :mail").setParameter("mail", user.getEmail());
+        return query.getResultList();
+    }
     
     
     

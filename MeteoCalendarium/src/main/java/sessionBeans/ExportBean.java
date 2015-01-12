@@ -13,6 +13,7 @@ import entities.Event;
 import entities.Preference;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -57,7 +58,7 @@ public class ExportBean {
     @PostConstruct
     public void init() {
         events = new ArrayList<>();
-        events = em.loadCalendar(um.getLoggedUser());
+        events = em.getEventsCreated(um.getLoggedUser());
         preferences = new ArrayList<>();
         userInvited = new ArrayList<>();
         System.out.println("Init export complete");
@@ -66,13 +67,12 @@ public class ExportBean {
 	public void export() {
             
                    events = new ArrayList<>();
-        events = em.loadCalendar(um.getLoggedUser());
+        events = em.getEventsCreated(um.getLoggedUser());
         preferences = new ArrayList<>();
         userInvited = new ArrayList<>();
-        System.out.println("Init export complete");
+        System.out.println("Init export complete + size: " + events.size());
   
         
-            System.out.println("Export begin");
             String help;
             //System.out.println("Evento " + events.get(0).getTitle());
            
@@ -170,7 +170,14 @@ public class ExportBean {
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(doc);
                 String DefaultFolder=new JFileChooser().getFileSystemView().getDefaultDirectory().toString();
-		File file= new File(DefaultFolder+"\\mycalendar2.xml");
+		String os=System.getProperty("os.name");
+                System.out.println("Sistema: " + os);
+                String slash = "\\";
+                if(os.equalsIgnoreCase("Mac OS X")){
+                    slash="/";
+                }
+                File file= new File(DefaultFolder+slash+"mycalendar2.xml");
+                System.out.println("afet");
                 
 		StreamResult result = new StreamResult(file);
 		// Output to console for testing
