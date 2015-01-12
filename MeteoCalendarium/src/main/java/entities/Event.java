@@ -49,7 +49,7 @@ public class Event implements Serializable {
     private Timestamp endDate;
     
     @NotNull(message = "May not be empty")
-    private String description = " ";
+    private String description;
     
     @NotNull(message = "May not be empty")
     @ManyToOne(targetEntity = Place.class, optional = false, cascade={CascadeType.MERGE},fetch=FetchType.EAGER)
