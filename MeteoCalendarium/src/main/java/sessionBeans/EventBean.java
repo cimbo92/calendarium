@@ -75,7 +75,17 @@ public class EventBean implements Serializable {
     private Date startDate = new Date();
     private Date endDate = new Date();
     private boolean canSelectPreferences;
+    private boolean canDecline=false;
 
+    public boolean isCanDecline() {
+        return !this.isOwnEvent&!this.creating;
+    }
+
+    public void setCanDecline(boolean canDecline) {
+        this.canDecline = canDecline;
+    }
+    
+    
     public boolean isCanSelectPreferences() {
         return this.event.isOutdoor()&this.isOwnEvent;
     }
@@ -127,8 +137,6 @@ public class EventBean implements Serializable {
         return this.isOwnEvent&!this.creating;
     }
     
-
-
     public Date getStartDate() {
         return startDate;
     }
@@ -227,6 +235,11 @@ public class EventBean implements Serializable {
       context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!","Event delete completed"));
     }
     
+    
+    public void decline(){
+        UserEvent ue =uem.getUserEventofUser(event, um.getLoggedUser());
+        uem.modifyUserEvent(ue, false);
+    }
 
     public void updateEvent() throws OverlappingException{
         em.removeEvent(event);
