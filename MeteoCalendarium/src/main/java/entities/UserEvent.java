@@ -28,7 +28,7 @@ public class UserEvent implements Serializable{
         @GeneratedValue(generator="increment")
         private int idUserEvent;
     
-        @ManyToOne(targetEntity = Event.class, optional = false,fetch=FetchType.LAZY)
+        @ManyToOne(targetEntity = Event.class, optional = false,fetch=FetchType.EAGER)
         private Event event;
         
         @ManyToOne(targetEntity = User.class, optional = false,fetch=FetchType.EAGER)

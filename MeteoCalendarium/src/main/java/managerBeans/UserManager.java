@@ -89,6 +89,15 @@ public class UserManager implements UserManagerInterface {
              System.out.println("Errore nella query setCalendar");
          }
     }
+
+    @Override
+    public List<String> getListUsersPublic() {
+       
+        Query query;
+        query = em.createQuery("SELECT e.email FROM User e WHERE e.email!= :usermail and e.publicCalendar=1" ).setParameter("usermail", principal.getName());
+        List<String> user;
+        user = query.getResultList();
+        return user; }
     
     
 }

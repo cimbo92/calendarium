@@ -277,11 +277,23 @@ public class EventBean implements Serializable {
 
     public void save()
     { 
+         
+       
+        
         for(int i=0;i<selectedPref.size();i++)
         {
             preferences.add(new Preference(event,selectedPref.get(i)));
             pm.addPreference(preferences.get(i));
         }
+        if(selectedPref.isEmpty())
+        {
+         for(int i=0;i<this.listPref().size();i++)
+        {
+           
+             pm.addPreference(new Preference(event,listPref().get(i)));
+        }  
+        }
+        
         preferences = new ArrayList<>();
     }
     

@@ -26,6 +26,8 @@ public interface UserManagerInterface {
      
      public List<String> getListUsers();
      
+     public List<String> getListUsersPublic();
+     
      public void setCalendar(boolean status, User user);
              
 

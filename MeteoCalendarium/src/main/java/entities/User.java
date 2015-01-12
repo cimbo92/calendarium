@@ -36,7 +36,7 @@ public class User implements Serializable {
     @NotNull(message = "May not be empty")
     private String groupName;
     @NotNull
-    private boolean publicCalendar = true;
+    private boolean publicCalendar = false;
     
     public void setGroupName(String groupName) {
         this.groupName = groupName;

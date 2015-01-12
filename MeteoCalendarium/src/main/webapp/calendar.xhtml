@@ -44,10 +44,13 @@
                     </p:toolbar>
 
 
-                    <p:dialog  widgetVar="dlg-settings">
-                           <h:panelGrid id="panelsetting" columnClasses="value">              
+                    <p:dialog  widgetVar="dlg-settings" id="dialogsettings" >
+                        <h:panelGrid id="panelsetting" cellpadding="5" columnClasses="value">              
                         <p:commandButton value="Export" id="export"  action="#{exportBean.export()}"/>
                         <p:commandButton value="Import" id="import" action="#{importBean.imports()}" />
+                        <p:inputSwitch onLabel="Public"  offLabel="Private" value="#{setCalendarBean.status}" >
+                            <p:ajax listener="#{setCalendarBean.saveDecision()}" update="dialogsettings" />
+                        </p:inputSwitch>
                            </h:panelGrid>
                     </p:dialog>
 

@@ -21,16 +21,18 @@ public class SetCalendarBean {
     @EJB
     private UserManagerInterface um;
    
-    private boolean status;
+    private boolean status=true;
 
     public boolean isStatus() {
-        return status;
+        return um.getLoggedUser().isPublicCalendar();
     }
 
     public void setStatus(boolean status) {
         this.status = status;
     }
     
-    
+    public void saveDecision(){
+        um.setCalendar(status, um.getLoggedUser());
+    }
     
 }
