@@ -59,8 +59,15 @@ public class ImportBean {
         
        
         System.out.println("Import begin");
+        String os=System.getProperty("os.name");
+                String slash = "\\";
+                if(os.equalsIgnoreCase("Mac OS X")){
+                    slash="/";
+                }
+                 
+                System.out.println("afet");
            String DefaultFolder=new JFileChooser().getFileSystemView().getDefaultDirectory().toString();
-	   file= new File(DefaultFolder+"\\mycalendar.xml");
+           file= new File(DefaultFolder+slash+"calendar.xml");
           
         Timestamp help;
         try {

@@ -47,7 +47,8 @@ public class Event implements Serializable {
 
     @NotNull(message = "May not be empty")
     private Timestamp endDate;
-     
+    
+    @NotNull(message = "May not be empty")
     private String description;
     
     @NotNull(message = "May not be empty")
