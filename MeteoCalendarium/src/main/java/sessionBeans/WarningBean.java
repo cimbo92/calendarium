@@ -7,8 +7,6 @@ package sessionBeans;
 
 import HelpClasses.OverlappingException;
 import entities.Event;
-import entities.Preference;
-import entities.UserEvent;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +73,6 @@ public class WarningBean {
     public void searchSolution()
     {        
         solutions = bwnm.findSolution(warnings);
-
     }
 
     public List<Timestamp> getSolutions() {
@@ -112,20 +109,15 @@ public class WarningBean {
                 if(solutions.get(i)!=null)
                 {
                      event.setStartDate(solutions.get(i));
-                     System.out.println(event.getStartDate());
-                     help=new Timestamp(0);
-                     
+                     help=new Timestamp(0); 
                      help.setTime(solutions.get(i).getTime()+diff);
                      event.setEndDate(help);
-                     System.out.println("start "+event.getStartDate()+"end "+event.getEndDate());
                      eb.modifyFromWarning(event, preferenceEvent, userEvent);
                      ok=true;
                      warnings.remove(i);
                 }
-            
         }
               return "calendar?faces-redirect=true";
-        
     }
     
     public String getDate(String title)
