@@ -76,19 +76,19 @@
                     </p:dialog>
 
                     <p:dialog header="Warnings" widgetVar="dlg-warnings" showEffect="fade" hideEffect="fade"  id="inv-dialogW" width="800px" height="300px" resizable="false">
-                        <p:carousel value="#{warningBean.warnings}" var="eventWarning" numVisible="1" itemStyle="height:200px;width:750px;" effect="easeInStrong" headerText="Warning" style="margin-bottom:0;">
-                            <p:tab>
+                        <p:carousel value="#{warningBean.warnings}" var="eventWarning" numVisible="1" itemStyle="height:200px;width:750px;" effect="easeInStrong" headerText="Warning" style="margin-bottom:0;">         
+                                <p:tab>
                                 <p:panelGrid columns="2" columnClasses="label,value">
                                     <h:outputText value="Title:" />
                                     <h:outputText value="#{eventWarning.title}"  />
-                                    <h:outputText rendered="#{warningBean.enableModify}" value="It's possible to postpone the event at: " />
-                                    <h:outputText rendered="#{warningBean.enableModify}" value="#{warningBean.getDate(eventWarning.title)}" />
+                                    <h:outputText value="It's possible to postpone the event at: " />
+                                    <h:outputText value="#{warningBean.getDate(eventWarning.title)}" />
                                     <f:facet name="footer">
                                         <p:commandButton value="Modify" rendered="#{warningBean.enableModify}" id="accept-inv" action="#{warningBean.modifyOk(eventWarning, eventBean)}" oncomplete="PF('dlg-warnings').hide();" process="@this">
                                         </p:commandButton>
                                     </f:facet>
                                 </p:panelGrid>
-                            </p:tab>
+                                </p:tab>
                         </p:carousel> 
                     </p:dialog>
 
@@ -227,11 +227,11 @@
                 background-image:url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/background.jpg'); 
             }
 
-            .SunNotWarned {
+            .ClearNotWarned {
               
             }
 
-            .SunWarned {
+            .ClearWarned {
               
             }
             
@@ -270,10 +270,10 @@
                 
             }
 
-            .SunWarned .fc-event-inner {             
+            .ClearWarned .fc-event-inner {             
                   background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/sunWarning.jpg');
             }
-            .SunNotWarned .fc-event-inner {
+            .ClearNotWarned .fc-event-inner {
                     background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/sunNoWarning.jpg');
             }
              .RainWarned .fc-event-inner {             

@@ -28,7 +28,7 @@ import managerBeans.UserManagerInterface;
 @Named
 @RequestScoped
 public class WarningBean {
-    
+
     @EJB
     private BadWeatherNotificationManagerInterface bwnm;
     @EJB
@@ -39,12 +39,12 @@ public class WarningBean {
     PreferenceManagerInterface pm;
     @EJB
     UserEventManagerInterface uem;
-    
+
     private List<Event> warnings;
     private List<Timestamp> solutions;
     private boolean enableModify=false;
 
-    
+
     public boolean isEnableModify() {
         return enableModify;
     }
@@ -52,7 +52,7 @@ public class WarningBean {
     public void setEnableModify(boolean enableModify) {
         this.enableModify = enableModify;
     }
-    
+
      @PostConstruct
     public void init() {
         warnings = new ArrayList<>();
@@ -70,9 +70,9 @@ public class WarningBean {
             warnings.add(noWarning);
         }
     }
-    
+
     public void searchSolution()
-    {        
+    {
         solutions = bwnm.findSolution(warnings);
     }
 
@@ -83,7 +83,7 @@ public class WarningBean {
     public void setSolutions(List<Timestamp> solutions) {
         this.solutions = solutions;
     }
-    
+
     public List<Event> getWarnings() {
         return warnings;
     }
@@ -91,14 +91,14 @@ public class WarningBean {
     public void setWarnings(List<Event> warnings) {
         this.warnings = warnings;
     }
-   
+
     public String modifyOk(Event event, EventBean eb) throws OverlappingException, InvalidDateException
     {
         List<String> preferenceEvent = new ArrayList<>();
         preferenceEvent= pm.getPreferenceOfEvent(event);
         List<String> userEvent = new ArrayList<>();
         userEvent = uem.invitedUsersOfEvent(event);
-        
+
         em.removeEvent(event);
         long diff = event.getEndDate().getTime()-event.getStartDate().getTime();
         System.out.println("Evento modificato: " + event.getTitle() + "diff: " + diff);
@@ -110,7 +110,7 @@ public class WarningBean {
                 if(solutions.get(i)!=null)
                 {
                      event.setStartDate(solutions.get(i));
-                     help=new Timestamp(0); 
+                     help=new Timestamp(0);
                      help.setTime(solutions.get(i).getTime()+diff);
                      event.setEndDate(help);
                      eb.modifyFromWarning(event, preferenceEvent, userEvent);
@@ -120,7 +120,7 @@ public class WarningBean {
         }
               return "calendar?faces-redirect=true";
     }
-    
+
     public String getDate(String title)
     {
         for(int i=0;i<warnings.size();i++)
@@ -131,6 +131,6 @@ public class WarningBean {
         }
         return "no possible postpone in the next 10 days";
     }
-    
-    
+
+
 }

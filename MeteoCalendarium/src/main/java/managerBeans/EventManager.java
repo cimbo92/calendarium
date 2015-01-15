@@ -64,6 +64,7 @@ public class EventManager implements EventManagerInterface {
  * @param user
  * @return
  */
+    @Override
     public boolean isCreator(Event event,User user)
     {
          Query query = em.createQuery("SELECT ue FROM UserEvent ue WHERE ue.event= :event and ue.user= :user").setParameter("event", event).setParameter("user", user);
@@ -308,6 +309,19 @@ public class EventManager implements EventManagerInterface {
 
         return (((startFirst.compareTo(startSecond) == 0) || ((startFirst.compareTo(startSecond) < 0))) && (endFirst.compareTo(startSecond) > 0));
 
+    }
+
+
+    /**
+     * return true if event is indoor
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean isIndoor(Event event) {
+         Query query = em.createQuery("SELECT e FROM Event e WHERE e= :event").setParameter("event", event);
+         List<Event> result = new ArrayList<>(query.getResultList());
+        return !result.get(0).isOutdoor();
     }
 
 }

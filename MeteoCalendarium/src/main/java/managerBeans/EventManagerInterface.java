@@ -23,6 +23,8 @@ public interface EventManagerInterface {
 
     public Event loadSpecificEvent(String idEvent);
 
+    public boolean isIndoor(Event event);
+
     public boolean searchEventOverlapping(Event event,User user);
 
     public void addEvent(Event event, User user) throws OverlappingException;;

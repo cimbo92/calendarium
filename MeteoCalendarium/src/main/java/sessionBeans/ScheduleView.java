@@ -120,7 +120,7 @@ public class ScheduleView implements Serializable {
         String returnBanner = "";
 
         List<Forecast> forecastEvent = fm.getForecastOfEvent(event);
-        if (forecastEvent.isEmpty()) {
+        if (forecastEvent.isEmpty() || em.isIndoor(event)) {
             return "NoForecast";
         } else {
 
