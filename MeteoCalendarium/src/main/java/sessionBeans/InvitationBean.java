@@ -92,7 +92,6 @@ public class InvitationBean implements Serializable {
      */
     public String acceptInvite(Event event) {
         FacesContext context = FacesContext.getCurrentInstance();
-
         UserEvent ue = uem.getUserEventofUser(event, um.getLoggedUser());
 
         //Before Accepting controls that it is possible ( Overlapping)
