@@ -259,18 +259,20 @@ public class EventBean implements Serializable {
     }
 
     private boolean controlDate() {
-        /*beanEvent.convertStartDate(startDate);
-        beanEvent.convertEndDate(endDate);*/
         Timestamp now = new Timestamp(new java.util.Date().getTime());
-
+        this.beanEvent.convertStartDate(startDate);
+        this.beanEvent.convertEndDate(endDate);
+        boolean correct;
         //date must be after today and start must be before end date
-        if (beanEvent.getStartDate().before(beanEvent.getEndDate()) || beanEvent.getStartDate().equals(beanEvent.getEndDate()) && beanEvent.getStartDate().after(now)) {
-            return true;
+        if (beanEvent.getStartDate().after(beanEvent.getEndDate()) || beanEvent.getStartDate().before(now)) {
+            correct = false;
         } else {
-            return false;
+            correct= true;
+        }
+        return correct;
         }
 
-    }
+
 
     private void addEvent() throws OverlappingException, InvalidDateException {
 
