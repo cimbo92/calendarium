@@ -40,21 +40,26 @@
                             <p:commandButton value="Invitations" id="invitations" oncomplete="PF('dlg-invitations').show();" />
                             <p:commandButton value=" Utenti" id="utenti"  oncomplete="PF('dlg-users').show();"/>
                             <p:commandButton value="Settings" id="settings" oncomplete="PF('dlg-settings').show();" />                 
+                      
+  
                         </f:facet>
                     </p:toolbar>
+   
 
-
-                    <p:dialog  widgetVar="dlg-settings" id="dialogsettings" >
-                        <h:panelGrid id="panelsetting" cellpadding="5" columnClasses="value">              
-                        <p:commandButton value="Export" id="export"  action="#{exportBean.export()}"/>
+                    <p:dialog showEffect="fade" hideEffect="fade" header="Settings" widgetVar="dlg-settings" id="dialogsettings"  style="width: auto;height: auto" >
+                        
+                        <h:panelGrid id="panelsetting" cellpadding="1" columns="3" style="width: auto;height: auto" >              
+                        <p:selectManyButton>
+                            <p:commandButton value="Export" id="export"  action="#{exportBean.export()}"/>
                         <p:commandButton value="Import" id="import" action="#{importBean.imports()}" />
                         <p:inputSwitch onLabel="Public"  offLabel="Private" value="#{setCalendarBean.status}" >
-                            <p:ajax listener="#{setCalendarBean.saveDecision()}" update="dialogsettings" />
+                            <p:ajax listener="#{setCalendarBean.saveDecision()}" update="panelsetting"  />
                         </p:inputSwitch>
+                        </p:selectManyButton>
                            </h:panelGrid>
                     </p:dialog>
 
-                    <p:dialog header="utenti" widgetVar="dlg-users">
+                    <p:dialog header="utenti"  showEffect="fade" hideEffect="fade"  widgetVar="dlg-users">
                         <p:selectOneMenu  value="#{scheduleViewPublic.username}" 
                                           filter="true" filterMatchMode="contains"  >
                             <f:selectItems value="#{scheduleViewPublic.users}" />                             
@@ -62,7 +67,7 @@
                         <p:commandButton value="Go" id="goToCalendar" actionListener="#{scheduleViewPublic.loadCalendar()}" update="panelpubcal" process="@parent" oncomplete="PF('dlg-pubcal').show();PF('dlg-users').hide()" />
                     </p:dialog>
 
-                    <p:dialog header="Public Calendar of #{scheduleViewPublic.username}" id="dialogpubcal" widgetVar="dlg-pubcal">
+                    <p:dialog header="Public Calendar of #{scheduleViewPublic.username}"  showEffect="fade" hideEffect="fade"  id="dialogpubcal" widgetVar="dlg-pubcal">
                         <h:panelGrid id="panelpubcal" columnClasses="value" style ="margin : 0px auto">
                             <p:schedule id="pubcal" value="#{scheduleViewPublic.eventModel}"  widgetVar="publicCalendar" timeZone="GMT+2">
                                 <p:ajax event="eventSelect"  listener="#{publicEventBean.onEventSelect}" update="eventDetailsPublic" oncomplete="PF('eventDialogPublic').show();" />
@@ -70,7 +75,7 @@
                         </h:panelGrid>
                     </p:dialog>
 
-                    <p:dialog header="Warnings" widgetVar="dlg-warnings" id="inv-dialogW" width="800px" height="300px" resizable="false">
+                    <p:dialog header="Warnings" widgetVar="dlg-warnings" showEffect="fade" hideEffect="fade"  id="inv-dialogW" width="800px" height="300px" resizable="false">
                         <p:carousel value="#{warningBean.warnings}" var="eventWarning" numVisible="1" itemStyle="height:200px;width:750px;" effect="easeInStrong" headerText="Warning" style="margin-bottom:0;">
                             <p:tab>
                                 <p:panelGrid columns="2" columnClasses="label,value">
@@ -87,7 +92,7 @@
                         </p:carousel> 
                     </p:dialog>
 
-                    <p:dialog header="Invitations" widgetVar="dlg-invitations" id="inv-dialog" width="800px" height="300px" resizable="false">
+                    <p:dialog header="Invitations" widgetVar="dlg-invitations" showEffect="fade" hideEffect="fade"  id="inv-dialog" width="800px" height="300px" resizable="false">
                       
                         <p:carousel id="carouselwatning" value="#{invitationBean.invites}" var="event" numVisible="1" itemStyle="height:200px;width:750px;" effect="easeInStrong" headerText="Invitation" style="margin-bottom:0;">
                      
@@ -119,7 +124,7 @@
                         </p:carousel> 
                     </p:dialog>
 
-                    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
+                    <p:dialog widgetVar="eventDialog" header="Event Details"  showEffect="fade" hideEffect="fade"   >
                         <h:panelGrid  id="eventDetails" columns="2">
                             <h:outputLabel for="title" value="Title:" />
                             <p:inputText disabled="#{!eventBean.isOwnEvent}" id="title"  value="#{eventBean.event.title}" required="true"/>
@@ -160,7 +165,7 @@
                                 <f:selectItems value="#{eventBean.listUser()}" var="listUser" itemLabel="#{listUser}" itemValue="#{listUser}" />
                             </p:selectManyMenu>
 
-                            <p:commandButton id="declineButton" value="Decline" actionListener="#{eventBean.decline()}" action="#{scheduleView.loadCalendar()}" rendered="#{    eventBean.canDecline}" update="growl" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+                            <p:commandButton id="declineButton" value="Decline" action="#{eventBean.decline()}" actionListener="#{scheduleView.loadCalendar()}" rendered="#{    eventBean.canDecline}" update="growl" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
                             <p:commandButton id="modifyButton" value="Modify" actionListener="#{eventBean.modify()}" action="#{scheduleView.loadCalendar()}" rendered="#{!eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"  />
                             <p:commandButton id="addButton" value="Save" actionListener="#{eventBean.create()}" action="#{scheduleView.loadCalendar()}"  rendered="#{eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />  
                             <p:commandButton id="deleteButton" value="Delete" actionListener="#{eventBean.cancel()}" action="#{scheduleView.loadCalendar()}" rendered="#{!eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />  
@@ -168,7 +173,7 @@
                         </h:panelGrid>
                     </p:dialog>
 
-                    <p:dialog widgetVar="eventDialogPublic" header="Event Details" showEffect="clip" hideEffect="clip">
+                    <p:dialog widgetVar="eventDialogPublic" showEffect="fade" hideEffect="fade"  header="Event Details" >
                         <h:panelGrid id="eventDetailsPublic" columns="2">
                             <h:outputLabel for="titlePublic" value="Title:" />
                             <p:outputLabel id="titlePublic" value="#{publicEventBean.event.title}" />
@@ -201,15 +206,14 @@
                         </h:panelGrid>
                     </p:dialog> 
 
+                    
+                    
                 </p:layoutUnit>
             </p:layout>
+            <div style="position: relative;text-align: center">
+                <p style="position: fixed;bottom: 0; width: 100%">Powered By CianferottiCimbelliDeAngelis ©2015</p>
+            </div>
         </h:form>
-
-
-        <script>
-
-        </script>
-
 
         <style type="text/css">
             .value {

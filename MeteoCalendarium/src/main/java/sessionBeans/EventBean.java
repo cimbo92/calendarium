@@ -236,10 +236,11 @@ public class EventBean implements Serializable {
     }
     
     
-    public void decline(){
+    public String decline(){
         UserEvent ue =uem.getUserEventofUser(event, um.getLoggedUser());
-        ue.setView(false);
-        uem.modifyUserEvent(ue, false);
+        uem.modifyUserEvent(ue, false,false);
+       return "calendar?faces-redirect=true";
+      
     }
 
     public void updateEvent() throws OverlappingException{

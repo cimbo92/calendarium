@@ -24,7 +24,7 @@ public interface UserEventManagerInterface {
     
     public UserEvent getUserEventofUser(Event event,User user);
     
-    public void modifyUserEvent(UserEvent userEvent,boolean decision);
+    public void modifyUserEvent(UserEvent userEvent,boolean decision,boolean view);
     
     public List<String> invitedUsersOfEvent(Event event);
 

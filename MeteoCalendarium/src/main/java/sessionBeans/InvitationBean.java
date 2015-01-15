@@ -80,7 +80,7 @@ public class InvitationBean implements Serializable {
      UserEvent ue =uem.getUserEventofUser(event, um.getLoggedUser());
      if(!em.searchEventOverlapping(event, um.getLoggedUser()))
      {
-     uem.modifyUserEvent(ue,true);
+     uem.modifyUserEvent(ue,true,true);
      invites.remove(event);
      return "calendar?faces-redirect=true";
      }else
@@ -93,7 +93,7 @@ public class InvitationBean implements Serializable {
     
     public void declineInvite(Event event) {
     UserEvent ue =uem.getUserEventofUser(event, um.getLoggedUser());
-    uem.modifyUserEvent(ue,false);
+    uem.modifyUserEvent(ue,false,true);
     invites.remove(event);
     if(invites.isEmpty())
     {
