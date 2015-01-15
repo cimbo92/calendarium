@@ -12,20 +12,28 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 /**
- *
+ * Entity that rapresent a Weather Condition
  * @author alessandro
  */
-
-
 @Entity
 public class MainCondition implements Serializable {
-    
-    @Id
-    String conditione; 
-    
-    
 
-    
+       /*
+     *******************************************************************
+     * FIELDS
+     *******************************************************************
+     */
+
+    @Id
+    String conditione;
+
+       /*
+     *******************************************************************
+     * GETTERS AND SETTERS
+     *******************************************************************
+     */
+
+
     public String getCondition() {
         return conditione;
     }
@@ -33,7 +41,17 @@ public class MainCondition implements Serializable {
     public void setCondition(String Condition) {
         this.conditione = Condition;
     }
-    
+
+       /*
+     *******************************************************************
+     * PUBLIC FUNCTIONS
+     *******************************************************************
+     */
+
+    /**
+     * List of Strings with name of possible MainCondition
+     * @return
+     */
     public static List<String> getListPref()
     {
         List<String> pref = new ArrayList<>();
@@ -43,5 +61,5 @@ public class MainCondition implements Serializable {
         pref.add("Snow");
         return pref;
     }
-    
+
 }

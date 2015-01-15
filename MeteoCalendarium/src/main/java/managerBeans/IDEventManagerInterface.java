@@ -5,7 +5,7 @@
  */
 package managerBeans;
 
-import entities.iDEvent;
+import entities.IDEvent;
 import javax.ejb.Remote;
 
 /**

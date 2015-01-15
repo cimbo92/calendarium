@@ -6,37 +6,34 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 /**
+ * Entity that rapresents a Place
  *
  * @author home
  */
 @Entity
 public class Place implements Serializable {
-    
+
+    /*
+     *******************************************************************
+     * FIELDS
+     *******************************************************************
+     */
     private static final long serialVersionUID = 1L;
-    
-//    @NotNull(message = "May not be empty")
-//    private String postalCode;
+
     @Id
     @NotNull(message = "May not be empty")
     private String city;
-   
-//    public String getPostalCode() {
-//        return postalCode;
-//    }
-//
-//    public void setPostalCode(String postalCode) {
-//        this.postalCode = postalCode;
-//    }
 
+    /*
+     *******************************************************************
+     * GETTERS AND SETTERS
+     *******************************************************************
+     */
     public String getCity() {
         return city;
     }
@@ -44,10 +41,5 @@ public class Place implements Serializable {
     public void setCity(String city) {
         this.city = city.toLowerCase();
     }
-    
-//    @Override
-//    public String toString(){
-//        return city;
-//    }
-//    
+
 }

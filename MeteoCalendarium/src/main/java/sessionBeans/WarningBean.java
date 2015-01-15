@@ -5,6 +5,7 @@
  */
 package sessionBeans;
 
+import HelpClasses.InvalidDateException;
 import HelpClasses.OverlappingException;
 import entities.Event;
 import java.sql.Timestamp;
@@ -91,7 +92,7 @@ public class WarningBean {
         this.warnings = warnings;
     }
    
-    public String modifyOk(Event event, EventBean eb) throws OverlappingException
+    public String modifyOk(Event event, EventBean eb) throws OverlappingException, InvalidDateException
     {
         List<String> preferenceEvent = new ArrayList<>();
         preferenceEvent= pm.getPreferenceOfEvent(event);

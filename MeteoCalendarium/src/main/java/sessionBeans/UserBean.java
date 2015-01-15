@@ -11,20 +11,31 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 
 /**
- *
- * @author home
+ * manager of logged user
+ * @author Alessandro De Angelis
  */
 @Named
 @RequestScoped
 public class UserBean {
 
-    
+    /*
+     * ******************************************************************
+     * MANAGERS
+     *******************************************************************
+     */
     @EJB
     UserManager um;
-    
-    public UserBean() {
-    }
-    
+
+    /*
+     * ******************************************************************
+     * PUBLIC FUNCTIONS
+     *******************************************************************
+     */
+    /**
+     * return logged user email
+     *
+     * @return
+     */
     public String getName() {
         return um.getLoggedUser().getEmail();
     }

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package sessionBeans;
 
 import javax.enterprise.context.RequestScoped;
@@ -10,16 +6,23 @@ import javax.inject.Named;
 
 /**
  *
- * @author Alessandro
+ * @author Alessandro De Angelis
  */
 @RequestScoped
 @Named
+/**
+ * Bean for Images
+ */
 public class ImageBean {
-    
-    public String getUserImage()
+
+    /**
+     * get url of demoImage from repository
+     * @return
+     */
+    public String getUDemoImage()
     {
         return "https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/demo.jpg";
     }
-    
-    
+
+
 }

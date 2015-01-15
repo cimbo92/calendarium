@@ -1,14 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entities;
 
-import static java.awt.AWTEventMulticaster.remove;
 import java.io.Serializable;
-import javax.persistence.CascadeType;
-import static javax.persistence.CascadeType.REMOVE;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,29 +9,54 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 /**
+ * Entity for invitations
  *
  * @author alessandro
  */
 @Entity
-public class UserEvent implements Serializable{
-    
-        @Id
-        @NotNull
-        @GeneratedValue(generator="increment")
-        private int idUserEvent;
-    
-        @ManyToOne(targetEntity = Event.class, optional = false,fetch=FetchType.EAGER)
-        private Event event;
-        
-        @ManyToOne(targetEntity = User.class, optional = false,fetch=FetchType.EAGER)
-        private User user;
-        
-        public boolean creator;
-        
-        public boolean accepted;
-        
-        public boolean view;
+public class UserEvent implements Serializable {
 
+    /*
+     *******************************************************************
+     * FIELDS
+     *******************************************************************
+     */
+    @Id
+    @NotNull
+    @GeneratedValue(generator = "increment")
+    private int idUserEvent;
+
+    @ManyToOne(targetEntity = Event.class, optional = false, fetch = FetchType.EAGER)
+    private Event event;
+
+    @ManyToOne(targetEntity = User.class, optional = false, fetch = FetchType.EAGER)
+    private User user;
+
+    private boolean creator;
+
+    private boolean accepted;
+
+    private boolean view;
+
+    /*
+     *******************************************************************
+     * PUBLIC FUNCTIONS
+     *******************************************************************
+     */
+    public UserEvent() {
+    }
+
+    public UserEvent(Event event, User user, boolean creator) {
+        this.event = event;
+        this.user = user;
+        this.creator = creator;
+    }
+
+    /*
+     *******************************************************************
+     * GETTERS AND SETTERS
+     *******************************************************************
+     */
     public boolean isCreator() {
         return creator;
     }
@@ -63,14 +80,6 @@ public class UserEvent implements Serializable{
     public void setView(boolean view) {
         this.view = view;
     }
-        
-        public UserEvent() {};
-        
-        public UserEvent(Event event, User user, boolean creator){
-            this.event=event;
-            this.user=user;
-            this.creator=creator;
-        }
 
     public int getIdUserEvent() {
         return idUserEvent;
@@ -95,6 +104,5 @@ public class UserEvent implements Serializable{
     public void setUser(User user) {
         this.user = user;
     }
-    
-        
+
 }

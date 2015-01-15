@@ -1,8 +1,8 @@
 /*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package entities;
 
 import java.io.Serializable;
@@ -18,14 +18,20 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 /**
+ * Entity that rapresent an Unser
  *
  * @author home
  */
 @Entity
 public class User implements Serializable {
-    
+
+    /*
+     *******************************************************************
+     * FIELDS
+     *******************************************************************
+     */
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
             message = "invalid email")
@@ -37,53 +43,53 @@ public class User implements Serializable {
     private String groupName;
     @NotNull
     private boolean publicCalendar = false;
-    
+
+    /*
+     *******************************************************************
+     * GETTERS AND SETTERS
+     *******************************************************************
+     */
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
-    
+
     public String getGroupName() {
         return groupName;
     }
-    
+
     public String getEmail() {
         return email;
     }
-    
+
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     public String getPassword() {
         return password;
     }
-    
+
     public void setPassword(String password) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(password.getBytes("UTF-8"));
             BigInteger bigInt = new BigInteger(1, hash);
             this.password = bigInt.toString(16);
-//            StringBuilder hexString = new StringBuilder();
-//            for (int i = 0; i < hash.length; i++) {
-//                hexString.append(Integer.toHexString(0xFF & hash[i]));
-//            }
-//            this.password = hexString.toString();
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public boolean isPublicCalendar() {
         return publicCalendar;
     }
-    
+
     public void setPublicCalendar(boolean publicCalendar) {
         this.publicCalendar = publicCalendar;
     }
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         return email;
     }
 }

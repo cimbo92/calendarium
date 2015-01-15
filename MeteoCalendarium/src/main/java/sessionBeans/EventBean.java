@@ -8,47 +8,45 @@ package sessionBeans;
 import HelpClasses.InvalidDateException;
 import HelpClasses.OverlappingException;
 import entities.Event;
+import entities.IDEvent;
 import entities.MainCondition;
 import entities.Preference;
-import entities.User;
 import entities.UserEvent;
-import entities.iDEvent;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.SessionBean;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import managerBeans.EventManagerInterface;
 import managerBeans.IDEventManagerInterface;
 import managerBeans.MailSenderManagerInterface;
-import managerBeans.OwmClientInterface;
 import managerBeans.PreferenceManagerInterface;
 import managerBeans.UserEventManagerInterface;
 import managerBeans.UserManagerInterface;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
-import org.primefaces.model.ScheduleEvent;
+
 /**
  *
- * @author home
+ * @author Alessandro De Angelis
  */
 @SessionScoped
 @Named
 public class EventBean implements Serializable {
 
+    /*
+     * ******************************************************************
+     * EJB MANAGERS
+     * ******************************************************************
+     */
     @EJB
-    private PreferenceManagerInterface pm;    
+    private PreferenceManagerInterface pm;
     @EJB
     private EventManagerInterface em;
     @EJB
@@ -59,71 +57,292 @@ public class EventBean implements Serializable {
     private IDEventManagerInterface idm;
     @EJB
     private MailSenderManagerInterface mailSender;
-    @EJB
-    private OwmClientInterface forecast;
 
-    
-    
-    
-    private List<String> selectedPref = new ArrayList<>();
-    private List<Preference> preferences = new ArrayList<>();
-    private List<String> invitated = new ArrayList<>();
-    private Event event;
-    private long savedId;
+    /*
+     *******************************************************************
+     * FIELDS
+     *******************************************************************
+     */
+    /**
+     * list of preferences selected by creator user
+     */
+    private List<String> selectedPreferences = new ArrayList<>();
+    /**
+     * list of preferences to save in database
+     */
+    private List<Preference> toSavePreferences = new ArrayList<>();
+
+    /**
+     * List of users selected by creator user
+     */
+    private List<String> selectedUsers = new ArrayList<>();
+    private UserEvent userEvent;
+    private Event beanEvent;
+
+    //booleans used to enable/disable buttons in dialog
+    private boolean isOwnEvent;
     private boolean creating;
-    private boolean canEliminate;
+
+    //Utility Date to convert timestamps
     private Date startDate = new Date();
     private Date endDate = new Date();
-    private boolean canSelectPreferences;
-    private boolean canDecline=false;
+
+    //context used for messges
+    /*
+     *******************************************************************
+     PUBLIC FUNCTIONS
+     *******************************************************************
+     */
+    /**
+     * Function that create An Event ( and all consequent invitations and
+     * preferences ) in database using fields inserted by user
+     */
+    public void create() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        try {
+            this.addEvent();
+            this.savePreferences();
+            this.addUserEvent();
+            context.addMessage(null, new FacesMessage("Successful", "Event Created"));
+        } catch (OverlappingException e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", e.getMessage()));
+        } catch (InvalidDateException e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Warning!", "Are you Serious!? , Date Not Correct"));
+        }
+        beanEvent = new Event();
+    }
+
+    /**
+     * Function that modify ( and all consequent invitations and preferences )
+     * the event selected in database using fields modified by user
+     */
+    public void modify() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        try {
+            this.updateEvent();
+        } catch (OverlappingException e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", e.getMessage()));
+        }
+        RequestContext request = RequestContext.getCurrentInstance();
+        request.update("formcentral:schedule");
+        this.resetBean();
+    }
+
+    /**
+     * Function that cancel ( and all consequent invitations and preferences )
+     * the event selected in database using fields modified by user
+     */
+    public void cancel() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        em.removeEvent(beanEvent);
+        RequestContext request = RequestContext.getCurrentInstance();
+        request.update("formcentral:schedule");
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "Event delete completed"));
+    }
+
+    /**
+     * After accepting an invitation , The function revert decision of the user
+     * for the selected event
+     *
+     * @return String for redirecting page
+     */
+    public String decline() {
+        UserEvent ue = uem.getUserEventofUser(beanEvent, um.getLoggedUser());
+        uem.modifyUserEvent(ue, false, false);
+        return "calendar?faces-redirect=true";
+    }
+
+    /**
+     * Function that called by the warning dialog change the Event date in case
+     * of warning for weather condition
+     *
+     * @param event the @Event to change
+     * @param pref @Event preferences
+     * @param userEvent @Event invitations
+     * @throws OverlappingException
+     * @throws InvalidDateException
+     */
+    public void modifyFromWarning(Event event, List<String> pref, List<String> userEvent) throws OverlappingException, InvalidDateException {
+        this.resetBean();
+        this.beanEvent = event;
+        this.selectedUsers = userEvent;
+        this.selectedPreferences = pref;
+        this.addEvent();
+        this.savePreferences();
+        this.addUserEvent();
+        this.resetBean();
+    }
+
+    /**
+     * Function called by PrimeFace's schedule in caso of selection of event
+     * that load informations about the selected @Event
+     *
+     * @param selectEvent
+     */
+    public void onEventSelect(SelectEvent selectEvent) {
+
+        this.resetBean();
+        DefaultScheduleEvent selectedEvent = (DefaultScheduleEvent) selectEvent.getObject();
+        beanEvent = em.loadSpecificEvent(selectedEvent.getDescription());
+        this.isOwnEvent = em.isCreator(beanEvent, um.getLoggedUser());
+        this.creating=false;
+        beanEvent.getIdEvent().setId(Long.parseLong(selectedEvent.getDescription()));
+        this.startDate = selectedEvent.getStartDate();
+        this.endDate = selectedEvent.getEndDate();
+        this.loadInvitations();
+        this.loadPreferences();
+    }
+
+    /**
+     * Function called by PrimeFace's schedule in caso of selection of a day
+     * that the day Date
+     *
+     * @param selectEvent
+     */
+    public void onDateSelect(SelectEvent selectEvent) {
+
+        DefaultScheduleEvent selectedEvent = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
+        this.resetBean();
+        creating = true;
+        isOwnEvent = true;
+        Date correction;
+        correction = new Date(selectedEvent.getStartDate().getTime() + (60 * 60000));
+        this.setStartDate(correction);
+        this.setEndDate(correction);
+    }
+
+    /**
+     * main Conditions to load in Event Dialog
+     *
+     * @return List of Main Condition
+     */
+    public List<String> listPref() {
+        return MainCondition.getListPref();
+    }
+
+    /**
+     * Username of user to load in Event Dialog
+     *
+     * @return List of Users
+     */
+    public List<String> listUser() {
+        return um.getListUsers();
+    }
+
+    /*
+     * ******************************************************************
+     PRIVATE UTILITY FUNCTIONS
+     *******************************************************************
+     */
+    private void resetBean() {
+        beanEvent = new Event();
+        selectedPreferences = new ArrayList<>();
+        selectedUsers = new ArrayList<>();
+        toSavePreferences = new ArrayList<>();
+    }
+
+    private void loadPreferences() {
+        List<String> preferenzeEvento = pm.getPreferenceOfEvent(beanEvent);
+        for (String preferenza : preferenzeEvento) {
+            this.selectedPreferences.add(preferenza);
+        }
+    }
+
+    private void loadInvitations() {
+        List<String> invitedUsers = uem.invitedUsersOfEvent(beanEvent);
+        for (String invitedUser : invitedUsers) {
+            this.selectedUsers.add(invitedUser);
+        }
+    }
+
+    private boolean controlDate() {
+        beanEvent.convertStartDate(startDate);
+        beanEvent.convertEndDate(endDate);
+        Timestamp now = new Timestamp(new java.util.Date().getTime());
+
+        //date must be after today and start must be before end date
+        if (beanEvent.getStartDate().before(beanEvent.getEndDate()) || beanEvent.getStartDate().equals(beanEvent.getEndDate()) && beanEvent.getStartDate().after(now)) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    private void addEvent() throws OverlappingException, InvalidDateException {
+
+        if (this.controlDate()) {
+            IDEvent idEv = new IDEvent(idm.findFirstFreeID());
+            beanEvent.setIdEvent(idEv);
+            beanEvent.setCreator(um.getLoggedUser());
+            em.addEvent(beanEvent, um.getLoggedUser());
+        } else {
+            throw new InvalidDateException();
+        }
+    }
+
+    private void savePreferences() {
+        for (int i = 0; i < selectedPreferences.size(); i++) {
+            toSavePreferences.add(new Preference(beanEvent, selectedPreferences.get(i)));
+            pm.addPreference(toSavePreferences.get(i));
+        }
+        if (selectedPreferences.isEmpty()) {
+            for (int i = 0; i < this.listPref().size(); i++) {
+
+                pm.addPreference(new Preference(beanEvent, listPref().get(i)));
+            }
+        }
+        toSavePreferences = new ArrayList<>();
+    }
 
     public boolean isCanDecline() {
-        return !this.isOwnEvent&!this.creating;
+        return !this.isOwnEvent & !this.creating;
     }
 
-    public void setCanDecline(boolean canDecline) {
-        this.canDecline = canDecline;
+    private void updateEvent() throws OverlappingException {
+        em.removeEvent(beanEvent);
+        this.create();
     }
-    
-    
+
+    private void addUserEvent() {
+
+        userEvent = new UserEvent(beanEvent, um.getLoggedUser(), true);
+        uem.addUserEvent(userEvent);
+        for (String invitated1 : selectedUsers) {
+            userEvent = new UserEvent(beanEvent, um.findByMail(invitated1), false);
+            uem.addUserEvent(userEvent);
+            mailSender.sendMail(invitated1, "Invitation", userEvent.getEvent().toString());
+        }
+    }
+
+    /*
+     * ******************************************************************
+     * GETTERS AND SETTERS
+     *******************************************************************
+     */
     public boolean isCanSelectPreferences() {
-        return this.event.isOutdoor()&this.isOwnEvent;
+        return this.beanEvent.isOutdoor() & this.isOwnEvent;
     }
-
-    public void setCanSelectPreferences(boolean canSelectPreferences) {
-        this.canSelectPreferences = canSelectPreferences;
-    }
-    
-    private UserEvent userEvent;
-
-
-       private boolean isOwnEvent;
 
     public boolean isIsOwnEvent() {
         return isOwnEvent;
     }
 
+    public boolean canEliminate() {
+        return this.isOwnEvent & !this.creating;
+    }
+
     public void setIsOwnEvent(boolean isOwnEvent) {
         this.isOwnEvent = isOwnEvent;
     }
-    
-        public long getSavedId() {
-        return savedId;
-    }
 
-    public void setSavedId(long savedId) {
-        this.savedId = savedId;
-    }
-    
     public boolean isCanEliminate() {
-        return this.isOwnEvent&!this.creating;
+        return this.isOwnEvent & !this.creating;
     }
 
-    public void setCanEliminate(boolean canEliminate) {
-        this.canEliminate = canEliminate;
-    }
-           
-    
     public boolean isCreating() {
         return creating;
     }
@@ -131,12 +350,7 @@ public class EventBean implements Serializable {
     public void setCreating(boolean creating) {
         this.creating = creating;
     }
-    
-    public boolean canEliminate()
-    {
-        return this.isOwnEvent&!this.creating;
-    }
-    
+
     public Date getStartDate() {
         return startDate;
     }
@@ -152,224 +366,40 @@ public class EventBean implements Serializable {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-    
-    public EventBean(){}
-    
-    public Event getEvent(){
-         if (event == null) {
-            event = new Event();      
+
+    public Event getBeanEvent() {
+        if (beanEvent == null) {
+            beanEvent = new Event();
         }
-
-        return event;
-    }
-    
-    public void setEvent(Event event) {
-        this.event = event;
-    }
-    
-    
-    public void addEvent() throws OverlappingException, InvalidDateException{
-         FacesContext context = FacesContext.getCurrentInstance();
-       
-            event.convertStartDate(startDate);
-            event.convertEndDate(endDate);
-              Timestamp now = new Timestamp(new java.util.Date().getTime());
-      
-            if(event.getStartDate().before(event.getEndDate()) || event.getStartDate().equals(event.getEndDate()) && event.getStartDate().after(now))
-            {
-                
-            long id;
-            id=idm.findFirstFreeID();
-            iDEvent idEv = new iDEvent();
-            idEv.setId(id);
-            event.setIdEvent(idEv);
-            event.setCreator(um.getLoggedUser());
-            em.addEvent(event,um.getLoggedUser());
-       
-            }
-            else
-            {
-            throw new InvalidDateException();
-            }
-    }
-    
-    public void create(){  
-        FacesContext context = FacesContext.getCurrentInstance();
-        
-        try{
-            this.addEvent();
-            this.save();
-            this.addUserEvent();
-             context.addMessage(null, new FacesMessage("Successful","Event Created") );
-       }catch(OverlappingException e)
-        {
-                  context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", e.getMessage()));
-        }
-        catch(InvalidDateException e)
-        {
-           context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Warning!","Are you Serious!? , Start Date after End Date"));
-        }
-        
-         event=new Event();
-    }
-    
-    
-    public void modify(){
-     FacesContext context = FacesContext.getCurrentInstance();
-        try{
-            this.updateEvent(); 
-       }catch(OverlappingException e)
-        {
-                  context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", e.getMessage()));
-        }   
-       RequestContext request=  RequestContext.getCurrentInstance();
-      request.update("formcentral:schedule");
-         event=new Event();
+        return beanEvent;
     }
 
-    public void cancel(){
-        FacesContext context = FacesContext.getCurrentInstance();
-     
-         em.removeEvent(event);
-          RequestContext request=  RequestContext.getCurrentInstance();
-          
-      request.update("formcentral:schedule");
-      context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!","Event delete completed"));
-    }
-    
-    
-    public String decline(){
-        UserEvent ue =uem.getUserEventofUser(event, um.getLoggedUser());
-        uem.modifyUserEvent(ue, false,false);
-       return "calendar?faces-redirect=true";
-      
+    public void setBeanEvent(Event beanEvent) {
+        this.beanEvent = beanEvent;
     }
 
-    public void updateEvent() throws OverlappingException{
-        em.removeEvent(event);
-        this.create();
-        }
-    public void addUserEvent(){
-        
-        userEvent=new UserEvent(event, um.getLoggedUser(), true);
-        uem.addUserEvent(userEvent);
-        for (String invitated1 : invitated) {
-            userEvent = new UserEvent(event, um.findByMail(invitated1), false);
-            uem.addUserEvent(userEvent);
-            mailSender.sendMail(invitated1, "Invitation", userEvent.getEvent().toString());
-        }
+    public List<String> getToInviteUsers() {
+        return selectedUsers;
     }
 
-    public void modifyFromWarning(Event event, List<String> pref, List<String> userEvent) throws OverlappingException
-    {
-        this.event=event;
-        this.invitated = userEvent;
-        this.selectedPref=pref;
-        preferences = new ArrayList<>();
-        em.addEvent(event,um.getLoggedUser());
-        this.save();
-        this.addUserEvent();
-        this.event = new Event();
-        invitated = new ArrayList<>();
-        selectedPref  = new ArrayList<>();
-        preferences = new ArrayList<>();
-    }
-    
-    public List<Preference> getPreferences() {
-        return preferences;
+    public void setToInviteUsers(List<String> toInviteUsers) {
+        this.selectedUsers = toInviteUsers;
     }
 
-    public void setPreferences(List<Preference> preferences) {
-        this.preferences = preferences;
-    }
-    
-    
-    public List<String> getSelectedPref() {
-        return selectedPref;
+    public List<Preference> getToSavePreferences() {
+        return toSavePreferences;
     }
 
-    public void setSelectedPref(List<String> selectedPref) {
-        this.selectedPref = selectedPref;
+    public void setToSavePreferences(List<Preference> toSavePreferences) {
+        this.toSavePreferences = toSavePreferences;
     }
 
-    public void save()
-    { 
-         
-       
-        
-        for(int i=0;i<selectedPref.size();i++)
-        {
-            preferences.add(new Preference(event,selectedPref.get(i)));
-            pm.addPreference(preferences.get(i));
-        }
-        if(selectedPref.isEmpty())
-        {
-         for(int i=0;i<this.listPref().size();i++)
-        {
-           
-             pm.addPreference(new Preference(event,listPref().get(i)));
-        }  
-        }
-        
-        preferences = new ArrayList<>();
-    }
-    
-    public List<String> listPref ()
-    {
-        return MainCondition.getListPref();
-    }
-    
-    public List<String> listUser()
-    {
-        return um.getListUsers();
-    }
-    
-    public List<String> getInvitated() {
-        return invitated;
+    public List<String> getSelectedPreferences() {
+        return selectedPreferences;
     }
 
-    public void setInvitated(List<String> invitated) {
-        this.invitated = invitated;
+    public void setSelectedPreferences(List<String> selectedPreferences) {
+        this.selectedPreferences = selectedPreferences;
     }
 
-    
-     public void onEventSelect(SelectEvent selectEvent) {
-
-         DefaultScheduleEvent selectedEvent = (DefaultScheduleEvent) selectEvent.getObject(); 
-          event=em.loadSpecificEvent(selectedEvent.getDescription());
-           creating= false;
-          this.isOwnEvent = selectedEvent.getStyleClass().equals("emp1");
-         event.getIdEvent().setId(Long.parseLong(selectedEvent.getDescription()));
-           creating= false;
-          this.startDate=selectedEvent.getStartDate();
-                  this.endDate=selectedEvent.getEndDate();
-          List<String> preferenzeEvento = pm.getPreferenceOfEvent(event);
-              
-        for (String preferenza : preferenzeEvento) {
-            this.selectedPref.add(preferenza);
-        }
-         List<String> invitedUsers = uem.invitedUsersOfEvent(event);
-        for (String invitedUser : invitedUsers) {
-            this.invitated.add(invitedUser);
-        }
-    
-     }
-     
-       public void onDateSelect(SelectEvent selectEvent) {
-           
-     DefaultScheduleEvent selectedEvent = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
-         event = new Event();
-         selectedPref = new ArrayList<>();
-        invitated = new ArrayList<>();
-        preferences= new ArrayList<>();
-        creating= true;
-        isOwnEvent=true;
-     Date correction;
-     correction = new Date(selectedEvent.getStartDate().getTime() + (60 * 60000));
-     this.setStartDate(correction);
-     this.setEndDate(correction);
-       }
-    
-     
-     
 }

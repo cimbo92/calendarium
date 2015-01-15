@@ -5,7 +5,6 @@
  */
 package sessionBeans;
 
-import managerBeans.UserManager;
 import entities.User;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -13,21 +12,47 @@ import javax.enterprise.context.RequestScoped;
 import managerBeans.UserManagerInterface;
 
 /**
- *
- * @author home
+ *Bean That Manage Registrations
+ * @author Alessandro De Angelis
  */
 @Named
 @RequestScoped
 public class RegistrationBean {
 
-
+/*
+     * ******************************************************************
+     * MANAGERS
+     *******************************************************************
+     */
     @EJB
     private UserManagerInterface um;
 
+    /*
+     * ******************************************************************
+     * FIELDS
+     *******************************************************************
+     */
     private User user = new User();
 
-    public RegistrationBean() {
+    /*
+     * ******************************************************************
+     * PUBLIC FUNCTIONS
+     *******************************************************************
+     */
+
+    /**
+    * Save new User
+    */
+    public String register() {
+        um.save(user);
+        return "registrationAuthentication.xhtml?faces-redirect=true";
     }
+    /*
+     * ******************************************************************
+     * GETTERS AND SETTER
+     *******************************************************************
+     */
+
 
     public User getUser() {
         if (user == null) {
@@ -40,9 +65,5 @@ public class RegistrationBean {
         this.user = user;
     }
 
-    public String register() {
-        um.save(user);  
-        return "registrationAuthentication.xhtml?faces-redirect=true";
-    }
 
 }

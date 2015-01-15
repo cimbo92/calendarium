@@ -11,7 +11,7 @@ import entities.Place;
 import entities.Preference;
 import entities.User;
 import entities.UserEvent;
-import entities.iDEvent;
+import entities.IDEvent;
 import java.io.File;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -137,7 +137,7 @@ public class ImportBean {
                 
                 long id;
             id=idm.findFirstFreeID();
-            iDEvent idEv = new iDEvent();
+            IDEvent idEv = new IDEvent();
             idEv.setId(id);
             event.setIdEvent(idEv);
             em.addEvent(event,event.getCreator());

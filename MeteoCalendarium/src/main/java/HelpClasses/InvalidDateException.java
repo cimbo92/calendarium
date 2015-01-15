@@ -6,11 +6,11 @@
 package HelpClasses;
 
 /**
- *
- * @author Alessandro
+ * exception in case of invalid date submission
+ * @author Alessandro De Angelis
  */
 public class InvalidDateException  extends Exception{
-       
+
     public InvalidDateException (){
         super("Are you Serious!? , Start Date after End Date");
     }

@@ -7,7 +7,7 @@ package managerBeans;
 
 import entities.Event;
 import entities.Preference;
-import entities.iDEvent;
+import entities.IDEvent;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +32,6 @@ public class PreferenceManager implements PreferenceManagerInterface {
     @Inject
     Principal principal;
     
-    @Override
-    public void updatePreference(Preference preference) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     @Override
     public void addPreference(Preference preference) {
         em.merge(preference);

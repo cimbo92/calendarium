@@ -15,28 +15,40 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 /**
- *
+ * entity that rapresent a forecast
  * @author home
  */
 @Entity
 public class Forecast implements Serializable {
-    
-    private static final long serialVersionUID = 1L;  
-    
+
+     /*
+     *******************************************************************
+     * FIELDS
+     *******************************************************************
+     */
+
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    
+
     @ManyToOne(targetEntity = Place.class, optional = false)
     private Place place;
-    
+
     @ManyToOne(targetEntity = MainCondition.class, optional = false)
     private MainCondition mainCondition;
-    
+
     @NotNull(message = "May not be empty")
     private Timestamp date;
-     
-    
+
+     /*
+     *******************************************************************
+     * GETTERS AND SETTERS
+     *******************************************************************
+     */
+
+
     public int getId() {
         return id;
     }
@@ -73,9 +85,7 @@ public class Forecast implements Serializable {
     public void setDate(Timestamp date) {
         this.date = date;
     }
-    
-    
-    
+
     
     @Override
     public boolean equals(Object obj){
@@ -88,7 +98,7 @@ public class Forecast implements Serializable {
         }
         return false;
     }
-    
+
     @Override
     public int hashCode() {
         return id;

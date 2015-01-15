@@ -8,44 +8,86 @@ package sessionBeans;
 import entities.Event;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.SessionBean;
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.spi.Bean;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import managerBeans.EventManagerInterface;
 import managerBeans.UserManagerInterface;
-import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleModel;
 
 /**
+ * Manager of Public View
  *
- * @author Alessandro
+ * @author Alessandro De Angelis
  */
-
 @ViewScoped
 @Named
 public class ScheduleViewPublic implements Serializable {
 
+    /*
+     * ******************************************************************
+     * MANAGERS
+     *******************************************************************
+     */
     @EJB
-  private EventManagerInterface em;
-    
-     @EJB
-  private UserManagerInterface um;
+    private EventManagerInterface em;
+    @EJB
+    private UserManagerInterface um;
 
-  private List<String> users =new ArrayList<>();
-  private Event event;
- 
+    /*
+     * ******************************************************************
+     * FIELDS
+     *******************************************************************
+     */
+    private List<String> users = new ArrayList<>();
+    private Event event;
+
     private ScheduleModel eventModel;
 
     private String username;
+
+    /*
+     * ******************************************************************
+     * PUBLIC FUNCTIONS
+     *******************************************************************
+     */
+    @PostConstruct
+    public void init() {
+        eventModel = new DefaultScheduleModel();
+        users = um.getListUsersPublic();
+    }
+
+    /**
+     * load Events on public Schedule
+     */
+    public void loadCalendar() {
+
+        List<Event> tempCalendar = em.loadPublicCalendar(username);
+        for (Event tempCalendar1 : tempCalendar) {
+            DefaultScheduleEvent temp = new DefaultScheduleEvent(tempCalendar1.getTitle(), tempCalendar1.getStartDate(), tempCalendar1.getEndDate());
+            temp.setDescription(tempCalendar1.getIdEvent().getId().toString());
+            if (!eventModel.getEvents().contains(temp)) {
+                eventModel.addEvent(temp);
+            } else {
+                eventModel.updateEvent(temp);
+            }
+
+        }
+
+    }
+
+    /*
+     * ******************************************************************
+     * GETTERS AND SETTERS
+     *******************************************************************
+     */
+    public ScheduleModel getEventModel() {
+        return eventModel;
+    }
 
     public String getUsername() {
         return username;
@@ -70,36 +112,4 @@ public class ScheduleViewPublic implements Serializable {
     public void setUsers(List<String> users) {
         this.users = users;
     }
-    
-    @PostConstruct
-    public void init() {
-        eventModel = new DefaultScheduleModel();   
-        users =  um.getListUsersPublic();  
-    }
-    
-    public void loadCalendar(){
-               
-        List<Event> tempCalendar = em.loadPublicCalendar(username);
-        for (Event tempCalendar1 : tempCalendar) {
-           DefaultScheduleEvent temp = new DefaultScheduleEvent(tempCalendar1.getTitle(), tempCalendar1.getStartDate(), tempCalendar1.getEndDate());
-           temp.setDescription(tempCalendar1.getIdEvent().getId().toString());
-           if(!eventModel.getEvents().contains(temp)) 
-           {
-               eventModel.addEvent(temp);
-           }
-        else
-           {
-               eventModel.updateEvent(temp);
-           } 
-           
-       }   
-     
-    }	
-    
-    public ScheduleModel getEventModel() {
-        return eventModel;
-    }
 }
-
-
-

@@ -17,7 +17,7 @@
                 <p:layoutUnit position="west" resizable="false">
                     <p:panelGrid columns="1" >
                         <f:facet name="header">
-                            <h:graphicImage  value="#{imageBean.getUserImage()}"  />
+                            <h:graphicImage  value="#{imageBean.UDemoImage}"  />
 
                         </f:facet>
                         <h:outputText value="Benvenuto: #{loginBean.name}" />
@@ -124,7 +124,7 @@
                         <h:panelGrid  id="eventDetails" columns="2">
                             
                             <h:outputLabel for="title" value="Title:" />
-                            <p:inputText disabled="#{!eventBean.isOwnEvent}" id="title"  value="#{eventBean.event.title}" required="true" requiredMessage="Insert Title">
+                            <p:inputText disabled="#{!eventBean.isOwnEvent}" id="title"  value="#{eventBean.beanEvent.title}" required="true" requiredMessage="Insert Title">
                             </p:inputText>
                             
                             <p:outputLabel for="startDate" value="From:" />
@@ -134,36 +134,36 @@
                             <p:calendar  disabled="#{!eventBean.isOwnEvent}" id="endDate" value="#{eventBean.endDate}" pattern="MM/dd/yyyy HH:mm:ss"  required="true" requiredMessage="Insert EndDate"/>
 
                             <h:outputLabel for="place" value="Place:" />
-                            <p:inputText  disabled="#{!eventBean.isOwnEvent}" id="place" value="#{eventBean.event.place.city}" required="true" requiredMessage="Insert Place"/>
+                            <p:inputText  disabled="#{!eventBean.isOwnEvent}" id="place" value="#{eventBean.beanEvent.place.city}" required="true" requiredMessage="Insert Place"/>
 
                             <p:outputLabel for="outdoor" value="In/Out"  />
-                            <p:selectOneRadio disabled="#{!eventBean.isOwnEvent}" id="outdoor" value="#{eventBean.event.outdoor}"  required="true">
+                            <p:selectOneRadio disabled="#{!eventBean.isOwnEvent}" id="outdoor" value="#{eventBean.beanEvent.outdoor}"  required="true">
                                 <f:selectItem id="outdoorno" itemLabel="Indoor" itemValue="false" />
                                 <f:selectItem id="outdooryes" itemLabel="Outdoor" itemValue="true" />
                                 <p:ajax update="grid" />
                             </p:selectOneRadio>
 
                             <p:outputLabel for="public" value="In/Out"  />
-                            <p:selectOneRadio  disabled="#{!eventBean.isOwnEvent}" id="public" value="#{eventBean.event.publicEvent}" required="true" >
+                            <p:selectOneRadio  disabled="#{!eventBean.isOwnEvent}" id="public" value="#{eventBean.beanEvent.publicEvent}" required="true" >
                                 <f:selectItem itemLabel="Public" itemValue="true"/>
                                 <f:selectItem itemLabel="Private" itemValue="false" />
                             </p:selectOneRadio>
 
                             <p:outputLabel for="description" value="Description:" />
-                            <p:inputTextarea id="description" disabled="#{!eventBean.isOwnEvent}" value="#{eventBean.event.description}" rows="6" cols="33" required="true" requiredMessage="Insert Description"/>
+                            <p:inputTextarea id="description" disabled="#{!eventBean.isOwnEvent}" value="#{eventBean.beanEvent.description}" rows="6" cols="33" required="true" requiredMessage="Insert Description"/>
 
                             <h:outputText value="Preferences:" />
-                            <p:selectManyCheckbox disabled="#{!eventBean.canSelectPreferences}" id="grid" value="#{eventBean.selectedPref}" layout="grid" columns="3" >
+                            <p:selectManyCheckbox disabled="#{!eventBean.canSelectPreferences}" id="grid" value="#{eventBean.selectedPreferences}" layout="grid" columns="3" >
                                 <f:selectItems value="#{eventBean.listPref()}" var="preference" itemLabel="#{listPref}" itemValue="#{listPref}" />
                             </p:selectManyCheckbox>
 
                             <p:outputLabel for="invites" value="Invites:" />
-                            <p:selectManyMenu  disabled="#{!eventBean.isOwnEvent}" id="invites" value="#{eventBean.invitated}" 
+                            <p:selectManyMenu  disabled="#{!eventBean.isOwnEvent}" id="invites" value="#{eventBean.toInviteUsers}" 
                                                filter="true" filterMatchMode="contains" showCheckbox="true" >
                                 <f:selectItems value="#{eventBean.listUser()}" var="listUser" itemLabel="#{listUser}" itemValue="#{listUser}" />
                             </p:selectManyMenu>
 
-                            <p:commandButton id="declineButton" value="Decline" action="#{eventBean.decline()}" actionListener="#{scheduleView.loadCalendar()}" rendered="#{    eventBean.canDecline}" update="growl" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+                            <p:commandButton id="declineButton" value="Decline" action="#{eventBean.decline()}" actionListener="#{scheduleView.loadCalendar()}" rendered="#{eventBean.canDecline}" update="growl" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
                             <p:commandButton id="modifyButton" value="Modify" actionListener="#{eventBean.modify()}" action="#{scheduleView.loadCalendar()}" rendered="#{!eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"  />
                             <p:commandButton id="addButton" value="Save" actionListener="#{eventBean.create()}" action="#{scheduleView.loadCalendar()}"  rendered="#{eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />  
                             <p:commandButton id="deleteButton" value="Delete" actionListener="#{eventBean.cancel()}" action="#{scheduleView.loadCalendar()}" rendered="#{!eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />  

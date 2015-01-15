@@ -6,7 +6,7 @@
 package entities;
 
 /**
- *
+ * entity for login
  * @author home
  */
 public class Group {

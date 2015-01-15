@@ -17,7 +17,6 @@ import javax.ejb.Remote;
 @Remote
 public interface PreferenceManagerInterface {
 
-    public void updatePreference(Preference preference);
     
     public void addPreference(Preference get);
     

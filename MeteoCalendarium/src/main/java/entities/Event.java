@@ -14,53 +14,84 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Date;
-import static javax.persistence.CascadeType.REMOVE;
-import javax.persistence.Column;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 /**
- *
+ * entity representing an Event with his details
  * @author home
  */@Entity
 public class Event implements Serializable {
-     
-     
-    //ATTRIBUTI 
-     
+
+
+    /*
+     *******************************************************************
+     * FIELDS
+     *******************************************************************
+     */
+
     private static final long serialVersionUID = 1L;
 
     @Id
     @OneToOne
-   private iDEvent idEvent;
-    
+   private IDEvent idEvent;
+
     @NotNull(message = "May not be empty")
     @ManyToOne(targetEntity = User.class, optional = false)
     private User creator;
-    
+
     @NotNull(message = "May not be empty")
     private String title;
-    
+
     @NotNull(message = "May not be empty")
     private Timestamp startDate;
 
     @NotNull(message = "May not be empty")
     private Timestamp endDate;
-    
+
     @NotNull(message = "May not be empty")
     private String description;
-    
+
     @NotNull(message = "May not be empty")
     @ManyToOne(targetEntity = Place.class, optional = false, cascade={CascadeType.MERGE},fetch=FetchType.EAGER)
     private Place place = new Place();
-    
+
     @NotNull(message = "May not be empty")
-    
+
     private boolean outdoor;
-    
+
     @NotNull(message = "May not be empty")
     private boolean publicEvent;
+
+
+
+    /*
+     *******************************************************************
+     * PUBLIC FUNCTIONS
+     *******************************************************************
+     */
+    /**
+     * convert date in Timestamp
+     * @param date
+     */
+        public void convertStartDate(Date date)
+    {
+     startDate = new java.sql.Timestamp(date.getTime());
+    }
+
+        /**
+         * convert date in Timestamp
+         * @param date
+         */
+    public void convertEndDate(Date date)
+    {
+       endDate = new java.sql.Timestamp(date.getTime());
+    }
+
+    /*
+     *******************************************************************
+     * GETTERS AND SETTERS
+     *******************************************************************
+     */
 
     public boolean isPublicEvent() {
         return publicEvent;
@@ -69,12 +100,12 @@ public class Event implements Serializable {
     public void setPublicEvent(boolean publicEvent) {
         this.publicEvent = publicEvent;
     }
-    //METODI
-    
+
+
     public User getCreator() {
         return creator;
     }
-    
+
     public void setCreator(User creator) {
         this.creator = creator;
     }
@@ -83,16 +114,6 @@ public class Event implements Serializable {
         return startDate;
     }
 
-    public void convertStartDate(Date date)
-    {
-     startDate = new java.sql.Timestamp(date.getTime());        
-    }
-    
-    public void convertEndDate(Date date)
-    {
-       endDate = new java.sql.Timestamp(date.getTime());      
-    }
-    
     public void setStartDate(Timestamp startDate) {
         this.startDate = startDate;
     }
@@ -104,15 +125,15 @@ public class Event implements Serializable {
     public void setEndDate(Timestamp endDate) {
         this.endDate = endDate;
     }
-    
-    public iDEvent getIdEvent() {
+
+    public IDEvent getIdEvent() {
         return idEvent;
     }
 
-    public void setIdEvent(iDEvent idEvent) {
+    public void setIdEvent(IDEvent idEvent) {
         this.idEvent = idEvent;
     }
-    
+
     public String getTitle() {
         return title;
     }
@@ -120,7 +141,7 @@ public class Event implements Serializable {
     public void setTitle(String Title) {
         this.title = Title;
     }
-    
+
     public String getDescription() {
         return description;
     }
@@ -144,10 +165,10 @@ public class Event implements Serializable {
     public void setOutdoor(boolean outdoor) {
         this.outdoor = outdoor;
     }
-    
+
     @Override
     public String toString(){
         return title + "\n" + "Creator: "+creator+"\n"+"Title: "+title+"\n"+"Description: "+description+"\n"+"Place: "+place.getCity()+"\n"+"Starting from: "+startDate+"\n"+"To: "+endDate+"\n"+"OutDoor: "+outdoor+"\n";
     }
-    
+
 }

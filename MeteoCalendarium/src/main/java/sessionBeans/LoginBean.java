@@ -1,77 +1,82 @@
 /*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package sessionBeans;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
-import javax.ejb.Stateless;
-import javax.inject.Named;
-import javax.enterprise.context.Dependent;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
+import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import managerBeans.OwmClientInterface;
 import managerBeans.UserManagerInterface;
 
+@RequestScoped
+@Stateful
+@Named("loginBean")
 /**
+ * Bean That Manage Invitations
  *
  * @author home
  */
-@ManagedBean(name="loginBean")
-@RequestScoped
-@Stateful
 public class LoginBean {
-    
-    private String username;
-    private String password;
-    
+
+    /*
+     * ******************************************************************
+     * ;MANAGERS
+     *******************************************************************
+     */
     @EJB
     UserManagerInterface um;
-   
-     
-    public LoginBean() {
-    }
-    
-    public String getName()
-    {
+
+    /*
+     * ******************************************************************
+     * FIELDS
+     *******************************************************************
+     */
+    private String username;
+    private String password;
+
+    /*
+     * ******************************************************************
+     * PUBLIC FUNCTIONS
+     *******************************************************************
+     */
+    /**
+     * Return email of logged User
+     *
+     * @return
+     */
+    public String getName() {
         return um.getLoggedUser().getEmail();
     }
-    
-        public String getUsername() {
-        return this.username;
-    }
-    
-    public void setUsername(String username) {
-        this.username = username;
-    }
-    
-    public String getPassword() {
-        return this.password;
-    }
-    
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    
+
+    /**
+     * login request
+     *
+     * @return
+     */
     public String login() {
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-try {
-    request.login(this.username, this.password);
+        try {
+            request.login(this.username, this.password);
         } catch (ServletException e) {
-            context.addMessage(null, new FacesMessage("Login failed."));   
+            context.addMessage(null, new FacesMessage("Login failed."));
             return "";
         }
         return "calendar?faces-redirect=true";
     }
-    
+
+    /**
+     * logout request
+     *
+     * @return
+     */
     public String logout() {
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -82,4 +87,26 @@ try {
         }
         return "registrationAuthentication?faces-redirect=true";
     }
+
+    /*
+     * ******************************************************************
+     * GETERS AND SETTER
+     *******************************************************************
+     */
+    public String getUsername() {
+        return this.username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 }

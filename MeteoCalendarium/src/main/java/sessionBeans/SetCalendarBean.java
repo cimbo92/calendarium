@@ -11,28 +11,51 @@ import javax.inject.Named;
 import managerBeans.UserManagerInterface;
 
 /**
+ * Manager of Public Calendar Settings
  *
- * @author home
+ * @author Alessandro De Angelis
  */
 @Named
 @RequestScoped
 public class SetCalendarBean {
-    
+
+    /*
+     * ******************************************************************
+     * MANAGERS
+     *******************************************************************
+     */
     @EJB
     private UserManagerInterface um;
-   
-    private boolean status=true;
+
+    /*
+     * ******************************************************************
+     * FIELDS
+     *******************************************************************
+     */
+    private boolean status = true;
+
+    /*
+     * ******************************************************************
+     * PUBLIC FUNCTIONS
+     *******************************************************************
+     */
+    /**
+     * save decision of user in database
+     */
+    public void saveDecision() {
+        um.setCalendar(status, um.getLoggedUser());
+    }
+
+    /*
+     * ******************************************************************
+     * GETTERS AND SETTERS
+     *******************************************************************
+     */
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 
     public boolean isStatus() {
         return um.getLoggedUser().isPublicCalendar();
     }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-    
-    public void saveDecision(){
-        um.setCalendar(status, um.getLoggedUser());
-    }
-    
 }
