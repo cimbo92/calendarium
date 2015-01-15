@@ -21,7 +21,7 @@ public class ImageBean {
      */
     public String getUDemoImage()
     {
-        return "https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/demo.jpg";
+        return "https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/logo.jpg";
     }
 
 
