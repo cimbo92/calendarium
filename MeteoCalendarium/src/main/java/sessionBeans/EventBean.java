@@ -173,7 +173,9 @@ public class EventBean implements Serializable {
        
             event.convertStartDate(startDate);
             event.convertEndDate(endDate);
-            if(event.getStartDate().before(event.getEndDate()) || event.getStartDate().equals(event.getEndDate()) )
+              Timestamp now = new Timestamp(new java.util.Date().getTime());
+      
+            if(event.getStartDate().before(event.getEndDate()) || event.getStartDate().equals(event.getEndDate()) && event.getStartDate().after(now))
             {
                 
             long id;

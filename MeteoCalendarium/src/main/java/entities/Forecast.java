@@ -57,6 +57,11 @@ public class Forecast implements Serializable {
         return mainCondition;
     }
 
+    @Override
+    public String toString() {
+        return "Forecast{" + "mainCondition=" + mainCondition + '}';
+    }
+
     public void setMainCondition(MainCondition mainCondition) {
         this.mainCondition = mainCondition;
     }
@@ -68,6 +73,9 @@ public class Forecast implements Serializable {
     public void setDate(Timestamp date) {
         this.date = date;
     }
+    
+    
+    
     
     @Override
     public boolean equals(Object obj){

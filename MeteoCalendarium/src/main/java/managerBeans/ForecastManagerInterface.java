@@ -5,6 +5,7 @@
  */
 package managerBeans;
 
+import entities.Event;
 import entities.Forecast;
 import entities.Place;
 import java.util.List;
@@ -19,4 +20,5 @@ public interface ForecastManagerInterface {
  
     public List<Forecast> getForecastInPlace(Place place);
     
+    public List<Forecast> getForecastOfEvent(Event event);
 }

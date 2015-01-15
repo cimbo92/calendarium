@@ -113,12 +113,8 @@
 
                                     <h:outputText value="Description:"/>
                                     <h:outputText value="#{event.description}" />
-
-                                   
                                         <p:commandButton value="Accept" rendered="#{invitationBean.enableInvitation}" id="accept-inv" update=":formcentral:growl,:formcentral:schedule" action="#{invitationBean.acceptInvite(event)}" actionListener="#{scheduleView.loadCalendar()}" oncomplete="PF('myschedule').update();"  />
-                                        <p:commandButton value="Decline"  rendered="#{invitationBean.enableInvitation}" id="decline-inv"  update=":formcentral:inv-dialog"  action="#{invitationBean.declineInvite(event)}" oncomplete="PF('myschedule').update()" />
-
-                                   
+                                        <p:commandButton value="Decline"  rendered="#{invitationBean.enableInvitation}" id="decline-inv"  update=":formcentral:inv-dialog"  action="#{invitationBean.declineInvite(event)}" oncomplete="PF('myschedule').update()" />                                   
                                 </p:panelGrid>
                             </p:tab>
                         </p:carousel> 
@@ -126,33 +122,35 @@
 
                     <p:dialog widgetVar="eventDialog" header="Event Details"  showEffect="fade" hideEffect="fade"   >
                         <h:panelGrid  id="eventDetails" columns="2">
+                            
                             <h:outputLabel for="title" value="Title:" />
-                            <p:inputText disabled="#{!eventBean.isOwnEvent}" id="title"  value="#{eventBean.event.title}" required="true"/>
-
+                            <p:inputText disabled="#{!eventBean.isOwnEvent}" id="title"  value="#{eventBean.event.title}" required="true" requiredMessage="Insert Title">
+                            </p:inputText>
+                            
                             <p:outputLabel for="startDate" value="From:" />
-                            <p:calendar  disabled="#{!eventBean.isOwnEvent}" id="startDate" value="#{eventBean.startDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+                            <p:calendar  disabled="#{!eventBean.isOwnEvent}" id="startDate" value="#{eventBean.startDate}" pattern="MM/dd/yyyy HH:mm:ss" required="true" requiredMessage="Insert Start Date"/>
 
                             <p:outputLabel for="endDate" value="To:" />
-                            <p:calendar  disabled="#{!eventBean.isOwnEvent}" id="endDate" value="#{eventBean.endDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+                            <p:calendar  disabled="#{!eventBean.isOwnEvent}" id="endDate" value="#{eventBean.endDate}" pattern="MM/dd/yyyy HH:mm:ss"  required="true" requiredMessage="Insert EndDate"/>
 
                             <h:outputLabel for="place" value="Place:" />
-                            <p:inputText  disabled="#{!eventBean.isOwnEvent}" id="place" value="#{eventBean.event.place.city}" required="true" />
+                            <p:inputText  disabled="#{!eventBean.isOwnEvent}" id="place" value="#{eventBean.event.place.city}" required="true" requiredMessage="Insert Place"/>
 
                             <p:outputLabel for="outdoor" value="In/Out"  />
-                            <p:selectOneRadio disabled="#{!eventBean.isOwnEvent}" id="outdoor" value="#{eventBean.event.outdoor}" >
+                            <p:selectOneRadio disabled="#{!eventBean.isOwnEvent}" id="outdoor" value="#{eventBean.event.outdoor}"  required="true">
                                 <f:selectItem id="outdoorno" itemLabel="Indoor" itemValue="false" />
                                 <f:selectItem id="outdooryes" itemLabel="Outdoor" itemValue="true" />
                                 <p:ajax update="grid" />
                             </p:selectOneRadio>
 
                             <p:outputLabel for="public" value="In/Out"  />
-                            <p:selectOneRadio  disabled="#{!eventBean.isOwnEvent}" id="public" value="#{eventBean.event.publicEvent}" >
+                            <p:selectOneRadio  disabled="#{!eventBean.isOwnEvent}" id="public" value="#{eventBean.event.publicEvent}" required="true" >
                                 <f:selectItem itemLabel="Public" itemValue="true"/>
                                 <f:selectItem itemLabel="Private" itemValue="false" />
                             </p:selectOneRadio>
 
                             <p:outputLabel for="description" value="Description:" />
-                            <p:inputTextarea id="description" disabled="#{!eventBean.isOwnEvent}" value="#{eventBean.event.description}" rows="6" cols="33" />
+                            <p:inputTextarea id="description" disabled="#{!eventBean.isOwnEvent}" value="#{eventBean.event.description}" rows="6" cols="33" required="true" requiredMessage="Insert Description"/>
 
                             <h:outputText value="Preferences:" />
                             <p:selectManyCheckbox disabled="#{!eventBean.canSelectPreferences}" id="grid" value="#{eventBean.selectedPref}" layout="grid" columns="3" >
@@ -229,23 +227,81 @@
                 background-image:url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/background.jpg'); 
             }
 
-            .emp1 {
-                border: 13px;
-
+            .SunNotWarned {
+              
             }
 
-            .emp2 {
-                border: 13px;
-
+            .SunWarned {
+              
+            }
+            
+            .RainNotWarned {
+              
             }
 
-            .emp1 .fc-event-inner {             
-                background: greenyellow;
-                background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/ownSun.jpg');
+            .RainWarned {
+              
             }
-            .emp2 .fc-event-inner {
-                border: 3px;
-                background: salmon;
+            
+            .CloudsNotWarned {
+              
+            }
+
+            .CloudsWarned {
+              
+            }
+            
+            .SnowNotWarned {
+              
+            }
+
+            .SnowWarned {
+              
+            }
+            
+            .VariableNotWarned {
+              
+            }
+
+            .VariableWarned {
+              
+            }
+            .NoForecast {
+                
+            }
+
+            .SunWarned .fc-event-inner {             
+                  background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/ownSun.jpg');
+            }
+            .SunNotWarned .fc-event-inner {
+                    background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/ownSun.jpg');
+            }
+             .RainWarned .fc-event-inner {             
+                  background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/ownSun.jpg');
+            }
+            .RainNotWarned .fc-event-inner {
+                    background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/ownSun.jpg');
+            }
+             .CloudsWarned .fc-event-inner {             
+                  background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/ownSun.jpg');
+            }
+            .CloudsNotWarned .fc-event-inner {
+                    background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/ownSun.jpg');
+            }
+             .SnowWarned .fc-event-inner {             
+                  background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/ownSun.jpg');
+            }
+            .SnowNotWarned .fc-event-inner {
+                    background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/ownSun.jpg');
+            }
+             .VariableWarned .fc-event-inner {             
+                  background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/ownSun.jpg');
+            }
+            .VariableNotWarned .fc-event-inner {
+                    background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/ownSun.jpg');
+            }
+            .NoForecast .fc-event-inner {
+                    background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/ownSun.jpg');
             }
 
         </style>

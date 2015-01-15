@@ -41,6 +41,13 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
     private EventManagerInterface emi;
     
        
+    
+     @Override
+    public boolean isWarned(Event event) {
+         Query query1 = em.createQuery("Select distinct e From Event e, UserEvent ue, Preference p, Forecast f Where ue.event= :event and e.outdoor=1 and p.event= :event and f.place=e.place and f.date between e.startDate and e.endDate and f.mainCondition not in (Select pr.main From Preference pr where pr.event= :event) ").setParameter("event", event);
+         List<Event> eventWarning=query1.getResultList();
+         return !eventWarning.isEmpty();
+     }
 
     @Override
     public List<Event> findWarnings(User creator) {
@@ -152,5 +159,7 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
         event.setCreator(creator);
         return emi.searchEventOverlapping(event,event.getCreator());
         }
+
+   
     }
 

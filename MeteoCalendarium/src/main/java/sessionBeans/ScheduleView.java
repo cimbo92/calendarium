@@ -10,6 +10,8 @@ package sessionBeans;
  * @author Alessandro
  */
 import entities.Event;
+import entities.Forecast;
+import entities.User;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,7 +24,9 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import managerBeans.BadWeatherNotificationManagerInterface;
 import managerBeans.EventManagerInterface;
+import managerBeans.ForecastManagerInterface;
 import managerBeans.UserManagerInterface;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.ScheduleEntryMoveEvent;
@@ -45,8 +49,13 @@ public class ScheduleView implements Serializable {
     private EventManagerInterface em;
 
     @EJB
-    UserManagerInterface um;
+    private UserManagerInterface um;
  
+    @EJB 
+         private   BadWeatherNotificationManagerInterface bwm;
+    @EJB 
+        private    ForecastManagerInterface fm;
+    
     
     @PostConstruct
     public void init() {
@@ -55,15 +64,14 @@ public class ScheduleView implements Serializable {
     }
 
     public void loadCalendar() {
+        
         List<Event> tempCalendar = em.loadCalendar(um.getLoggedUser());
         eventModel = new DefaultScheduleModel();
         for (Event tempCalendar1 : tempCalendar) {
             DefaultScheduleEvent temp;
-            if (tempCalendar1.getCreator().getEmail().equals(um.getLoggedUser().getEmail())) {
-                temp = new DefaultScheduleEvent(tempCalendar1.getTitle(), tempCalendar1.getStartDate(), tempCalendar1.getEndDate(), "emp1");
-            } else {
-                temp = new DefaultScheduleEvent(tempCalendar1.getTitle(), tempCalendar1.getStartDate(), tempCalendar1.getEndDate(), "emp2");
-            }
+            String banner;
+            banner = this.getBanner(tempCalendar1, um.getLoggedUser());
+            temp = new DefaultScheduleEvent(tempCalendar1.getTitle(), tempCalendar1.getStartDate(), tempCalendar1.getEndDate(),banner); 
             temp.setDescription(tempCalendar1.getIdEvent().getId().toString());
             
             boolean alreadyIn=false;
@@ -81,12 +89,38 @@ public class ScheduleView implements Serializable {
                 eventModel.updateEvent(temp);
             }
         }
-        
-        
+         
     }
 
     public ScheduleModel getEventModel() {
         return eventModel;
     }
 
+    public String getBanner(Event event,User user){
+        String returnBanner = "";
+        
+        List<Forecast> forecastEvent=  fm.getForecastOfEvent(event);
+        if(forecastEvent.isEmpty())
+        {
+            return "NoForecast";
+        }else{
+            
+        }
+        if(forecastEvent.size()>1)
+        {
+        returnBanner =returnBanner+"Variable";
+        }
+        else{
+        returnBanner =returnBanner+forecastEvent.get(0).getMainCondition().getCondition();
+        }
+        if(bwm.isWarned(event)){
+            returnBanner = returnBanner + "Warned";
+        }else
+        {
+             returnBanner = returnBanner +"NotWarned" ;
+        }
+        
+        return returnBanner;
+    }
+    
 }

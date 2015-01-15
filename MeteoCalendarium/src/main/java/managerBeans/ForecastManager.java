@@ -9,6 +9,7 @@ import entities.Event;
 import entities.Forecast;
 import entities.Place;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.ejb.Remote;
@@ -46,6 +47,18 @@ public class ForecastManager implements ForecastManagerInterface {
         
         return list;
     }
+
+    @Override
+    public List<Forecast> getForecastOfEvent(Event event) {
+            Query query = em.createQuery("SELECT distinct f FROM Forecast f JOIN f.place p WHERE p.city =:city and f.date between :start and :end").setParameter("city", event.getPlace().getCity());
+            query.setParameter("start", event.getStartDate());
+            query.setParameter("end", event.getEndDate());
+            List<Forecast> result = new ArrayList<>(query.getResultList());
+           return result;
+           
+    }
+    
+    
     
     
 }
