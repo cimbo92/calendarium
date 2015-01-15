@@ -53,7 +53,7 @@ public class ImportBean {
     
      public void imports() {
     
-        removeEvents();
+        
         File file;
         Event event = new Event();
         
@@ -77,7 +77,8 @@ public class ImportBean {
             doc.getDocumentElement().normalize();
             
             NodeList events = doc.getElementsByTagName("event");
-            
+            if(events.getLength()!=0)
+                removeEvents();
             for (int i = 0; i < events.getLength(); i++) {
                 Element element = (Element) events.item(i);
                 NodeList titles = element.getElementsByTagName("title");
@@ -177,7 +178,7 @@ public class ImportBean {
                 
             }
         } catch (Exception e) {
-            System.out.println("Exception");
+            System.out.println("File not opened");
         }
         
     }
