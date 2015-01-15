@@ -12,6 +12,4 @@ import javax.ejb.Remote;
  * @author alessandro
  */
 @Remote
-public interface WarningManagerCheckerInterface {
-    
-}
+public interface WarningManagerCheckerInterface {}
