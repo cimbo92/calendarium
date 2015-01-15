@@ -17,7 +17,7 @@ import java.util.Date;
 import javax.persistence.OneToOne;
 
 /**
- * entity representing an Event with his details
+ * entity representing an Event with his
  * @author home
  */@Entity
 public class Event implements Serializable {
