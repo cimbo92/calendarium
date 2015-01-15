@@ -44,7 +44,7 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
     
      @Override
     public boolean isWarned(Event event) {
-         Query query1 = em.createQuery("Select distinct e From Event e, UserEvent ue, Preference p, Forecast f Where ue.event= :event and e.outdoor=1 and p.event= :event and f.place=e.place and f.date between e.startDate and e.endDate and f.mainCondition not in (Select pr.main From Preference pr where pr.event= :event) ").setParameter("event", event);
+         Query query1 = em.createQuery("Select distinct e From Event e, UserEvent ue, Preference p, Forecast f Where ue.event= :event and e.outdoor=1 and p.event= :event and f.place=e.place and CAST(f.date AS DATE) between CAST(e.startDate AS DATE) and eCAST(e.endDate AS DATE) and f.mainCondition not in (Select pr.main From Preference pr where pr.event= :event) ").setParameter("event", event);
          List<Event> eventWarning=query1.getResultList();
          return !eventWarning.isEmpty();
      }
@@ -52,7 +52,7 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
     @Override
     public List<Event> findWarnings(User creator) {
         
-        Query query1 = em.createQuery("Select distinct e From Event e, UserEvent ue, Preference p, Forecast f Where ue.event=e and ue.creator=1 and e.outdoor=1 and e.creator.email= :mail and p.event=e and f.place=e.place and f.date between e.startDate and e.endDate and f.mainCondition not in (Select pr.main From Preference pr where pr.event=e) ").setParameter("mail", creator.getEmail());
+        Query query1 = em.createQuery("Select distinct e From Event e, UserEvent ue, Preference p, Forecast f Where ue.event=e and ue.creator=1 and e.outdoor=1 and e.creator.email= :mail and p.event=e and f.place=e.place and CAST(f.date AS DATE) between  CAST(e.startDate AS DATE) and  CAST(e.endDate AS DATE) and f.mainCondition not in (Select pr.main From Preference pr where pr.event=e) ").setParameter("mail", creator.getEmail());
     List<Event> eventWarning=query1.getResultList();
     
     if(!eventWarning.isEmpty())
@@ -88,7 +88,7 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
                 
             }
             
-            queryForecast = em.createQuery("Select  distinct f From Forecast f where f.place= :place and f.date > :startDate").setParameter(("place"), eventWarning.get(i).getPlace()).setParameter("startDate", eventWarning.get(i).getStartDate());
+            queryForecast = em.createQuery("Select  distinct f From Forecast f where f.place= :place and CAST(f.date AS DATE) > CAST(:startDate AS DATE)").setParameter(("place"), eventWarning.get(i).getPlace()).setParameter("startDate", eventWarning.get(i).getStartDate());
             forecast = queryForecast.getResultList();
             System.out.println("Forecast : " + forecast.size() + " type: " + forecast.get(0).getMainCondition().getCondition());
             
