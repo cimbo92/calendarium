@@ -259,8 +259,8 @@ public class EventBean implements Serializable {
     }
 
     private boolean controlDate() {
-        beanEvent.convertStartDate(startDate);
-        beanEvent.convertEndDate(endDate);
+        /*beanEvent.convertStartDate(startDate);
+        beanEvent.convertEndDate(endDate);*/
         Timestamp now = new Timestamp(new java.util.Date().getTime());
 
         //date must be after today and start must be before end date
