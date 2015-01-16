@@ -266,7 +266,7 @@ public class OwmClient implements OwmClientInterface{
         return new WeatherHistoryStationResponse (response);
     }
     
-    @Schedule(second = "59", minute = "*", hour = "*", persistent = false)
+    @Schedule(second = "0", minute = "0", hour = "*", persistent = false)
     public void checkWeather() {
         
         System.out.println("Inizio check");

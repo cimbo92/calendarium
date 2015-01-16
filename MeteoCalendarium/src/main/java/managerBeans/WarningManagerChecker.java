@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package managerBeans;
 
 import entities.Event;
@@ -13,6 +13,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Schedule;
+import javax.ejb.Schedules;
 import javax.ejb.Singleton;
 
 /**
@@ -34,25 +35,35 @@ public class WarningManagerChecker implements WarningManagerCheckerInterface {
     private MailSenderManagerInterface ms;
     @EJB
     private UserEventManagerInterface uem;
+   
+    int count=0;
     
-    @Schedule(second = "0", minute = "0", hour = "0", persistent = false)
+    @Schedules({
+        @Schedule(second = "0", minute = "0", hour = "0", persistent = false),
+        @Schedule(second = "0", minute = "0", hour = "12", persistent = false)
+    })
     private void warningEvery12Hours(){
         
-         List<User> users = uem.getUsersCreator();
-         Iterator<User> ite = users.iterator();
+        
+        
+        System.out.println("Begin warningEvery12Hours "+count);
+        count++;
+        
+        List<User> users = uem.getUsersCreator();
+        Iterator<User> ite = users.iterator();
         while(ite.hasNext()){
             User u = ite.next();
             List<Event> eventWarning = bm.findWarnings(u);
             
             for(Event e : eventWarning){
-                    ms.sendMail(u.getEmail(),"Warning: "+e.getTitle(),"Message to notify a forecast change(12h). For more info check on your personal page. \nStaff MeteoCalendarium");  
-                }
+                ms.sendMail(u.getEmail(),"Warning: "+e.getTitle(),"Message to notify a forecast change(12h). For more info check on your personal page. \nStaff MeteoCalendarium");
+            }
         }
         
         
     }
     
-     @Schedule(second = "30", minute = "*", hour = "*", persistent = false)
+    @Schedule(second = "0", minute = "0", hour = "0", persistent = false)
     private void threeDaysWarning(){
         
         
@@ -80,10 +91,10 @@ public class WarningManagerChecker implements WarningManagerCheckerInterface {
                 {
                     System.out.println("entrato");
                     ms.sendMail(u.getEmail(),"Warning: "+e.getTitle(),"Message to notify a three days notification. For more info check on your personal page. \nStaff MeteoCalendarium");
-                
-                   
+                    
+                    
                 }
-                }
+            }
         }
         
         
@@ -91,7 +102,7 @@ public class WarningManagerChecker implements WarningManagerCheckerInterface {
         System.out.println("Fine check three day warning");
         
     }
-     @Schedule(second = "30", minute = "*", hour = "*", persistent = false)
+    @Schedule(second = "0", minute = "0", hour = "0", persistent = false)
     private void oneDayWarning(){
         
         System.out.println("Inizio check one day warning");
