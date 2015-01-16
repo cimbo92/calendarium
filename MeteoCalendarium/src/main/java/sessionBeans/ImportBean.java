@@ -173,7 +173,10 @@ public class ImportBean {
 
             }
             }catch (OverlappingException e) {
-                           context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Warning!","Event: "+event.getTitle()+" Date: "+event.getStartDate().toString()+" Has Overlapping Problem"));
+                System.out.println("Overlapping adding event");
+                       
+                //context.addMessage(null,"Event: "+event.getTitle()+" Date: "+event.getStartDate().toString()+" Has Overlapping Problem");
+                
             }
 
 
