@@ -10,10 +10,8 @@ package sessionBeans;
  * @author alessandro
  */
 import entities.Event;
-import entities.Preference;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -32,7 +30,7 @@ import managerBeans.EventManagerInterface;
 import managerBeans.PreferenceManagerInterface;
 import managerBeans.UserEventManagerInterface;
 import managerBeans.UserManagerInterface;
- 
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -40,7 +38,7 @@ import org.w3c.dom.Element;
 @Named
 @RequestScoped
 public class ExportBean {
- 
+
     @EJB
     private EventManagerInterface em;
     @EJB
@@ -49,12 +47,12 @@ public class ExportBean {
     PreferenceManagerInterface pm;
     @EJB
     UserEventManagerInterface uem;
-    List<Event> events;  
+    List<Event> events;
     List<String> preferences;
     List<String> userInvited;
-    
+
     public ExportBean(){}
-    
+
     @PostConstruct
     public void init() {
         events = new ArrayList<>();
@@ -63,75 +61,75 @@ public class ExportBean {
         userInvited = new ArrayList<>();
         System.out.println("Init export complete");
     }
-    
-	public void export() {
-            
+
+	public String export() {
+
                    events = new ArrayList<>();
         events = em.getEventsCreated(um.getLoggedUser());
         preferences = new ArrayList<>();
         userInvited = new ArrayList<>();
         System.out.println("Init export complete + size: " + events.size());
-  
-        
+
+
             String help;
             //System.out.println("Evento " + events.get(0).getTitle());
-           
- 
+
+
 	  try {
- 
+
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
- 
-                    
+
+
 		// root elements
 		Document doc = docBuilder.newDocument();
-                
+
 		Element rootElement = doc.createElement("data");
                 doc.appendChild(rootElement);
-                
+
                 for( int i = 0; i<events.size();i++){
-		
- 
+
+
 		// staff elements
 		Element event = doc.createElement("event");
 		rootElement.appendChild(event);
- 
+
 		// set attribute to staff element
 		Attr attr = doc.createAttribute("id");
 		attr.setValue(events.get(i).getIdEvent().toString());
 		event.setAttributeNode(attr);
- 
+
 		// shorten way
 		// staff.setAttribute("id", "1");
- 
+
 		// firstname elements
 		Element title = doc.createElement("title");
 		title.appendChild(doc.createTextNode(events.get(i).getTitle()));
 		event.appendChild(title);
- 
+
                 Element creator = doc.createElement("creator");
 		creator.appendChild(doc.createTextNode(events.get(i).getCreator().getEmail()));
 		event.appendChild(creator);
-                
+
 		// lastname elements
 		Element description = doc.createElement("description");
 		description.appendChild(doc.createTextNode(events.get(i).getDescription()));
 		event.appendChild(description);
-                
+
                 Element place = doc.createElement("place");
 		place.appendChild(doc.createTextNode(events.get(i).getPlace().getCity()));
 		event.appendChild(place);
- 
+
 		// nickname elements
 		Element startDate = doc.createElement("startDate");
 		startDate.appendChild(doc.createTextNode(events.get(i).getStartDate().toString()));
 		event.appendChild(startDate);
- 
+
                 // nickname elements
 		Element endDate = doc.createElement("endDate");
 		endDate.appendChild(doc.createTextNode(events.get(i).getEndDate().toString()));
 		event.appendChild(endDate);
-                
+
 		// salary elements
 		Element outdoor = doc.createElement("outdoor");
                 if(events.get(i).isOutdoor())
@@ -140,7 +138,7 @@ public class ExportBean {
                         help= "false";
 		outdoor.appendChild(doc.createTextNode(help));
 		event.appendChild(outdoor);
-                
+
                 Element publicEvent = doc.createElement("publicEvent");
                 if(events.get(i).isPublicEvent())
                        help="true";
@@ -148,7 +146,7 @@ public class ExportBean {
                         help= "false";
 		publicEvent.appendChild(doc.createTextNode(help));
 		event.appendChild(publicEvent);
-                
+
                 preferences = pm.getPreferenceOfEvent(events.get(i));
                 for(int j=0;j<preferences.size();j++)
                 {
@@ -163,7 +161,7 @@ public class ExportBean {
                     invit.appendChild(doc.createTextNode(userInvited.get(z)));
                     event.appendChild(invit);
                 }
-                
+
                 }
 		// write the content into xml file
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -178,19 +176,23 @@ public class ExportBean {
                 }
                 File file= new File(DefaultFolder+slash+"calendar.xml");
                 System.out.println("afet");
-                
+
 		StreamResult result = new StreamResult(file);
 		// Output to console for testing
 		// StreamResult result = new StreamResult(System.out);
- 
+
 		transformer.transform(source, result);
 
 		System.out.println("File saved!");
- 
+
+
 	  } catch (ParserConfigurationException pce) {
 		pce.printStackTrace();
 	  } catch (TransformerException tfe) {
 		tfe.printStackTrace();
 	  }
+
+              return "calendar?faces-redirect=true";
+
 	}
 }

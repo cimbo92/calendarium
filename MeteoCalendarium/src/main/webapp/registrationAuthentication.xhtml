@@ -16,24 +16,37 @@ and open the template in the editor.
         <p:growl id="growl" autoUpdate="true" showDetail="true"/>       
 
         <h:form>
-            <p:panel header="Login Form">
-                <h:panelGrid columns="2">               
+            
+            <p:panelGrid style="width: 100%; margin : 0px auto;background-color: white" columns="2">
+              <f:facet name="header">
+                            <h:graphicImage  value="#{imageBean.UDemoImage}"  />
+                        </f:facet>
+              <div style="text-align: center;border :0px">
+                <p style="width: 100%;">Welcome To MeteoCal My Friend!</p>
+            </div> </p:panelGrid>
+            
+            <div style="height: 50px"/>
+            <p:panelGrid columns="2" style="width: 100%;border: 0px;margin-bottom: 0px" >
+                <p:panel header="Login Form">
+                <h:panelGrid columns="2" >               
                     <p:outputLabel for="usernameInput" value="Username"/>
                     <p:inputText id="usernameInput" value="#{loginBean.username}" 
                                  required="true" />
                     <p:outputLabel for="passwordInput" value="Password"/>
                     <p:password id="passwordInput" value="#{loginBean.password}" 
                                 required="true" />
+                          <div style="height:55px"/>
                     <p:commandButton value="Login" 
-                                     action="#{loginBean.login()}" />
-                </h:panelGrid>
-            </p:panel>
-        </h:form>
-        <h:form>
+                                     action="#{loginBean.login()}" process="@parent" />
+                 
+            
+                      </h:panelGrid>
+                 </p:panel>
+
             <p:panel header="Registration Form">
                 <h:panelGrid columns="3" id="regGrid">
                     <h:outputLabel for="email">Email:</h:outputLabel>
-                    <p:inputText id="email" value="#{registrationBean.user.email}" >
+                    <p:inputText id="email" value="#{registrationBean.user.email}">
                         <p:ajax update="emailmsg"/>
                     </p:inputText>
                     <p:message id="emailmsg" for="email" />
@@ -45,12 +58,14 @@ and open the template in the editor.
 
                     <h:outputLabel for="pwd2">Confirm Password:</h:outputLabel>
                     <p:password id="pwd2" label="Confirm Password"/>
-                </h:panelGrid>
+                   <div style="height: 20px"/>
                 <p:commandButton value="Register" update="regGrid"
-                                 action="#{registrationBean.register()}" />
-
+                                 action="#{registrationBean.register()}" process="@parent" />
+                  
+                </h:panelGrid>
+                    
             </p:panel>
-            
+            </p:panelGrid>
           
 
           
