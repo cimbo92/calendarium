@@ -5,6 +5,7 @@
  */
 package sessionBeans;
 
+import HelpClasses.OverlappingException;
 import entities.Event;
 import entities.MainCondition;
 import entities.Place;
@@ -18,6 +19,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.swing.JFileChooser;
 import javax.xml.parsers.DocumentBuilder;
@@ -51,6 +54,7 @@ public class ImportBean {
     public ImportBean(){}
 
      public String imports() {
+  FacesContext context = FacesContext.getCurrentInstance();
 
 
         File file;
@@ -140,6 +144,7 @@ public class ImportBean {
             IDEvent idEv = new IDEvent();
             idEv.setId(id);
             event.setIdEvent(idEv);
+            try{
             em.addEvent(event,event.getCreator());
             NodeList preferences = element.getElementsByTagName("preference");
             Preference pref;
@@ -166,6 +171,9 @@ public class ImportBean {
                 uem.addUserEvent(userEvent);
                 }
 
+            }
+            }catch (OverlappingException e) {
+                           context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Warning!","Event: "+event.getTitle()+" Date: "+event.getStartDate().toString()+" Has Overlapping Problem"));
             }
 
 

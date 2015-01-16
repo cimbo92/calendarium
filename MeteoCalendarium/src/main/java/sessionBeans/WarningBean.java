@@ -8,9 +8,11 @@ package sessionBeans;
 import HelpClasses.InvalidDateException;
 import HelpClasses.OverlappingException;
 import entities.Event;
+import entities.IDEvent;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -67,6 +69,7 @@ public class WarningBean {
             enableModify = false;
             Event noWarning = new Event();
             noWarning.setTitle("No Warnings");
+            noWarning.setIdEvent(new IDEvent("-1"));
             warnings.add(noWarning);
         }
     }
@@ -106,7 +109,7 @@ public class WarningBean {
         boolean ok=false;
         for(int i=0;i<warnings.size()&&!ok ;i++)
         {
-            if(warnings.get(i).getTitle().equalsIgnoreCase(event.getTitle()))
+            if(Objects.equals(warnings.get(i).getIdEvent().getId(), event.getIdEvent().getId()))
                 if(solutions.get(i)!=null)
                 {
                      event.setStartDate(solutions.get(i));
@@ -121,16 +124,18 @@ public class WarningBean {
               return "calendar?faces-redirect=true";
     }
 
-    public String getDate(String title)
+    public String getDate(Long id)
     {
-        for(int i=0;i<warnings.size();i++)
-        {
-            if(warnings.get(i).getTitle().equalsIgnoreCase(title))
-                if(solutions.get(i)!=null)
-                    return solutions.get(i).toString();
+        if(id!=-1)
+        {      
+            for(int i=0;i<warnings.size();i++)
+            {
+                if(Objects.equals(warnings.get(i).getIdEvent().getId(), id))
+                    if(solutions.get(i)!=null)
+                        return solutions.get(i).toString();
+            }
+            return "no possible postpone in the next 10 days";
         }
-        return "no possible postpone in the next 10 days";
+        return "";
     }
-
-
 }

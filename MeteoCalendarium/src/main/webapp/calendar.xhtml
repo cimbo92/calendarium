@@ -83,7 +83,7 @@
                                     <h:outputText value="Title:" />
                                     <h:outputText value="#{eventWarning.title}"  />
                                     <h:outputText value="It's possible to postpone the event at: " />
-                                    <h:outputText value="#{warningBean.getDate(eventWarning.title)}" />
+                                    <h:outputText value="#{warningBean.getDate(eventWarning.idEvent.id)}" />
                                     <f:facet name="footer">
                                         <p:commandButton value="Modify" rendered="#{warningBean.enableModify}" id="accept-inv" action="#{warningBean.modifyOk(eventWarning, eventBean)}" oncomplete="PF('dlg-warnings').hide();" process="@this">
                                         </p:commandButton>
