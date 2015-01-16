@@ -18,7 +18,6 @@
                     <p:panelGrid columns="1" >
                         <f:facet name="header">
                             <h:graphicImage  value="#{imageBean.UDemoImage}"  />
-
                         </f:facet>
                         <h:outputText value="Benvenuto: #{loginBean.name}" />
                         <p:commandButton value="Logout" id="logout" action="#{loginBean.logout()}"/>
@@ -26,30 +25,24 @@
 
                 </p:layoutUnit>
                 <p:layoutUnit position="center" id="center" >
-
-                    <h:panelGrid id="principalgrid" columnClasses="value" style ="margin : 0px auto">
-                        <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" timeZone="GMT+2">
+          
+                    
+          
+                    <h:panelGrid id="principalgrid" columnClasses="value" style ="margin : 0px auto;width: 100%">
+                        <p:schedule id="schedule" value="#{scheduleView.eventModel}" style="width: 60%;height: 60%;margin: 0px auto;" widgetVar="myschedule" timeZone="GMT+2">
                             <p:ajax event="dateSelect"  listener="#{eventBean.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                             <p:ajax event="eventSelect" listener="#{eventBean.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                         </p:schedule>
+                   
                     </h:panelGrid>
+                    
 
-                    <p:toolbar style=" position: absolute ; bottom : 10px; right: 10px">
-                        <f:facet name="right">
-                            <p:commandButton value="Warnings" id="warn"  onclick="PF('dlg-warnings').show();"/>
-                            <p:commandButton value="Invitations" id="invitations" oncomplete="PF('dlg-invitations').show();" />
-                            <p:commandButton value=" Utenti" id="utenti"  oncomplete="PF('dlg-users').show();"/>
-                            <p:commandButton value="Settings" id="settings" oncomplete="PF('dlg-settings').show();" />                 
-                      
-  
-                        </f:facet>
-                    </p:toolbar>
    
 
                     <p:dialog showEffect="fade" hideEffect="fade" header="Settings" widgetVar="dlg-settings" id="dialogsettings"  style="width: auto;height: auto" >
                         
-                        <h:panelGrid id="panelsetting" cellpadding="1" columns="3" style="width: auto;height: auto" >              
-                        <p:selectManyButton>
+                        <h:panelGrid id="panelsetting" cellpadding="1" columns="3" style="width: auto;height: auto; background-color: transparent" >              
+                            <p:selectManyButton style="background-color: transparent">
                             <p:commandButton value="Export" id="export"  action="#{exportBean.export()}"/>
                         <p:commandButton value="Import" id="import" action="#{importBean.imports()}" />
                         <p:inputSwitch onLabel="Public"  offLabel="Private" value="#{setCalendarBean.status}" >
@@ -204,28 +197,40 @@
                             </p:dataList>
                         </h:panelGrid>
                     </p:dialog> 
-
-                    
-                    
                 </p:layoutUnit>
             </p:layout>
-            <div style="position: relative;text-align: center">
-                <p style="position: fixed;bottom: 0; width: 100%">Powered By CianferottiCimbelliDeAngelis ©2015</p>
-            </div>
+  
+            
+                  <p:dock>  
+               <p:menuitem  icon="/images/dock/teacher.png"  id="warn" value="Warnings" onclick="PF('dlg-warnings').show();"/>
+                            <p:menuitem  icon="/images/dock/teacher.png" value="Invitations" id="invitations" oncomplete="PF('dlg-invitations').show();" />
+                            <p:menuitem  icon="/images/dock/teacher.png" value=" Users" id="utenti"  oncomplete="PF('dlg-users').show();"/>
+                            <p:menuitem  icon="/images/dock/teacher.png" value="Settings" id="settings" oncomplete="PF('dlg-settings').show();" />                 
+                     </p:dock>  
+           
         </h:form>
 
         <style type="text/css">
             .value {
-                width: 1000px;
+                width: 900px;
             }
 
+            .ui-toolbar.ui-widget-header{
+                background-color: transparent;
+            }
+            
+            .ui-layout-content{
+                   overflow: auto; 
+                    padding: 0; 
+                          background-image:url('http://leverage.it/wp-content/uploads/2011/09/CutClouds.jpg'); 
+          
+            }
+            
             .ui-layout-unit{
-                border : 0px;
-                border-color: deepskyblue;
+         
             }
-
-            .ui-layout-unit-content{      
-                background-image:url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/background.jpg'); 
+        
+            .ui-layout-center{      
             }
 
             .ClearNotWarned {

@@ -15,18 +15,17 @@ and open the template in the editor.
     <h:body>
         <p:growl id="growl" autoUpdate="true" showDetail="true"/>       
 
-        <h:form>
+        <h:form >
             
-            <p:panelGrid style="width: 100%; margin : 0px auto;background-color: white" columns="2">
-              <f:facet name="header">
-                            <h:graphicImage  value="#{imageBean.UDemoImage}"  />
-                        </f:facet>
-              <div style="text-align: center;border :0px">
-                <p style="width: 100%;">Welcome To MeteoCal My Friend!</p>
-            </div> </p:panelGrid>
+            <h:panelGrid style="width: 100%;">
+                <h:panelGrid style="margin-left: auto ; margin-right: auto">
+                 <h:graphicImage value="#{imageBean.UDemoImage}" />
+                   <p:outputLabel  value="Welcome To MeteoCal My Friend!"/>     
+                </h:panelGrid>
+              </h:panelGrid>
             
-            <div style="height: 50px"/>
-            <p:panelGrid columns="2" style="width: 100%;border: 0px;margin-bottom: 0px" >
+            <div style="height: 70px"/>
+            <h:panelGrid columns="2" style="width: 100%;border: 0px;margin-bottom: 0px" >
                 <p:panel header="Login Form">
                 <h:panelGrid columns="2" >               
                     <p:outputLabel for="usernameInput" value="Username"/>
@@ -35,11 +34,9 @@ and open the template in the editor.
                     <p:outputLabel for="passwordInput" value="Password"/>
                     <p:password id="passwordInput" value="#{loginBean.password}" 
                                 required="true" />
-                          <div style="height:55px"/>
+                          <div style="height:68px"/>
                     <p:commandButton value="Login" 
                                      action="#{loginBean.login()}" process="@parent" />
-                 
-            
                       </h:panelGrid>
                  </p:panel>
 
@@ -65,11 +62,14 @@ and open the template in the editor.
                 </h:panelGrid>
                     
             </p:panel>
-            </p:panelGrid>
-          
+            </h:panelGrid>
 
-          
+            <div style="position: relative;text-align: center">
+                <p style="position: fixed;bottom: 0; width: 100%">Powered By CianferottiCimbelliDeAngelis ©2015</p>
+            </div>
+                    
         </h:form>
+       
         <br />
     </h:body>
 </html>
