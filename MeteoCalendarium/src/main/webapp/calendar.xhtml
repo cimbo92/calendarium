@@ -25,31 +25,31 @@
 
                 </p:layoutUnit>
                 <p:layoutUnit position="center" id="center" style="width: auto;height: auto" styleClass="Center" >
-          
-                    
-          
+
+
+
                     <h:panelGrid id="principalgrid" columnClasses="value" style ="margin : 0px auto;width: 100%">
                         <p:schedule id="schedule" value="#{scheduleView.eventModel}" style="width: 60%;height: 60%;margin: 0px auto;" widgetVar="myschedule" timeZone="GMT+2">
                             <p:ajax event="dateSelect"  listener="#{eventBean.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                             <p:ajax event="eventSelect" listener="#{eventBean.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                         </p:schedule>
-                   
-                    </h:panelGrid>
-                    
 
-   
+                    </h:panelGrid>
+
+
+
 
                     <p:dialog showEffect="fade" hideEffect="fade" header="Settings" widgetVar="dlg-settings" id="dialogsettings"  style="width: auto;height: auto" >
-                        
+
                         <h:panelGrid id="panelsetting" cellpadding="1" columns="3" style="width: auto;height: auto; background-color: transparent" >              
                             <p:selectManyButton style="background-color: transparent">
-                            <p:commandButton value="Export" id="export"  action="#{exportBean.export()}"/>
-                        <p:commandButton value="Import" id="import" action="#{importBean.imports()}" />
-                        <p:inputSwitch onLabel="Public"  offLabel="Private" value="#{setCalendarBean.status}" >
-                            <p:ajax listener="#{setCalendarBean.saveDecision()}" update="panelsetting"  />
-                        </p:inputSwitch>
-                        </p:selectManyButton>
-                           </h:panelGrid>
+                                <p:commandButton value="Export" id="export"  action="#{exportBean.export()}"/>
+                                <p:commandButton value="Import" id="import" action="#{importBean.imports()}" />
+                                <p:inputSwitch onLabel="Public"  offLabel="Private" value="#{setCalendarBean.status}" >
+                                    <p:ajax listener="#{setCalendarBean.saveDecision()}" update="panelsetting"  />
+                                </p:inputSwitch>
+                            </p:selectManyButton>
+                        </h:panelGrid>
                     </p:dialog>
 
                     <p:dialog header="utenti"  showEffect="fade" hideEffect="fade"  widgetVar="dlg-users">
@@ -68,10 +68,10 @@
                         </h:panelGrid>
                     </p:dialog>
 
-                    
+
                     <p:dialog header="Warnings" widgetVar="dlg-warnings" showEffect="fade" hideEffect="fade"  id="inv-dialogW" width="800px" height="300px" resizable="false">
                         <p:carousel value="#{warningBean.warnings}" var="eventWarning" numVisible="1" itemStyle="height:200px;width:750px;" effect="easeInStrong" headerText="Warning" style="margin-bottom:0;">         
-                                <p:tab>
+                            <p:tab>
                                 <p:panelGrid columns="2" columnClasses="label,value">
                                     <h:outputText value="Title:" />
                                     <h:outputText value="#{eventWarning.title}"  />
@@ -82,14 +82,14 @@
                                         </p:commandButton>
                                     </f:facet>
                                 </p:panelGrid>
-                                </p:tab>
+                            </p:tab>
                         </p:carousel> 
                     </p:dialog>
 
                     <p:dialog header="Invitations" widgetVar="dlg-invitations" showEffect="fade" hideEffect="fade"  id="inv-dialog" width="800px" height="300px" resizable="false">
-                      
+
                         <p:carousel id="carouselwatning" value="#{invitationBean.invites}" var="event" numVisible="1" itemStyle="height:200px;width:750px;" effect="easeInStrong" headerText="Invitation" style="margin-bottom:0;">
-                     
+
                             <p:tab> 
 
                                 <p:panelGrid columns="2" columnClasses="label,value">
@@ -107,8 +107,8 @@
 
                                     <h:outputText value="Description:"/>
                                     <h:outputText value="#{event.description}" />
-                                        <p:commandButton value="Accept" rendered="#{invitationBean.enableInvitation}" id="accept-inv" update=":formcentral:growl,:formcentral:schedule" action="#{invitationBean.acceptInvite(event)}" actionListener="#{scheduleView.loadCalendar()}" oncomplete="PF('myschedule').update();"  />
-                                        <p:commandButton value="Decline"  rendered="#{invitationBean.enableInvitation}" id="decline-inv"  update=":formcentral:inv-dialog"  action="#{invitationBean.declineInvite(event)}" oncomplete="PF('myschedule').update()" />                                   
+                                    <p:commandButton value="Accept" rendered="#{invitationBean.enableInvitation}" id="accept-inv" update=":formcentral:growl,:formcentral:schedule" action="#{invitationBean.acceptInvite(event)}" actionListener="#{scheduleView.loadCalendar()}" oncomplete="PF('myschedule').update();"  />
+                                    <p:commandButton value="Decline"  rendered="#{invitationBean.enableInvitation}" id="decline-inv"  update=":formcentral:inv-dialog"  action="#{invitationBean.declineInvite(event)}" oncomplete="PF('myschedule').update()" />                                   
                                 </p:panelGrid>
                             </p:tab>
                         </p:carousel> 
@@ -116,11 +116,11 @@
 
                     <p:dialog widgetVar="eventDialog" header="Event Details"  showEffect="fade" hideEffect="fade"   >
                         <h:panelGrid  id="eventDetails" columns="2">
-                            
+
                             <h:outputLabel for="title" value="Title:" />
                             <p:inputText disabled="#{!eventBean.isOwnEvent}" id="title"  value="#{eventBean.beanEvent.title}" required="true" requiredMessage="Insert Title">
                             </p:inputText>
-                            
+
                             <p:outputLabel for="startDate" value="From:" />
                             <p:calendar  disabled="#{!eventBean.isOwnEvent}" id="startDate" value="#{eventBean.startDate}" pattern="MM/dd/yyyy HH:mm:ss" required="true" requiredMessage="Insert Start Date"/>
 
@@ -199,15 +199,15 @@
                     </p:dialog> 
                 </p:layoutUnit>
             </p:layout>
-  
-            
-                  <p:dock >  
-                      <p:menuitem  style="background-color: transparent" icon="https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/warnings.png"  id="warn" value="Warnings" onclick="PF('dlg-warnings').show();"/>
-                            <p:menuitem  icon="https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/invitations.png" value="Invitations" id="invitations" oncomplete="PF('dlg-invitations').show();" />
-                            <p:menuitem  icon="https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/users.png" value=" Users" id="utenti"  oncomplete="PF('dlg-users').show();"/>
-                            <p:menuitem  icon="https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/Settings.png" value="Settings" id="settings" oncomplete="PF('dlg-settings').show();" />                 
-                     </p:dock>  
-           
+
+
+            <p:dock>  
+                <p:menuitem  icon="https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/warnings.png"  id="warn" value="Warnings" onclick="PF('dlg-warnings').show();"/>
+                <p:menuitem  icon="https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/invitations.png" value="Invitations" id="invitations" oncomplete="PF('dlg-invitations').show();" />
+                <p:menuitem  icon="https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/users.png" value=" Users" id="utenti"  oncomplete="PF('dlg-users').show();"/>
+                <p:menuitem  icon="https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/Settings.png" value="Settings" id="settings" oncomplete="PF('dlg-settings').show();" />                 
+            </p:dock>  
+
         </h:form>
 
         <style type="text/css">
@@ -215,112 +215,107 @@
                 width: 900px;
             }
 
-
-            
             .Center{
-                
+
             }
-            
-          .Center .ui-layout-unit-content{
+
+            .Center .ui-layout-unit-content{
                 background-image:url('http://leverage.it/wp-content/uploads/2011/09/CutClouds.jpg'); 
-          
-} 
+
+            } 
 
             .ui-layout-content{
-                   overflow: auto; 
-                    padding: 0; 
-                          background-image:url('http://leverage.it/wp-content/uploads/2011/09/CutClouds.jpg'); 
-          
+                overflow: auto; 
+                padding: 0; 
+                background-image:url('http://leverage.it/wp-content/uploads/2011/09/CutClouds.jpg'); 
+
             }
-            
-            
-            
             .ui-layout-unit{
-          border-width: 0;
-          overflow: hidden;
-    position: relative;
-    padding: 0;
-    margin: 0;
+                border-width: 0;
+                overflow: hidden;
+                position: relative;
+                padding: 0;
+                margin: 0;
             }
-        
+
             .ui-layout-center{      
             }
 
             .ClearNotWarned {
-              
+
             }
 
             .ClearWarned {
-              
+
             }
-            
+
             .RainNotWarned {
-              
+
             }
 
             .RainWarned {
-              
+
             }
-            
+
             .CloudsNotWarned {
-              
+
             }
 
             .CloudsWarned {
-              
+
             }
-            
+
             .SnowNotWarned {
-              
+
             }
 
             .SnowWarned {
-              
+
             }
-            
+
             .VariableNotWarned {
-              
+
             }
 
             .VariableWarned {
-              
+
             }
             .NoForecast {
-                
+
             }
 
             .ClearWarned .fc-event-inner {             
-                  background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/sunWarning.jpg');
+                background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/sunWarning.jpg');
             }
             .ClearNotWarned .fc-event-inner {
-                    background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/sunNoWarning.jpg');
+                background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/sunNoWarning.jpg');
             }
-             .RainWarned .fc-event-inner {             
-                  background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/RainWarning.jpg');
+            .RainWarned .fc-event-inner {             
+                background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/RainWarning.jpg');
             }
             .RainNotWarned .fc-event-inner {
-                    background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/RainNoWarning.jpg');
+                background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/RainNoWarning.jpg');
             }
-             .CloudsWarned .fc-event-inner {             
-                  background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/CloudsWarning.jpg');
+            .CloudsWarned .fc-event-inner {             
+                background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/CloudsWarning.jpg');
             }
             .CloudsNotWarned .fc-event-inner {
-                    background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/CloudsNoWarning.jpg');
+                background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/CloudsNoWarning.jpg');
             }
-             .SnowWarned .fc-event-inner {             
-                  background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/SnowWarning.jpg');
+            .SnowWarned .fc-event-inner {             
+                background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/SnowWarning.jpg');
             }
             .SnowNotWarned .fc-event-inner {
-                    background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/SnowNoWarning.jpg');
+                background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/SnowNoWarning.jpg');
             }
-             .VariableWarned .fc-event-inner {             
-                  background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/VariableWarning.jpg');
+            .VariableWarned .fc-event-inner {             
+                background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/VariableWarning.jpg');
             }
             .VariableNotWarned .fc-event-inner {
-                    background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/VariableNoWarning.jpg');
+                background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/VariableNoWarning.jpg');
             }
             .NoForecast .fc-event-inner {
-                    background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/NoForecast.jpg');
+                background-image: url('https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/NoForecast.jpg');
             }
 
         </style>
