@@ -24,5 +24,10 @@ public class ImageBean {
         return "https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/logo.jpg";
     }
 
+    public String getUDemoImageBig()
+    {
+        return "https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/logoBig.png";
+    }
+
 
 }
