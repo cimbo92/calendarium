@@ -13,9 +13,9 @@
         <h:form id="formcentral"> 
             <p:growl id="growl" showDetail="true"/>       
 
-            <p:layout style="min-width:390px;min-height:890px; ">
-                <p:layoutUnit position="west" resizable="false">
-                    <p:panelGrid columns="1" >
+            <p:layout style="min-height: 800px;min-width: 400px" >
+                <p:layoutUnit position="west" >
+                    <p:panelGrid columns="1" style="width: 300px">
                         <f:facet name="header">
                             <h:graphicImage  value="#{imageBean.UDemoImage}"  />
                         </f:facet>
@@ -24,7 +24,7 @@
                     </p:panelGrid>
 
                 </p:layoutUnit>
-                <p:layoutUnit position="center" id="center" >
+                <p:layoutUnit position="center" id="center" style="width: auto;height: auto" styleClass="Center" >
           
                     
           
@@ -201,11 +201,11 @@
             </p:layout>
   
             
-                  <p:dock>  
-               <p:menuitem  icon="/images/dock/teacher.png"  id="warn" value="Warnings" onclick="PF('dlg-warnings').show();"/>
-                            <p:menuitem  icon="/images/dock/teacher.png" value="Invitations" id="invitations" oncomplete="PF('dlg-invitations').show();" />
-                            <p:menuitem  icon="/images/dock/teacher.png" value=" Users" id="utenti"  oncomplete="PF('dlg-users').show();"/>
-                            <p:menuitem  icon="/images/dock/teacher.png" value="Settings" id="settings" oncomplete="PF('dlg-settings').show();" />                 
+                  <p:dock >  
+                      <p:menuitem  style="background-color: transparent" icon="https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/warnings.png"  id="warn" value="Warnings" onclick="PF('dlg-warnings').show();"/>
+                            <p:menuitem  icon="https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/invitations.png" value="Invitations" id="invitations" oncomplete="PF('dlg-invitations').show();" />
+                            <p:menuitem  icon="https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/users.png" value=" Users" id="utenti"  oncomplete="PF('dlg-users').show();"/>
+                            <p:menuitem  icon="https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/Settings.png" value="Settings" id="settings" oncomplete="PF('dlg-settings').show();" />                 
                      </p:dock>  
            
         </h:form>
@@ -215,10 +215,17 @@
                 width: 900px;
             }
 
-            .ui-toolbar.ui-widget-header{
-                background-color: transparent;
+
+            
+            .Center{
+                
             }
             
+          .Center .ui-layout-unit-content{
+                background-image:url('http://leverage.it/wp-content/uploads/2011/09/CutClouds.jpg'); 
+          
+} 
+
             .ui-layout-content{
                    overflow: auto; 
                     padding: 0; 
@@ -226,8 +233,14 @@
           
             }
             
+            
+            
             .ui-layout-unit{
-         
+          border-width: 0;
+          overflow: hidden;
+    position: relative;
+    padding: 0;
+    margin: 0;
             }
         
             .ui-layout-center{      
