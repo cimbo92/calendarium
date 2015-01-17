@@ -34,18 +34,15 @@
                             <p:ajax event="dateSelect"  listener="#{eventBean.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                             <p:ajax event="eventSelect" listener="#{eventBean.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                         </p:schedule>
-
                     </h:panelGrid>
 
 
-
-
                     <p:dialog showEffect="fade" hideEffect="fade" header="Settings" widgetVar="dlg-settings" id="dialogsettings"  style="width: auto;height: auto" >
-
-                        <h:panelGrid id="panelsetting" cellpadding="1" columns="3" style="width: auto;height: auto; background-color: transparent" >              
+                        <h:panelGrid id="panelsetting" cellpadding="1" columns="1" style=" background-color: transparent" >              
                             <p:selectManyButton style="background-color: transparent">
-                                <p:commandButton value="Export" id="export"  action="#{exportBean.export()}"/>
-                                <p:commandButton value="Import" id="import" action="#{importBean.imports()}" />
+                                <p:commandButton value="Export" id="export"  action="#{exportBean.export()}" update="schedule,growl" oncomplete="PF('myschedule').update();PF('dlg-settings').hide()">     
+                                </p:commandButton>
+                                <p:commandButton value="Import" id="import" action="#{importBean.imports()}" actionListener="#{scheduleView.loadCalendar()}" update="schedule,growl" oncomplete="PF('myschedule').update();PF('dlg-settings').hide()" />
                                 <p:inputSwitch onLabel="Public"  offLabel="Private" value="#{setCalendarBean.status}" >
                                     <p:ajax listener="#{setCalendarBean.saveDecision()}" update="panelsetting"  />
                                 </p:inputSwitch>
@@ -219,53 +216,53 @@
             .Center{
 
             }
-            
-          
-          
-.ui-dock-bottom {
-        width: 100%;
-        bottom: 0px;
-        position: absolute;
-        left: 0px;
-         background-color: transparent;
- 
-}
 
- .ui-dock-container-bottom {
-     border-width: 0px;
-        position: fixed;
-        height: 50px;
-        padding-left: 50px;
-         background-color: transparent;
-}
-a.ui-dock-item-bottom {
-       display: block; 
-        width: 200px;  
-        bottom: 0px; 
-        position: absolute;
-        text-align: center;
-        text-decoration: none;
-         background-color: transparent;
 
-}
-.ui-dock-item-bottom span {
-        display: none;
-        padding-left: 50px;
-}
-.ui-dock-item-bottom img {
-        border: none; 
-        margin: 5px 10px 0px; 
-        width: 100%; 
-}
-        
-.West{
-    
-}
 
-.West .ui-layout-unit-content{
-    
-    background-color: #F5F5F5;
-}
+            .ui-dock-bottom {
+                width: 100%;
+                bottom: 0px;
+                position: absolute;
+                left: 0px;
+                background-color: transparent;
+
+            }
+
+            .ui-dock-container-bottom {
+                border-width: 0px;
+                position: fixed;
+                height: 50px;
+                padding-left: 50px;
+                background-color: transparent;
+            }
+            a.ui-dock-item-bottom {
+                display: block; 
+                width: 200px;  
+                bottom: 0px; 
+                position: absolute;
+                text-align: center;
+                text-decoration: none;
+                background-color: transparent;
+
+            }
+            .ui-dock-item-bottom span {
+                display: none;
+                padding-left: 50px;
+            }
+            .ui-dock-item-bottom img {
+                border: none; 
+                margin: 5px 10px 0px; 
+                width: 100%; 
+            }
+
+            .West{
+
+            }
+
+            .West .ui-layout-unit-content{
+
+                background-color: #F5F5F5;
+            }
             .Center .ui-layout-unit-content{
                 background-image:url('http://leverage.it/wp-content/uploads/2011/09/CutClouds.jpg'); 
 

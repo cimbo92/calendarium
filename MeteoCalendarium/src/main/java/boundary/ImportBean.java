@@ -53,7 +53,7 @@ public class ImportBean {
     private UserEventManagerInterface uem;
     public ImportBean(){}
 
-     public String imports() {
+     public void imports() {
   FacesContext context = FacesContext.getCurrentInstance();
 
 
@@ -61,7 +61,6 @@ public class ImportBean {
         Event event = new Event();
 
 
-        System.out.println("Import begin");
         String os=System.getProperty("os.name");
                 String slash = "\\";
                 if(os.equalsIgnoreCase("Mac OS X")){
@@ -104,7 +103,6 @@ public class ImportBean {
 
 
                 event.setStartDate(timestamp);
-                System.out.println(event.getStartDate().toString());
                 NodeList endDates = element.getElementsByTagName("endDate");
 
 
@@ -174,24 +172,15 @@ public class ImportBean {
             }
             }catch (OverlappingException e) {
                 System.out.println("Overlapping adding event");
-                       
-                //context.addMessage(null,"Event: "+event.getTitle()+" Date: "+event.getStartDate().toString()+" Has Overlapping Problem");
-                
+                context.addMessage(null,new FacesMessage("Error", "Overlapping"));
             }
-
-
-
-
-
-
-
 
             }
         } catch (Exception e) {
             System.out.println("File not opened");
+
         }
 
-                      return "calendar?faces-redirect=true";
 
     }
      public void removeEvents()

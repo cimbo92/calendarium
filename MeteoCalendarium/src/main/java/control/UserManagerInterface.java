@@ -15,20 +15,20 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface UserManagerInterface {
-    
-     public void save(User user);
-     
+
+     public void save(User user)throws Exception;
+
      public void unregister();
-     
+
      public User getLoggedUser();
-     
+
      public User findByMail(String mail);
-     
+
      public List<String> getListUsers();
-     
+
      public List<String> getListUsersPublic();
-     
+
      public void setCalendar(boolean status, User user);
-             
+
 
 }

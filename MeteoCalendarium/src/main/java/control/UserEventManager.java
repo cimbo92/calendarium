@@ -68,14 +68,11 @@ public class UserEventManager implements UserEventManagerInterface {
     @Override
     public List<String> invitedUsersOfEvent(Event event) {
       Query query;
-       query =em.createQuery( "SELECT ue FROM UserEvent ue WHERE ue.event= :event and ue.creator=0" ).setParameter("event", event);
+       query =em.createQuery( "SELECT ue.user.email FROM UserEvent ue WHERE ue.event= :event and ue.creator=0" ).setParameter("event", event);
 
-    List<UserEvent> result = new ArrayList<>(query.getResultList());
+    List<String> result = new ArrayList<>(query.getResultList());
 
-
-    List<String> ritorno = new ArrayList<>();
-
-            return ritorno;
+            return result;
     }
 
     @Override

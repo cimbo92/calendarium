@@ -30,6 +30,8 @@ import control.EventManagerInterface;
 import control.PreferenceManagerInterface;
 import control.UserEventManagerInterface;
 import control.UserManagerInterface;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -59,17 +61,16 @@ public class ExportBean {
         events = em.getEventsCreated(um.getLoggedUser());
         preferences = new ArrayList<>();
         userInvited = new ArrayList<>();
-        System.out.println("Init export complete");
     }
 
-	public String export() {
+	public void export() {
 
                    events = new ArrayList<>();
         events = em.getEventsCreated(um.getLoggedUser());
         preferences = new ArrayList<>();
         userInvited = new ArrayList<>();
-        System.out.println("Init export complete + size: " + events.size());
 
+ FacesContext context = FacesContext.getCurrentInstance();
 
             String help;
             //System.out.println("Evento " + events.get(0).getTitle());
@@ -169,13 +170,11 @@ public class ExportBean {
 		DOMSource source = new DOMSource(doc);
                 String DefaultFolder=new JFileChooser().getFileSystemView().getDefaultDirectory().toString();
 		String os=System.getProperty("os.name");
-                System.out.println("Sistema: " + os);
                 String slash = "\\";
                 if(os.equalsIgnoreCase("Mac OS X")){
                     slash="/";
                 }
                 File file= new File(DefaultFolder+slash+"calendar.xml");
-                System.out.println("afet");
 
 		StreamResult result = new StreamResult(file);
 		// Output to console for testing
@@ -183,16 +182,20 @@ public class ExportBean {
 
 		transformer.transform(source, result);
 
-		System.out.println("File saved!");
 
 
 	  } catch (ParserConfigurationException pce) {
-		pce.printStackTrace();
+
+                      context.addMessage(null,new FacesMessage("Error", "Error in Exporting"));
+
 	  } catch (TransformerException tfe) {
-		tfe.printStackTrace();
+
+                      context.addMessage(null,new FacesMessage("Error", "Error in Exporting"));
+
 	  }
 
-              return "calendar?faces-redirect=true";
+                    context.addMessage(null,new FacesMessage("Export", "Export Completed"));
+
 
 	}
 }
