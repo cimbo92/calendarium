@@ -348,6 +348,7 @@ public class OwmClient implements OwmClientInterface{
         System.out.println("Check Weather Completed!");
         
         
+        
     }
     
     private boolean alreadyIn(ForecastWeatherData fwd, String city) {
