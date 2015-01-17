@@ -47,6 +47,7 @@ public class WarningBean {
     private boolean enableModify=false;
 
 
+
     public boolean isEnableModify() {
         return enableModify;
     }
@@ -54,6 +55,26 @@ public class WarningBean {
     public void setEnableModify(boolean enableModify) {
         this.enableModify = enableModify;
     }
+
+    public void loadWarnings(){
+  warnings = new ArrayList<>();
+        warnings = bwnm.findWarnings(um.getLoggedUser());
+        if(!warnings.isEmpty())
+        {
+            searchSolution();
+            enableModify = true;
+        }
+        else
+        {
+            enableModify = false;
+            Event noWarning = new Event();
+            noWarning.setTitle("No Warnings");
+            noWarning.setIdEvent(new IDEvent("-1"));
+            warnings.add(noWarning);
+        }
+}
+
+
 
      @PostConstruct
     public void init() {
@@ -127,7 +148,7 @@ public class WarningBean {
     public String getDate(Long id)
     {
         if(id!=-1)
-        {      
+        {
             for(int i=0;i<warnings.size();i++)
             {
                 if(Objects.equals(warnings.get(i).getIdEvent().getId(), id))
