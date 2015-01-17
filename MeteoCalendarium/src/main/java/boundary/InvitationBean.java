@@ -95,7 +95,7 @@ public class InvitationBean implements Serializable {
         UserEvent ue = uem.getUserEventofUser(event, um.getLoggedUser());
 
         //Before Accepting controls that it is possible ( Overlapping)
-        if (!em.searchEventOverlapping(event, um.getLoggedUser())) {
+        if (!em.searchOverlapping(event, um.getLoggedUser())) {
             uem.modifyUserEvent(ue, true, true);
             invites.remove(event);
             return "calendar?faces-redirect=true";
