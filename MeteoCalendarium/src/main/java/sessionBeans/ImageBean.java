@@ -21,7 +21,7 @@ public class ImageBean {
      */
     public String getUDemoImage()
     {
-        return "https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/logo.jpg";
+        return "http://i.huffpost.com/gen/1166671/thumbs/o-PROFILO-FACEBOOK-facebook.jpg";
     }
 
     public String getUDemoImageBig()
