@@ -66,20 +66,12 @@ public class WarningBean {
      */
     private boolean enableModify = false;
     
+    /**
+     * initializer
+     */
     @PostConstruct
     public void init() {
-        warnings = new ArrayList<>();
-        warnings = bwnm.findWarnings(um.getLoggedUser());
-        if (!warnings.isEmpty()) {
-            searchSolution();
-            enableModify = true;
-        } else {
-            enableModify = false;
-            Event noWarning = new Event();
-            noWarning.setTitle("No Warnings");
-            noWarning.setIdEvent(new IDEvent("-1"));
-            warnings.add(noWarning);
-        }
+        loadWarnings();
     }
 
     /*
@@ -111,32 +103,31 @@ public class WarningBean {
         }
     }
     /**
-     * 
+     * modify the event setting as a start day the date suggested
      * @param event
      * @param eb
      * @return
      * @throws OverlappingException
      * @throws InvalidDateException 
      */
-    public String modifyOk(Event event, EventBean eb) throws OverlappingException, InvalidDateException {
-        List<String> preferenceEvent = new ArrayList<>();
+    public String modifyButton(Event event, EventBean eb) throws OverlappingException, InvalidDateException {
+        /*List<String> preferenceEvent = new ArrayList<>();
         preferenceEvent = pm.getPreferenceOfEvent(event);
         List<String> userEvent = new ArrayList<>();
-        userEvent = uem.invitedUsersOfEvent(event);
-
+        userEvent = uem.invitedUsersOfEvent(event);*/
         em.removeEvent(event);
-        long diff = event.getEndDate().getTime() - event.getStartDate().getTime();
-        System.out.println("Evento modificato: " + event.getTitle() + "diff: " + diff);
-        Timestamp help;
+        /*long diff = event.getEndDate().getTime() - event.getStartDate().getTime();
+        Timestamp help;*/
         boolean ok = false;
         for (int i = 0; i < warnings.size() && !ok; i++) {
             if (Objects.equals(warnings.get(i).getIdEvent().getId(), event.getIdEvent().getId())) {
                 if (solutions.get(i) != null) {
-                    event.setStartDate(solutions.get(i));
+                    /*event.setStartDate(solutions.get(i));
                     help = new Timestamp(0);
                     help.setTime(solutions.get(i).getTime() + diff);
                     event.setEndDate(help);
-                    eb.modifyFromWarning(event, preferenceEvent, userEvent);
+                    eb.modifyFromWarning(event, preferenceEvent, userEvent);*/
+                    modify(event, solutions.get(i), eb);
                     ok = true;
                     warnings.remove(i);
                 }
@@ -144,7 +135,26 @@ public class WarningBean {
         }
         return "calendar?faces-redirect=true";
     }
-
+    public void modify(Event event, Timestamp solut, EventBean eb) throws OverlappingException, InvalidDateException{
+        
+        List<String> preferenceEvent = new ArrayList<>();
+        preferenceEvent = pm.getPreferenceOfEvent(event);
+        List<String> userEvent = new ArrayList<>();
+        userEvent = uem.invitedUsersOfEvent(event);
+        long diff = event.getEndDate().getTime() - event.getStartDate().getTime();
+        Timestamp help;
+        
+        event.setStartDate(solut);
+        help = new Timestamp(0);
+        help.setTime(solut.getTime() + diff);
+        event.setEndDate(help);
+        eb.modifyFromWarning(event, preferenceEvent, userEvent);
+    }
+    /**
+     * 
+     * @param id: it's the id of the event
+     * @return a string that contains the suggested day 
+     */
     public String getDate(Long id) {
         if (id != -1) {
             for (int i = 0; i < warnings.size(); i++) {
