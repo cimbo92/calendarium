@@ -5,9 +5,11 @@
  */
 package Forecast;
 
-import Forecast.LocalizedWeatherData.GeoCoord;
-import Forecast.WeatherData.Clouds.CloudDescription;
-import Forecast.WeatherData.WeatherCondition;
+import forecastService.StatusWeatherData;
+import forecastService.WeatherData;
+import forecastService.LocalizedWeatherData.GeoCoord;
+import forecastService.WeatherData.Clouds.CloudDescription;
+import forecastService.WeatherData.WeatherCondition;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;

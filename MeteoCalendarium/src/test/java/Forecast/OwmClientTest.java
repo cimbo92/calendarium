@@ -5,7 +5,14 @@
  */
 package Forecast;
 
-import Forecast.WeatherForecastResponse.City;
+import forecastService.WeatherForecastResponse;
+import forecastService.StatusWeatherData;
+import forecastService.WeatherHistoryStationResponse;
+import forecastService.WeatherStatusResponse;
+import forecastService.ForecastWeatherData;
+import forecastService.WeatherHistoryCityResponse;
+import forecastService.AbstractWeatherData;
+import forecastService.WeatherForecastResponse.City;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -17,8 +24,8 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
-import managerBeans.OwmClient;
-import managerBeans.OwmClient.HistoryType;
+import control.OwmClient;
+import control.OwmClient.HistoryType;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
