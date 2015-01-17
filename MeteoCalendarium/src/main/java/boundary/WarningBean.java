@@ -22,6 +22,8 @@ import control.EventManagerInterface;
 import control.PreferenceManagerInterface;
 import control.UserEventManagerInterface;
 import control.UserManagerInterface;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -47,7 +49,7 @@ public class WarningBean {
     @EJB
     UserEventManagerInterface uem;
 
-    
+
     /*
      *******************************************************************
      * FIELDS
@@ -65,7 +67,7 @@ public class WarningBean {
      * variable used to manage the calendar
      */
     private boolean enableModify = false;
-    
+
     /**
      * initializer
      */
@@ -108,13 +110,18 @@ public class WarningBean {
      * @param eb
      * @return
      * @throws OverlappingException
-     * @throws InvalidDateException 
+     * @throws InvalidDateException
      */
     public String modifyButton(Event event, EventBean eb) throws OverlappingException, InvalidDateException {
+            FacesContext context = FacesContext.getCurrentInstance();
+
+
         /*List<String> preferenceEvent = new ArrayList<>();
         preferenceEvent = pm.getPreferenceOfEvent(event);
         List<String> userEvent = new ArrayList<>();
         userEvent = uem.invitedUsersOfEvent(event);*/
+        if(event.getIdEvent().getId()==-1)
+        {
         em.removeEvent(event);
         /*long diff = event.getEndDate().getTime() - event.getStartDate().getTime();
         Timestamp help;*/
@@ -134,16 +141,22 @@ public class WarningBean {
             }
         }
         return "calendar?faces-redirect=true";
+        }
+        {
+             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!","No Event To Modify"));
+    }
+
+        return "";
     }
     public void modify(Event event, Timestamp solut, EventBean eb) throws OverlappingException, InvalidDateException{
-        
+
         List<String> preferenceEvent = new ArrayList<>();
         preferenceEvent = pm.getPreferenceOfEvent(event);
         List<String> userEvent = new ArrayList<>();
         userEvent = uem.invitedUsersOfEvent(event);
         long diff = event.getEndDate().getTime() - event.getStartDate().getTime();
         Timestamp help;
-        
+
         event.setStartDate(solut);
         help = new Timestamp(0);
         help.setTime(solut.getTime() + diff);
@@ -151,9 +164,9 @@ public class WarningBean {
         eb.modifyFromWarning(event, preferenceEvent, userEvent);
     }
     /**
-     * 
+     *
      * @param id: it's the id of the event
-     * @return a string that contains the suggested day 
+     * @return a string that contains the suggested day
      */
     public String getDate(Long id) {
         if (id != -1) {
@@ -168,7 +181,7 @@ public class WarningBean {
         }
         return "";
     }
-    
+
     /*
      * ******************************************************************
      * GETTERS AND SETTERS
@@ -190,7 +203,7 @@ public class WarningBean {
     public void setWarnings(List<Event> warnings) {
         this.warnings = warnings;
     }
-    
+
     public boolean isEnableModify() {
         return enableModify;
     }

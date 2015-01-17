@@ -28,6 +28,8 @@ import control.MailSenderManagerInterface;
 import control.PreferenceManagerInterface;
 import control.UserEventManagerInterface;
 import control.UserManagerInterface;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
@@ -87,6 +89,7 @@ public class EventBean implements Serializable {
     private Date startDate = new Date();
     private Date endDate = new Date();
 
+    private Event tempEvent;
     //context used for messges
     /*
      *******************************************************************
@@ -106,10 +109,32 @@ public class EventBean implements Serializable {
             this.addUserEvent();
             context.addMessage(null, new FacesMessage("Successful", "Event Created"));
         } catch (OverlappingException e) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", e.getMessage()));
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", e.getMessage()));
         } catch (InvalidDateException e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Warning!", "Are you Serious!? , Date Not Correct"));
         }
+        beanEvent = new Event();
+    }
+
+       public void reCreate() throws OverlappingException, InvalidDateException {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+            this.addEvent();
+            this.savePreferences();
+            this.addUserEvent();
+            context.addMessage(null, new FacesMessage("Successful", "Event Recreated"));
+
+        beanEvent = new Event();
+    }
+
+    public void createFromModify() throws OverlappingException, InvalidDateException {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+            this.addEvent();
+            this.savePreferences();
+            this.addUserEvent();
+            context.addMessage(null, new FacesMessage("Successful", "Event Modifed"));
+
         beanEvent = new Event();
     }
 
@@ -122,12 +147,23 @@ public class EventBean implements Serializable {
 
         try {
             this.updateEvent();
-        } catch (OverlappingException e) {
+        } catch (OverlappingException | InvalidDateException e) {
+            beanEvent = tempEvent;
+            this.setStartDate(tempEvent.getStartDate());
+            this.setEndDate(tempEvent.getEndDate());
+            try {
+                this.reCreate();
+            } catch (OverlappingException ex) {
+                Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InvalidDateException ex) {
+                Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", e.getMessage()));
         }
         RequestContext request = RequestContext.getCurrentInstance();
         request.update("formcentral:schedule");
         this.resetBean();
+
     }
 
     /**
@@ -242,6 +278,7 @@ public class EventBean implements Serializable {
         selectedPreferences = new ArrayList<>();
         selectedUsers = new ArrayList<>();
         toSavePreferences = new ArrayList<>();
+        tempEvent = new Event();
     }
 
     private void loadPreferences() {
@@ -304,9 +341,10 @@ public class EventBean implements Serializable {
         return !this.isOwnEvent & !this.creating;
     }
 
-    private void updateEvent() throws OverlappingException {
+    private void updateEvent() throws OverlappingException, InvalidDateException {
+        tempEvent = em.loadSpecificEvent(beanEvent.getIdEvent().getId().toString());
         em.removeEvent(beanEvent);
-        this.create();
+        this.createFromModify();
     }
 
     private void addUserEvent() {
