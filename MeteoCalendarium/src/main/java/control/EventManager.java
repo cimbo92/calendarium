@@ -204,9 +204,10 @@ public class EventManager implements EventManagerInterface {
         return query.getResultList();
     }
     
+    
     private boolean totalOverlapping(Timestamp startFirst, Timestamp endFirst, Timestamp startSecond, Timestamp endSecond){
-        return (   (startFirst.compareTo(endSecond) < 0) ||  (startFirst.compareTo(endSecond) == 0) ) &&
-                (   (startSecond.compareTo(endFirst) < 0) ||  (startSecond.compareTo(endFirst) == 0) );
+        return ( startFirst.before(endSecond) || startFirst.equals(endSecond) ) &&
+                (  startSecond.before(endFirst) || startSecond.equals(endFirst) );
     }
     
     
