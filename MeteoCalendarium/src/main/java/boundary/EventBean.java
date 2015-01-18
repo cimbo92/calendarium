@@ -61,7 +61,9 @@ public class EventBean implements Serializable {
     @EJB
     private MailSenderManagerInterface mailSender;
 
-    private FacesContext c;
+    FacesContext c;
+    
+    RequestContext r;
 
     /*
     *******************************************************************
@@ -193,13 +195,20 @@ public class EventBean implements Serializable {
      */
     public void cancel() {
         FacesContext context = FacesContext.getCurrentInstance();
+        if(context == null){
+            context = c;
+        }
         Event event = new Event();
         event.loadEvent(beanEvent);
         em.removeEvent(event);
         RequestContext request = RequestContext.getCurrentInstance();
+        if(request == null){
+            request = r;
+        }
         request.update("formcentral:schedule");
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "Event delete completed"));
     }
+    
 
     /**
      * After accepting an invitation , The function revert decision of the user
