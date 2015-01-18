@@ -135,7 +135,7 @@ public class Event implements Serializable {
     }
 
     public String getTitle() {
-        return title;
+        return title+" ";
     }
 
     public void setTitle(String Title) {
@@ -143,7 +143,7 @@ public class Event implements Serializable {
     }
 
     public String getDescription() {
-        return description;
+        return description+" ";
     }
 
     public void setDescription(String description) {
