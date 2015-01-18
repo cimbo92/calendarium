@@ -13,7 +13,6 @@ import entity.IDEvent;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -30,13 +29,13 @@ import javax.persistence.Query;
 @Stateless
 @Remote(EventManagerInterface.class)
 public class EventManager implements EventManagerInterface {
-    
+
     @PersistenceContext
     private EntityManager em;
-    
+
     @Inject
             Principal principal;
-    
+
     /**
      * add Event and place if not already saved ,
      *
@@ -46,7 +45,7 @@ public class EventManager implements EventManagerInterface {
      */
     @Override
     public void addEvent(Event event, User user) throws OverlappingException {
-        
+
         if (this.searchOverlapping(event, user)) {
             throw new OverlappingException();
         } else {
@@ -54,9 +53,9 @@ public class EventManager implements EventManagerInterface {
             em.persist(event.getIdEvent());
             em.persist(event);
         }
-        
+
     }
-    
+
     /**
      * Check if there is overlapping with existing events
      *
@@ -66,13 +65,14 @@ public class EventManager implements EventManagerInterface {
      */
     @Override
     public boolean searchOverlapping(Event event, User user) {
-        
+
         List<Event> list;
-        
-        Query query = em.createQuery("SELECT e FROM UserEvent ue JOIN User u JOIN Event e WHERE u.email = :email AND (ue.creator = 1 OR ue.accepted = 1)").setParameter("email", user.getEmail());
-        
+
+      //  Query query = em.createQuery("SELECT e FROM UserEvent ue JOIN User u JOIN Event e WHERE u.email = :email AND (ue.creator = 1 OR ue.accepted = 1)").setParameter("email", user.getEmail());
+        Query query = em.createQuery("SELECT ue.event FROM UserEvent ue  WHERE (ue.user = :user AND (ue.creator =1 OR ue.accepted = 1))").setParameter("user",user);
+
         list = query.getResultList();
-        
+
         for (Event e : list) {
             if (totalOverlapping(e.getStartDate(), e.getEndDate(), event.getStartDate(), event.getEndDate())) {
                 return true;
@@ -80,7 +80,7 @@ public class EventManager implements EventManagerInterface {
         }
         return false;
     }
-    
+
     /**
      * return true if user is creator of event
      * @param event
@@ -94,8 +94,8 @@ public class EventManager implements EventManagerInterface {
         List<UserEvent> result = new ArrayList<>(query.getResultList());
         return result.get(0).isCreator();
     }
-    
-    
+
+
     /**
      * remove event and related UserEvent , ID m Preferences
      *
@@ -103,7 +103,7 @@ public class EventManager implements EventManagerInterface {
      */
     @Override
     public void removeEvent(Event event) {
-        
+
         Query query1 = em.createQuery("Delete From Preference p Where p.event= :event").setParameter(("event"), event);
         query1.executeUpdate();
         Query query2 = em.createQuery("Delete From UserEvent ue Where ue.event= :event").setParameter(("event"), event);
@@ -113,7 +113,7 @@ public class EventManager implements EventManagerInterface {
         Query query4 = em.createQuery("Delete From IDEvent e Where e.event= :event").setParameter(("event"), event);
         query4.executeUpdate();
     }
-    
+
     /**
      * return Event with iDEvent
      *
@@ -125,10 +125,10 @@ public class EventManager implements EventManagerInterface {
         IDEvent id = new IDEvent( Long.parseLong(iDEvent));
         Query query = em.createQuery("SELECT e FROM Event e WHERE e.idEvent =:id").setParameter("id", id);
         List<Event> result = new ArrayList<>(query.getResultList());
-        
+
         return result.get(0);
     }
-    
+
     /**
      * return Invitations of User
      *
@@ -137,13 +137,13 @@ public class EventManager implements EventManagerInterface {
      */
     @Override
     public List<Event> findInvitatedEvent(User user) {
-        
+
         Query query = em.createQuery("SELECT ue.event FROM UserEvent ue WHERE ue.user = :user AND ue.creator=false and ue.view=false").setParameter(("user"), user);
         List<Event> tempSet = new ArrayList<>(query.getResultList());
-        
+
         return (List) tempSet;
     }
-    
+
     /**
      * return User Events ( Created or Accepted)
      *
@@ -152,13 +152,13 @@ public class EventManager implements EventManagerInterface {
      */
     @Override
     public List<Event> loadCalendar(User user) {
-        
+
         Query query = em.createQuery("SELECT ue.event FROM UserEvent ue WHERE (ue.user = :user AND (ue.accepted=true OR ue.creator=true))").setParameter(("user"), user);
         List<Event> tempSet = new ArrayList<>(query.getResultList());
-        
+
         return tempSet;
     }
-    
+
     /**
      * load Public calendar of the User
      *
@@ -167,13 +167,13 @@ public class EventManager implements EventManagerInterface {
      */
     @Override
     public List<Event> loadPublicCalendar(String username) {
-        
+
         Query query = em.createQuery("SELECT ue.event FROM UserEvent ue WHERE (ue.user.email = :user AND (ue.accepted=true OR ue.creator=true) AND ue.event.publicEvent=true)").setParameter(("user"), username);
         List<Event> tempSet = new ArrayList<>(query.getResultList());
-        
+
         return tempSet;
     }
-    
+
     /**
      * remove all Event of an user for Importing
      *
@@ -190,7 +190,7 @@ public class EventManager implements EventManagerInterface {
         query3.executeUpdate();
         System.out.println("Delete completed");
     }
-    
+
     /**
      * return events created by User
      *
@@ -199,18 +199,18 @@ public class EventManager implements EventManagerInterface {
      */
     @Override
     public List<Event> getEventsCreated(User user) {
-        
+
         Query query = em.createQuery("Select e From Event e Where e.creator.email= :mail").setParameter("mail", user.getEmail());
         return query.getResultList();
     }
-    
-    
+
+
     private boolean totalOverlapping(Timestamp startFirst, Timestamp endFirst, Timestamp startSecond, Timestamp endSecond){
         return ( startFirst.before(endSecond) || startFirst.equals(endSecond) ) &&
                 (  startSecond.before(endFirst) || startSecond.equals(endFirst) );
     }
-    
-    
+
+
     /**
      * return true if event is indoor
      * @param event
@@ -222,5 +222,5 @@ public class EventManager implements EventManagerInterface {
         List<Event> result = new ArrayList<>(query.getResultList());
         return !result.get(0).isOutdoor();
     }
-    
+
 }

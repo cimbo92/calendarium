@@ -88,9 +88,8 @@ public class InvitationBean implements Serializable {
      * User Accept Invitation
      *
      * @param event related @Event
-     * @return
      */
-    public String acceptInvite(Event event) {
+    public void acceptInvite(Event event) {
         FacesContext context = FacesContext.getCurrentInstance();
         UserEvent ue = uem.getUserEventofUser(event, um.getLoggedUser());
 
@@ -98,12 +97,10 @@ public class InvitationBean implements Serializable {
         if (!em.searchOverlapping(event, um.getLoggedUser())) {
             uem.modifyUserEvent(ue, true, true);
             invites.remove(event);
-            return "calendar?faces-redirect=true";
+
         } else {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Found Overlapping , Impossible to Accept", null));
-            return "";
         }
-
     }
 
     /**

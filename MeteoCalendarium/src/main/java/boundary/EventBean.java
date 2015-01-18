@@ -102,8 +102,11 @@ public class EventBean implements Serializable {
      */
     public void create() {
         FacesContext context = FacesContext.getCurrentInstance();
-
-        try {
+        if(this.beanEvent.getTitle().isEmpty() || this.getBeanEvent().getPlace().getCity().isEmpty() || this.getBeanEvent().getDescription().isEmpty())
+        {
+                   context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Warning!", "Insert All Input"));
+        }else{
+             try {
             this.addEvent();
             this.savePreferences();
             this.addUserEvent();
@@ -114,7 +117,9 @@ public class EventBean implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Warning!", "Are you Serious!? , Date Not Correct"));
         }
         beanEvent = new Event();
+        }
     }
+
 
        public void reCreate() throws OverlappingException, InvalidDateException {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -165,6 +170,7 @@ public class EventBean implements Serializable {
         this.resetBean();
 
     }
+
 
     /**
      * Function that cancel ( and all consequent invitations and preferences )
@@ -273,7 +279,7 @@ public class EventBean implements Serializable {
      PRIVATE UTILITY FUNCTIONS
      *******************************************************************
      */
-    private void resetBean() {
+    public void resetBean() {
         beanEvent = new Event();
         selectedPreferences = new ArrayList<>();
         selectedUsers = new ArrayList<>();

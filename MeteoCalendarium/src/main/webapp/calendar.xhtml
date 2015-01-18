@@ -84,12 +84,12 @@
                         </p:carousel> 
                     </p:dialog>
 
-                    <p:dialog header="Invitations" widgetVar="dlg-invitations" showEffect="fade" hideEffect="fade"  id="inv-dialog" width="800px" height="300px" resizable="false">
+                    <p:dialog header="Invitations" widgetVar="dlg-invitations" onShow="#{eventBean.hide()}" showEffect="fade" hideEffect="fade"  id="inv-dialog" width="800px" height="300px" resizable="false">
+                        <h:panelGrid>
 
-                        <p:carousel id="carouselwatning" value="#{invitationBean.invites}" var="event" numVisible="1" itemStyle="height:200px;width:750px;" effect="easeInStrong" headerText="Invitation" style="margin-bottom:0;">
+                        <p:carousel value="#{invitationBean.invites}" var="event" numVisible="1" itemStyle="height:200px;width:750px;" effect="easeInStrong" headerText="Invitation" style="margin-bottom:0;">
 
                             <p:tab> 
-
                                 <p:panelGrid columns="2" columnClasses="label,value">
                                     <h:outputText value="Title:" />
                                     <h:outputText value="#{event.title}"  />
@@ -105,18 +105,22 @@
 
                                     <h:outputText value="Description:"/>
                                     <h:outputText value="#{event.description}" />
-                                    <p:commandButton value="Accept" rendered="#{invitationBean.enableInvitation}" id="accept-inv" update=":formcentral:growl,:formcentral:schedule" action="#{invitationBean.acceptInvite(event)}" actionListener="#{scheduleView.loadCalendar()}" oncomplete="PF('myschedule').update();"  />
-                                    <p:commandButton value="Decline"  rendered="#{invitationBean.enableInvitation}" id="decline-inv"  update=":formcentral:inv-dialog"  action="#{invitationBean.declineInvite(event)}" oncomplete="PF('myschedule').update()" />                                   
+                               
                                 </p:panelGrid>
+                   
                             </p:tab>
+                                                            
+                            <p:commandButton value="Accept" rendered="#{invitationBean.enableInvitation}" action="#{invitationBean.acceptInvite(event)}" actionListener="#{scheduleView.loadCalendar()}" oncomplete="PF('myschedule').update();PF('dlg-invitations').hide()"  />
+                                    <p:commandButton value="Decline"  rendered="#{invitationBean.enableInvitation}" action="#{invitationBean.declineInvite(event)}" oncomplete="PF('myschedule').update();PF('dlg-invitations').hide()" />                        
                         </p:carousel> 
+                        </h:panelGrid>
                     </p:dialog>
 
-                    <p:dialog widgetVar="eventDialog" header="Event Details"  showEffect="fade" hideEffect="fade"   >
+                    <p:dialog widgetVar="eventDialog" header="Event Details"  showEffect="fade" hideEffect="fade"  >
                         <h:panelGrid  id="eventDetails" columns="2">
 
                             <h:outputLabel for="title" value="Title:" />
-                            <p:inputText disabled="#{!eventBean.isOwnEvent}" id="title"  value="#{eventBean.beanEvent.title}" required="true" requiredMessage="Insert Title">
+                            <p:inputText disabled="#{!eventBean.isOwnEvent}" id="title"  value="#{eventBean.beanEvent.title}" required="true" requiredMessage="Insert Title" >
                             </p:inputText>
 
                             <p:outputLabel for="startDate" value="From:" />
@@ -126,7 +130,7 @@
                             <p:calendar  disabled="#{!eventBean.isOwnEvent}" id="endDate" value="#{eventBean.endDate}" pattern="MM/dd/yyyy HH:mm:ss"  required="true" requiredMessage="Insert EndDate"/>
 
                             <h:outputLabel for="place" value="Place:" />
-                            <p:inputText  disabled="#{!eventBean.isOwnEvent}" id="place" value="#{eventBean.beanEvent.place.city}" required="true" requiredMessage="Insert Place"/>
+                            <p:inputText  disabled="#{!eventBean.isOwnEvent}" id="place" value="#{eventBean.beanEvent.place.city}" required="true" requiredMessage="Insert Location" />
 
                             <p:outputLabel for="outdoor" value="In/Out"  />
                             <p:selectOneRadio disabled="#{!eventBean.isOwnEvent}" id="outdoor" value="#{eventBean.beanEvent.outdoor}"  required="true">
@@ -136,7 +140,7 @@
                             </p:selectOneRadio>
 
                             <p:outputLabel for="public" value="In/Out"  />
-                            <p:selectOneRadio  disabled="#{!eventBean.isOwnEvent}" id="public" value="#{eventBean.beanEvent.publicEvent}" required="true" >
+                            <p:selectOneRadio  disabled="#{!eventBean.isOwnEvent}" id="public" value="#{eventBean.beanEvent.publicEvent}"  >
                                 <f:selectItem itemLabel="Public" itemValue="true"/>
                                 <f:selectItem itemLabel="Private" itemValue="false" />
                             </p:selectOneRadio>
@@ -155,12 +159,15 @@
                                 <f:selectItems value="#{eventBean.listUser()}" var="listUser" itemLabel="#{listUser}" itemValue="#{listUser}" />
                             </p:selectManyMenu>
 
-                            <p:commandButton id="declineButton" value="Decline" action="#{eventBean.decline()}" actionListener="#{scheduleView.loadCalendar()}" rendered="#{eventBean.canDecline}" update="growl" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
-                            <p:commandButton id="modifyButton" value="Modify" actionListener="#{eventBean.modify()}" action="#{scheduleView.loadCalendar()}" rendered="#{!eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('myschedule').update();PF('eventDialog').hide();"  />
+                                      <p:commandButton id="declineButton" value="Decline" action="#{eventBean.decline()}" actionListener="#{scheduleView.loadCalendar()}" rendered="#{eventBean.canDecline}" update="growl" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+                            <p:commandButton id="modifyButton" value="Modify" actionListener="#{eventBean.modify()}" action="#{scheduleView.loadCalendar()}" rendered="#{!eventBean.creating}" update="growl"  disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"  />
                             <p:commandButton id="addButton" value="Save" actionListener="#{eventBean.create()}" action="#{scheduleView.loadCalendar()}"  rendered="#{eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />  
                             <p:commandButton id="deleteButton" value="Delete" actionListener="#{eventBean.cancel()}" action="#{scheduleView.loadCalendar()}" rendered="#{!eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />  
 
+                            
                         </h:panelGrid>
+                        
+                  
                     </p:dialog>
 
                     <p:dialog widgetVar="eventDialogPublic" showEffect="fade" hideEffect="fade"  header="Event Details" >
@@ -201,7 +208,7 @@
 
             <p:dock position="bottom">  
                 <p:menuitem  icon="https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/warnings.png"  id="warn" value="Warnings" onclick="PF('dlg-warnings').show();"/>
-                <p:menuitem  icon="https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/invitations.png" value="Invitations" id="invitations" oncomplete="PF('dlg-invitations').show();" />
+                <p:menuitem  icon="https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/invitations.png" value="Invitations" id="invitations" onclick="PF('dlg-invitations').show();" />
                 <p:menuitem  icon="https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/users.png" value=" Users" id="utenti"  oncomplete="PF('dlg-users').show();"/>
                 <p:menuitem  icon="https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/Settings.png" value="Settings" id="settings" oncomplete="PF('dlg-settings').show();" />                 
             </p:dock>  
@@ -216,8 +223,6 @@
             .Center{
 
             }
-
-
 
             .ui-dock-bottom {
                 width: 100%;
