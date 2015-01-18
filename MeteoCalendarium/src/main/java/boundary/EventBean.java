@@ -5,6 +5,7 @@
  */
 package boundary;
 
+import HelpClasses.EventCreation;
 import HelpClasses.InvalidDateException;
 import HelpClasses.OverlappingException;
 import entity.Event;
@@ -79,17 +80,25 @@ public class EventBean implements Serializable {
      */
     private List<String> selectedUsers = new ArrayList<>();
     private UserEvent userEvent;
-    private Event beanEvent;
+    private EventCreation beanEvent;
 
     //booleans used to enable/disable buttons in dialog
     private boolean isOwnEvent;
     private boolean creating;
+    private boolean required=true;
 
+    public boolean isRequired() {
+        return required;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
+    }
     //Utility Date to convert timestamps
     private Date startDate = new Date();
     private Date endDate = new Date();
 
-    private Event tempEvent;
+    private EventCreation tempEvent;
     //context used for messges
     /*
      *******************************************************************
@@ -102,10 +111,6 @@ public class EventBean implements Serializable {
      */
     public void create() {
         FacesContext context = FacesContext.getCurrentInstance();
-        if(this.beanEvent.getTitle().isEmpty() || this.getBeanEvent().getPlace().getCity().isEmpty() || this.getBeanEvent().getDescription().isEmpty())
-        {
-                   context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Warning!", "Insert All Input"));
-        }else{
              try {
             this.addEvent();
             this.savePreferences();
@@ -116,10 +121,13 @@ public class EventBean implements Serializable {
         } catch (InvalidDateException e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Warning!", "Are you Serious!? , Date Not Correct"));
         }
-        beanEvent = new Event();
-        }
+        beanEvent = new EventCreation();
+
     }
 
+    public void unload(){
+        this.required=false;
+    }
 
        public void reCreate() throws OverlappingException, InvalidDateException {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -129,7 +137,7 @@ public class EventBean implements Serializable {
             this.addUserEvent();
             context.addMessage(null, new FacesMessage("Successful", "Event Recreated"));
 
-        beanEvent = new Event();
+        beanEvent = new EventCreation();
     }
 
     public void createFromModify() throws OverlappingException, InvalidDateException {
@@ -140,7 +148,7 @@ public class EventBean implements Serializable {
             this.addUserEvent();
             context.addMessage(null, new FacesMessage("Successful", "Event Modifed"));
 
-        beanEvent = new Event();
+        beanEvent = new EventCreation();
     }
 
     /**
@@ -178,8 +186,9 @@ public class EventBean implements Serializable {
      */
     public void cancel() {
         FacesContext context = FacesContext.getCurrentInstance();
-
-        em.removeEvent(beanEvent);
+        Event event = new Event();
+        event.loadEvent(beanEvent);
+        em.removeEvent(event);
         RequestContext request = RequestContext.getCurrentInstance();
         request.update("formcentral:schedule");
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "Event delete completed"));
@@ -192,7 +201,10 @@ public class EventBean implements Serializable {
      * @return String for redirecting page
      */
     public String decline() {
-        UserEvent ue = uem.getUserEventofUser(beanEvent, um.getLoggedUser());
+         Event event = new Event();
+         event.loadEvent(beanEvent);
+
+        UserEvent ue = uem.getUserEventofUser(event, um.getLoggedUser());
         uem.modifyUserEvent(ue, false, false);
         return "calendar?faces-redirect=true";
     }
@@ -209,7 +221,6 @@ public class EventBean implements Serializable {
      */
     public void modifyFromWarning(Event event, List<String> pref, List<String> userEvent) throws OverlappingException, InvalidDateException {
         this.resetBean();
-        this.beanEvent = event;
         this.selectedUsers = userEvent;
         this.selectedPreferences = pref;
         this.addEvent();
@@ -228,8 +239,10 @@ public class EventBean implements Serializable {
 
         this.resetBean();
         DefaultScheduleEvent selectedEvent = (DefaultScheduleEvent) selectEvent.getObject();
-        beanEvent = em.loadSpecificEvent(selectedEvent.getDescription());
-        this.isOwnEvent = em.isCreator(beanEvent, um.getLoggedUser());
+        Event event = new Event();
+        event = em.loadSpecificEvent(selectedEvent.getDescription());
+        beanEvent.loadEvent(event);
+        this.isOwnEvent = em.isCreator(event, um.getLoggedUser());
         this.creating=false;
         beanEvent.getIdEvent().setId(Long.parseLong(selectedEvent.getDescription()));
         this.startDate = selectedEvent.getStartDate();
@@ -280,22 +293,27 @@ public class EventBean implements Serializable {
      *******************************************************************
      */
     public void resetBean() {
-        beanEvent = new Event();
+        beanEvent = new EventCreation();
         selectedPreferences = new ArrayList<>();
         selectedUsers = new ArrayList<>();
         toSavePreferences = new ArrayList<>();
-        tempEvent = new Event();
+        tempEvent = new EventCreation();
+        required=true;
     }
 
     private void loadPreferences() {
-        List<String> preferenzeEvento = pm.getPreferenceOfEvent(beanEvent);
+        Event event = new Event();
+        event.loadEvent(beanEvent);
+        List<String> preferenzeEvento = pm.getPreferenceOfEvent(event);
         for (String preferenza : preferenzeEvento) {
             this.selectedPreferences.add(preferenza);
         }
     }
 
     private void loadInvitations() {
-        List<String> invitedUsers = uem.invitedUsersOfEvent(beanEvent);
+        Event event = new Event();
+        event.loadEvent(beanEvent);
+        List<String> invitedUsers = uem.invitedUsersOfEvent(event);
         for (String invitedUser : invitedUsers) {
             this.selectedUsers.add(invitedUser);
         }
@@ -323,7 +341,10 @@ public class EventBean implements Serializable {
             IDEvent idEv = new IDEvent(idm.findFirstFreeID());
             beanEvent.setIdEvent(idEv);
             beanEvent.setCreator(um.getLoggedUser());
-            em.addEvent(beanEvent, um.getLoggedUser());
+
+            Event event = new Event();
+            event.loadEvent(beanEvent);
+            em.addEvent(event, um.getLoggedUser());
         } else {
             throw new InvalidDateException();
         }
@@ -331,13 +352,16 @@ public class EventBean implements Serializable {
 
     private void savePreferences() {
         for (int i = 0; i < selectedPreferences.size(); i++) {
-            toSavePreferences.add(new Preference(beanEvent, selectedPreferences.get(i)));
+             Event event = new Event();
+            event.loadEvent(beanEvent);
+            toSavePreferences.add(new Preference(event, selectedPreferences.get(i)));
             pm.addPreference(toSavePreferences.get(i));
         }
         if (selectedPreferences.isEmpty()) {
             for (int i = 0; i < this.listPref().size(); i++) {
-
-                pm.addPreference(new Preference(beanEvent, listPref().get(i)));
+ Event event = new Event();
+            event.loadEvent(beanEvent);
+                pm.addPreference(new Preference(event, listPref().get(i)));
             }
         }
         toSavePreferences = new ArrayList<>();
@@ -348,17 +372,21 @@ public class EventBean implements Serializable {
     }
 
     private void updateEvent() throws OverlappingException, InvalidDateException {
-        tempEvent = em.loadSpecificEvent(beanEvent.getIdEvent().getId().toString());
-        em.removeEvent(beanEvent);
+        Event oldEvent = em.loadSpecificEvent(beanEvent.getIdEvent().getId().toString());
+        tempEvent.loadEvent(oldEvent);
+        Event event = new Event();
+        event.loadEvent(beanEvent);
+        em.removeEvent(event);
         this.createFromModify();
     }
 
     private void addUserEvent() {
-
-        userEvent = new UserEvent(beanEvent, um.getLoggedUser(), true);
+ Event event = new Event();
+            event.loadEvent(beanEvent);
+        userEvent = new UserEvent(event, um.getLoggedUser(), true);
         uem.addUserEvent(userEvent);
         for (String invitated1 : selectedUsers) {
-            userEvent = new UserEvent(beanEvent, um.findByMail(invitated1), false);
+            userEvent = new UserEvent(event, um.findByMail(invitated1), false);
             uem.addUserEvent(userEvent);
             mailSender.sendMail(invitated1, "Invitation", userEvent.getEvent().toString());
         }
@@ -413,14 +441,14 @@ public class EventBean implements Serializable {
         this.endDate = endDate;
     }
 
-    public Event getBeanEvent() {
+    public EventCreation getBeanEvent() {
         if (beanEvent == null) {
-            beanEvent = new Event();
+            beanEvent = new EventCreation();
         }
         return beanEvent;
     }
 
-    public void setBeanEvent(Event beanEvent) {
+    public void setBeanEvent(EventCreation beanEvent) {
         this.beanEvent = beanEvent;
     }
 

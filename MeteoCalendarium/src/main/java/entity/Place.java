@@ -26,7 +26,7 @@ public class Place implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @NotNull(message = "May not be empty")
+    @NotNull(message = "May not be empty31")
     private String city;
 
     /*
@@ -41,5 +41,11 @@ public class Place implements Serializable {
     public void setCity(String city) {
         this.city = city.toLowerCase();
     }
+    public Place(){
 
+    }
+    public Place(String city)
+    {
+        this.city=city;
+    }
 }

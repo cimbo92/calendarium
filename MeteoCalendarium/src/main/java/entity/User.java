@@ -35,11 +35,11 @@ public class User implements Serializable {
     @Id
     @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
             message = "invalid email")
-    @NotNull(message = "May not be empty")
+    @NotNull(message = "May not be empty11")
     private String email;
-    @NotNull(message = "May not be empty")
+    @NotNull(message = "May not be empty21")
     private String password;
-    @NotNull(message = "May not be empty")
+    @NotNull(message = "May not be empty31")
     private String groupName;
     @NotNull
     private boolean publicCalendar = false;

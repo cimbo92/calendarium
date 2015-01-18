@@ -5,6 +5,7 @@
  */
 package boundary;
 
+import HelpClasses.EventCreation;
 import entity.Event;
 import entity.UserEvent;
 import java.io.Serializable;
@@ -50,7 +51,7 @@ public class InvitationBean implements Serializable {
     /**
      * Event which user is invited
      */
-    private List<Event> invites;
+    private List<EventCreation> invites;
 
     //boolean used for enable/disable buttons
     private boolean enableInvitation = false;
@@ -74,11 +75,17 @@ public class InvitationBean implements Serializable {
      * query database and load Invitations
      */
     public void loadInvites() {
-        invites = em.findInvitatedEvent(um.getLoggedUser());
+        List<Event > events = em.findInvitatedEvent(um.getLoggedUser());
+        for(int i=0;i<events.size();i++)
+        {
+            EventCreation temp = new EventCreation();
+            temp.loadEvent(events.get(i));
+            invites.add(temp);
+        }
         enableInvitation = true;
         if (invites.isEmpty()) {
             enableInvitation = false;
-            Event noInvitation = new Event();
+            EventCreation noInvitation = new EventCreation();
             noInvitation.setTitle("No Invitation");
             invites.add(noInvitation);
         }
@@ -89,17 +96,21 @@ public class InvitationBean implements Serializable {
      *
      * @param event related @Event
      */
-    public void acceptInvite(Event event) {
+    public String acceptInvite(EventCreation eventC) {
         FacesContext context = FacesContext.getCurrentInstance();
+        Event event = new Event();
+        event.loadEvent(eventC);
         UserEvent ue = uem.getUserEventofUser(event, um.getLoggedUser());
 
         //Before Accepting controls that it is possible ( Overlapping)
         if (!em.searchOverlapping(event, um.getLoggedUser())) {
             uem.modifyUserEvent(ue, true, true);
-            invites.remove(event);
+            invites.remove(eventC);
+          return "calendar?faces-redirect=true";
 
         } else {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Found Overlapping , Impossible to Accept", null));
+            return"";
         }
     }
 
@@ -108,17 +119,19 @@ public class InvitationBean implements Serializable {
      *
      * @param event
      */
-    public void declineInvite(Event event) {
+    public String declineInvite(EventCreation eventC) {
+        Event event = new Event();
+        event.loadEvent(eventC);
         UserEvent ue = uem.getUserEventofUser(event, um.getLoggedUser());
         uem.modifyUserEvent(ue, false, true);
-        invites.remove(event);
+        invites.remove(eventC);
         if (invites.isEmpty()) {
             enableInvitation = false;
-            Event noInvitation = new Event();
+             EventCreation noInvitation = new EventCreation();
             noInvitation.setTitle("No Invitation");
             invites.add(noInvitation);
         }
-
+return "calendar?faces-redirect=true";
     }
 
     /*
@@ -134,11 +147,11 @@ public class InvitationBean implements Serializable {
         this.enableInvitation = enableInvitation;
     }
 
-    public List<Event> getInvites() {
+    public List<EventCreation> getInvites() {
         return invites;
     }
 
-    public void setInvites(List<Event> invites) {
+    public void setInvites(List<EventCreation> invites) {
         this.invites = invites;
     }
 

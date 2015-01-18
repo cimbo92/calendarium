@@ -39,7 +39,7 @@ public class Forecast implements Serializable {
     @ManyToOne(targetEntity = MainCondition.class, optional = false)
     private MainCondition mainCondition;
 
-    @NotNull(message = "May not be empty")
+    @NotNull(message = "May not be empty4")
     private Timestamp date;
 
      /*
@@ -86,7 +86,7 @@ public class Forecast implements Serializable {
         this.date = date;
     }
 
-    
+
     @Override
     public boolean equals(Object obj){
         if(!(obj instanceof Forecast)){

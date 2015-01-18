@@ -5,6 +5,7 @@
  */
 package entity;
 
+import HelpClasses.EventCreation;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -35,31 +36,31 @@ public class Event implements Serializable {
     @OneToOne
    private IDEvent idEvent;
 
-    @NotNull(message = "May not be empty")
+    @NotNull(message = "May not be empty1")
     @ManyToOne(targetEntity = User.class, optional = false)
     private User creator;
 
-    @NotNull(message = "May not be empty")
+    @NotNull(message = "May not be empty2")
     private String title;
 
-    @NotNull(message = "May not be empty")
+    @NotNull(message = "May not be empty3")
     private Timestamp startDate;
 
-    @NotNull(message = "May not be empty")
+    @NotNull(message = "May not be empty4")
     private Timestamp endDate;
 
-    @NotNull(message = "May not be empty")
+    @NotNull(message = "May not be empty5")
     private String description;
 
-    @NotNull(message = "May not be empty")
+    @NotNull(message = "May not be empty6")
     @ManyToOne(targetEntity = Place.class, optional = false, cascade={CascadeType.MERGE},fetch=FetchType.EAGER)
     private Place place = new Place();
 
-    @NotNull(message = "May not be empty")
+    @NotNull(message = "May not be empty7")
 
     private boolean outdoor;
 
-    @NotNull(message = "May not be empty")
+    @NotNull(message = "May not be empty8")
     private boolean publicEvent;
 
 
@@ -85,6 +86,18 @@ public class Event implements Serializable {
     public void convertEndDate(Date date)
     {
        endDate = new java.sql.Timestamp(date.getTime());
+    }
+
+    public void loadEvent(EventCreation e){
+        this.title = e.getTitle();
+        this.creator = e.getCreator();
+        this.description = e.getDescription();
+        this.idEvent = e.getIdEvent();
+        this.outdoor = e.isOutdoor();
+        this.place = new Place(e.getPlace());
+        this.publicEvent = e.isPublicEvent();
+        this.startDate = e.getStartDate();
+        this.endDate = e.getEndDate();
     }
 
     /*
@@ -135,7 +148,9 @@ public class Event implements Serializable {
     }
 
     public String getTitle() {
-        return title+" ";
+        {
+        return title;
+        }
     }
 
     public void setTitle(String Title) {
@@ -143,7 +158,7 @@ public class Event implements Serializable {
     }
 
     public String getDescription() {
-        return description+" ";
+        return description;
     }
 
     public void setDescription(String description) {
