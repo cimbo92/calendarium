@@ -50,7 +50,7 @@
                         </h:panelGrid>
                     </p:dialog>
 
-                    <p:dialog header="utenti"  showEffect="fade" hideEffect="fade"  widgetVar="dlg-users">
+                    <p:dialog header="Users"  showEffect="fade" hideEffect="fade"  widgetVar="dlg-users">
                         <p:selectOneMenu  value="#{scheduleViewPublic.username}" 
                                           filter="true" filterMatchMode="contains"  >
                             <f:selectItems value="#{scheduleViewPublic.users}" />                             
@@ -58,7 +58,7 @@
                         <p:commandButton value="Go" id="goToCalendar" actionListener="#{scheduleViewPublic.loadCalendar()}" update="panelpubcal" process="@parent" oncomplete="PF('dlg-pubcal').show();PF('dlg-users').hide()" />
                     </p:dialog>
 
-                    <p:dialog header="Public Calendar of #{scheduleViewPublic.username}"  showEffect="fade" hideEffect="fade"  id="dialogpubcal" widgetVar="dlg-pubcal">
+                    <p:dialog header="Public Calendar"   showEffect="fade" hideEffect="fade"  id="dialogpubcal" widgetVar="dlg-pubcal">
                         <h:panelGrid id="panelpubcal" columnClasses="value" style ="margin : 0px auto">
                             <p:schedule id="pubcal" value="#{scheduleViewPublic.eventModel}"  widgetVar="publicCalendar" timeZone="GMT+2">
                                 <p:ajax event="eventSelect"  listener="#{publicEventBean.onEventSelect}" update="eventDetailsPublic" oncomplete="PF('eventDialogPublic').show();" />
@@ -76,7 +76,7 @@
                                     <h:outputText value="It's possible to postpone the event at: " />
                                     <h:outputText value="#{warningBean.getDate(eventWarning.idEvent.id)}" />
                                     <f:facet name="footer">
-                                        <p:commandButton value="Modify" rendered="#{warningBean.enableModify}" id="accept-inv" action="#{warningBean.modifyButton(eventWarning, eventBean)}" oncomplete="PF('dlg-warnings').hide();" process="@this">
+                                        <p:commandButton value="Modify" rendered="#{warningBean.enableModify}" id="enablemodify" action="#{warningBean.modifyButton(eventWarning, eventBean)}" update=":formcentral:growl" oncomplete="PF('dlg-warnings').hide();" >
                                         </p:commandButton>
                                     </f:facet>
                                 </p:panelGrid>

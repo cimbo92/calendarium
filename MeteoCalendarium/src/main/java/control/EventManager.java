@@ -138,7 +138,7 @@ public class EventManager implements EventManagerInterface {
     @Override
     public List<Event> findInvitatedEvent(User user) {
 
-        Query query = em.createNamedQuery("SELECT ue.event FROM UserEvent ue WHERE ue.user = :user AND ue.creator=false and ue.view=false").setParameter(("user"), user);
+        Query query = em.createQuery("SELECT ue.event FROM UserEvent ue WHERE ue.user = :user AND ue.creator=false and ue.view=false").setParameter(("user"), user);
         List<Event> tempSet = new ArrayList<>(query.getResultList());
 
         return (List) tempSet;
