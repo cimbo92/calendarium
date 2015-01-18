@@ -200,7 +200,7 @@ public class EventManager implements EventManagerInterface {
     @Override
     public List<Event> getEventsCreated(User user) {
 
-        Query query = em.createQuery("Select e From Event e Where e.creator.email= :mail").setParameter("mail", user.getEmail());
+        Query query = em.createNamedQuery("Select e From Event e Where e.creator.email= :mail").setParameter("mail", user.getEmail());
         return query.getResultList();
     }
 
@@ -223,4 +223,21 @@ public class EventManager implements EventManagerInterface {
         return !result.get(0).isOutdoor();
     }
 
+    public EntityManager getEm() {
+        return em;
+    }
+
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
+
+    public Principal getPrincipal() {
+        return principal;
+    }
+
+    public void setPrincipal(Principal principal) {
+        this.principal = principal;
+    }
+
+    
 }
