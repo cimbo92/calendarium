@@ -62,7 +62,7 @@ public class EventBean implements Serializable {
     private MailSenderManagerInterface mailSender;
 
     FacesContext c;
-    
+
     RequestContext r;
 
     /*
@@ -208,7 +208,7 @@ public class EventBean implements Serializable {
         request.update("formcentral:schedule");
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "Event delete completed"));
     }
-    
+
 
     /**
      * After accepting an invitation , The function revert decision of the user
@@ -239,6 +239,7 @@ public class EventBean implements Serializable {
         this.resetBean();
         this.selectedUsers = userEvent;
         this.selectedPreferences = pref;
+        this.beanEvent.loadEvent(event);
         this.addEvent();
         this.savePreferences();
         this.addUserEvent();
@@ -573,6 +574,6 @@ public class EventBean implements Serializable {
         this.c = context;
     }
 
-    
+
 
 }
