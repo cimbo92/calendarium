@@ -25,6 +25,14 @@ public class UserManager implements UserManagerInterface {
     @PersistenceContext
     private EntityManager em;
 
+    public EntityManager getEm() {
+        return em;
+    }
+
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
+
     @Inject
             Principal principal;
 
@@ -32,7 +40,6 @@ public class UserManager implements UserManagerInterface {
     public void save(User user) throws Exception  {
 
             user.setGroupName(Group.USER);
-            Query query = em.createQuery("SELECT e.email FROM User e WHERE e.email= :usermail" ).setParameter("usermail", user.getEmail());
                 em.persist(user);
 
     }
