@@ -116,13 +116,8 @@ public class WarningBean {
             FacesContext context = FacesContext.getCurrentInstance();
 
 
-        /*List<String> preferenceEvent = new ArrayList<>();
-        preferenceEvent = pm.getPreferenceOfEvent(event);
-        List<String> userEvent = new ArrayList<>();
-        userEvent = uem.invitedUsersOfEvent(event);*/
         if(event.getIdEvent().getId()!=-1)
         {
-        em.removeEvent(event);
         /*long diff = event.getEndDate().getTime() - event.getStartDate().getTime();
         Timestamp help;*/
         boolean ok = false;

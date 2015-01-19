@@ -236,10 +236,13 @@ public class EventBean implements Serializable {
      * @throws InvalidDateException
      */
     public void modifyFromWarning(Event event, List<String> pref, List<String> userEvent) throws OverlappingException, InvalidDateException {
+        em.removeEventByID(event);
         this.resetBean();
         this.selectedUsers = userEvent;
         this.selectedPreferences = pref;
         this.beanEvent.loadEvent(event);
+        this.startDate=beanEvent.getStartDate();
+        this.endDate=beanEvent.getStartDate();
         this.addEvent();
         this.savePreferences();
         this.addUserEvent();

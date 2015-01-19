@@ -200,7 +200,7 @@ public class EventManager implements EventManagerInterface {
     @Override
     public List<Event> getEventsCreated(User user) {
 
-        Query query = em.createNamedQuery("Select e From Event e Where e.creator.email= :mail").setParameter("mail", user.getEmail());
+        Query query = em.createQuery("Select e From Event e Where e.creator.email= :mail").setParameter("mail", user.getEmail());
         return query.getResultList();
     }
 
@@ -241,6 +241,18 @@ public class EventManager implements EventManagerInterface {
     public void setPrincipal(Principal principal) {
         this.principal = principal;
     }
+
+    @Override
+    public void removeEventByID(Event event) {
+   Query query1 = em.createQuery("Delete From Preference p Where p.event.idEvent.id= :event").setParameter(("event"), event.getIdEvent().getId());
+        query1.executeUpdate();
+        Query query2 = em.createQuery("Delete From UserEvent ue Where ue.event.idEvent.id= :event").setParameter(("event"), event.getIdEvent().getId());
+        query2.executeUpdate();
+        Query query3 = em.createQuery("Delete From Event e Where e.idEvent.event.idEvent.id= :event").setParameter(("event"), event.getIdEvent().getId());
+        query3.executeUpdate();
+        Query query4 = em.createQuery("Delete From IDEvent e Where e.event.idEvent.id= :event").setParameter(("event"), event.getIdEvent().getId());
+        query4.executeUpdate();
+     }
 
 
 }

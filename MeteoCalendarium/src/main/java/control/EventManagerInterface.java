@@ -22,6 +22,8 @@ public interface EventManagerInterface {
 
     public void removeEvent(Event event);
 
+    public void removeEventByID(Event event);
+
     public Event loadSpecificEvent(String idEvent);
 
     public boolean isIndoor(Event event);

@@ -7,7 +7,6 @@ package control;
 
 import entity.Event;
 import entity.Preference;
-import entity.IDEvent;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +24,13 @@ import javax.persistence.Query;
 @Stateless
 @Remote(PreferenceManagerInterface.class)
 public class PreferenceManager implements PreferenceManagerInterface {
- 
+
     @PersistenceContext
     private EntityManager em;
-    
+
     @Inject
     Principal principal;
-    
+
     @Override
     public void addPreference(Preference preference) {
         em.merge(preference);
@@ -39,21 +38,21 @@ public class PreferenceManager implements PreferenceManagerInterface {
 
     @Override
     public List<String> getPreferenceOfEvent(Event event) {
-   
+
      Query query =em
-                    .createQuery("Select pref.main.conditione FROM Preference pref WHERE pref.event= :event").setParameter("event", event);
-       
+                    .createQuery("Select pref.main.conditione FROM Preference pref WHERE pref.event.idEvent.id= :event").setParameter("event", event.getIdEvent().getId());
+
     List<String> result = new ArrayList<>(query.getResultList());
 
-    
-    
-    
-    
+
+
+
+
     return result; }
 
 
-    
-    
-    
-    
+
+
+
+
 }
