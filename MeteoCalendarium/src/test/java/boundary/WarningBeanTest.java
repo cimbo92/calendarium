@@ -132,24 +132,18 @@ public class WarningBeanTest {
         
          when(bwnm.findSolution(listEvent)).thenReturn(listDate);
          when(bwnm.findWarnings((User) (Matchers.anyObject()))).thenReturn(listEvent);
-        
-         
-         
+              
          wb.em=em;
          wb.um=um;
          wb.bwnm=bwnm;
          wb.setSolutions(new ArrayList<Timestamp>());
          wb.loadWarnings();
          
-        
+       
          List<Timestamp> sol = wb.getSolutions();
          
          assertEquals( sol.get(0).getTime() , temp1.getTime() );
-         
-         
-        
-        
-        
+      
     }
     
 }
