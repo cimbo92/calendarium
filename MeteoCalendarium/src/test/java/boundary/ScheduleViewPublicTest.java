@@ -8,6 +8,8 @@ package boundary;
 import control.EventManagerInterface;
 import control.UserManagerInterface;
 import entity.Event;
+import entity.IDEvent;
+import entity.Place;
 import entity.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,7 @@ public class ScheduleViewPublicTest {
         List<String> publicUsers = new ArrayList<>();
         Event eventToSee = new Event();
         Event eventPrivate = new Event();
+        List<Event> listToSee = new ArrayList<>();
 
     private User initUser(String name) {
         User u = new User();
@@ -62,9 +65,27 @@ public class ScheduleViewPublicTest {
     }
 
     private void initEvents(){
-        eventToSee.setCreator(loggedUser);
+       eventToSee.setCreator(loggedUser);
        eventPrivate.setCreator(loggedUser);
+       eventToSee.setTitle("prova1");
+       eventPrivate.setTitle("prova2");
+
+       listToSee.add(eventToSee);
+
+        eventToSee.setCreator(publicUser1);
+        eventToSee.setDescription("");
+
+        IDEvent id = new IDEvent("-1");
+        long l = 111;
+        id.setId(l);
+        eventToSee.setIdEvent(id);
+        eventToSee.setOutdoor(false);
+        eventToSee.setPlace(new Place());
+        eventToSee.setPublicEvent(true);
+
+
     }
+
 
     private void setQueries(){
         UserManagerInterface um = mock(UserManagerInterface.class);
@@ -76,7 +97,7 @@ public class ScheduleViewPublicTest {
         when(um.getLoggedUser()).thenReturn(loggedUser);
         when(um.getListUsers()).thenReturn(allUsers);
         when(um.getListUsersPublic()).thenReturn(publicUsers);
-
+        when(em.loadPublicCalendar(s.getUsername())).thenReturn(listToSee);
     }
 
 
@@ -94,15 +115,16 @@ public class ScheduleViewPublicTest {
 
     }
 
-  //  @Test
-    //public void testCalendar{
-      //  this.initTest();
-       // s.init();
+    @Test
+    public void testCalendar(){
+        this.initTest();
+         s.init();
+         this.initEvents();
+        s.loadCalendar();
 
-//        s.loadCalendar();
-    
+        assertTrue(s.getEventModel().getEvents().get(0).getTitle().equals(eventToSee.getTitle()));
+     //   assertTrue(!s.getEventModel().getEvents().get(0).getTitle().equals(eventToSee.getTitle()));
 
-
-
+}
 
 }
