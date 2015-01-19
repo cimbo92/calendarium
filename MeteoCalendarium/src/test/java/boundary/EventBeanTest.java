@@ -31,7 +31,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.mockito.Matchers;
-import org.mockito.Mockito;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.primefaces.context.RequestContext;
@@ -54,35 +53,6 @@ public class EventBeanTest {
     private EventCreation beanEvent = new EventCreation();
     private EventBean eb = new EventBean();
     
-    
-    
-    @Test
-    public void deleteEventTest(){
-        
-        EventBean eb = new EventBean();
-        eb.setBeanEvent(new EventCreation());
-        
-        List<Event> listEvent = new ArrayList<Event>();
-        
-        Event e1 = new Event();
-        Event e2 = new Event();
-        
-        listEvent.add(e1);
-        listEvent.add(e2);
-        
-        
-        FacesContext fc = mock(FacesContext.class);
-        RequestContext rc = mock(RequestContext.class);
-        EventManagerInterface eM = mock(EventManagerInterface.class);
-        
-        
-        eb.c = fc;
-        eb.r = rc;
-        eb.setEm(eM);
-        
-        eb.cancel();
-               
-    }
     
     @Test
     public void createEventTest() throws OverlappingException{
@@ -143,6 +113,99 @@ public class EventBeanTest {
         
     }
     
+    @Test
+    public void modifyEventTest(){
+        
+        EventBean eb = new EventBean();
+        EventCreation beanEvent = new EventCreation();
+        EventCreation tempEvent = new EventCreation();
+        
+        initB(beanEvent);
+        
+        List<Event> listEvent = new ArrayList<Event>();
+        
+        Event e1 = new Event();
+        
+        FacesContext fc = mock(FacesContext.class);
+        RequestContext rc = mock(RequestContext.class);
+        
+        EventManagerInterface eM = mock(EventManagerInterface.class);
+        when(eM.loadSpecificEvent((String) Matchers.anyObject())).thenReturn(e1);
+        
+        PreferenceManagerInterface pm = mock(PreferenceManagerInterface.class);
+        
+        IDEventManagerInterface idm = mock(IDEventManagerInterface.class);
+        when(idm.findFirstFreeID()).thenReturn(new Long(-1));
+        
+        UserManagerInterface um = mock(UserManagerInterface.class);
+        when(um.getLoggedUser()).thenReturn(u);
+        when(um.findByMail(t)).thenReturn(u);
+        
+        MailSenderManagerInterface mailSender = mock(MailSenderManagerInterface.class);
+        
+        UserEventManagerInterface uem = mock(UserEventManagerInterface.class);
+        
+        
+        eb.setIdm(idm);
+        eb.c = fc;
+        eb.r = rc;
+        eb.setBeanEvent(beanEvent);
+        eb.setTempEvent(tempEvent);
+        eb.setUm(um);
+        eb.setStartDate(new Date(beanEvent.getStartDate().getTime()));
+        eb.setEndDate(new Date(beanEvent.getEndDate().getTime()));
+        eb.setEm(eM);
+        eb.setPm(pm);
+        eb.setMailSender(mailSender);
+        eb.setUem(uem);
+        
+        //Simple
+        eb.modify();
+        
+        List<String> p = new ArrayList();
+        p.add("Clear");
+        List<String> u = new ArrayList();
+        u.add("pippo");
+        
+        initB(beanEvent);
+        eb.setBeanEvent(beanEvent);
+        
+        //With Preference 
+        eb.modify();
+        
+    }
+    
+    
+    
+    
+    @Test
+    public void deleteEventTest(){
+        
+        EventBean eb = new EventBean();
+        eb.setBeanEvent(new EventCreation());
+        
+        List<Event> listEvent = new ArrayList<Event>();
+        
+        Event e1 = new Event();
+        Event e2 = new Event();
+        
+        listEvent.add(e1);
+        listEvent.add(e2);
+        
+        
+        FacesContext fc = mock(FacesContext.class);
+        RequestContext rc = mock(RequestContext.class);
+        EventManagerInterface eM = mock(EventManagerInterface.class);
+        
+        
+        eb.c = fc;
+        eb.r = rc;
+        eb.setEm(eM);
+        
+        eb.cancel();
+               
+    }
+    
     
     private EventBean init(EventBean eb) {
         
@@ -164,7 +227,10 @@ public class EventBeanTest {
         beanEvent.setCreator(u);
         beanEvent.setDescription("Test");
         beanEvent.setEndDate(ed);
-        beanEvent.setIdEvent(new IDEvent("-1"));
+        IDEvent id = new IDEvent("-1");
+        long l = 111;
+        id.setId(l);
+        beanEvent.setIdEvent(id);
         beanEvent.setOutdoor(false);
         beanEvent.setPlace(p.getCity());
         beanEvent.setPublicEvent(true);

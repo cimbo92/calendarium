@@ -151,6 +151,9 @@ public class EventBean implements Serializable {
 
     public void createFromModify() throws OverlappingException, InvalidDateException {
         FacesContext context = FacesContext.getCurrentInstance();
+        if(context == null){
+            context = c;
+        }
 
         this.addEvent();
         this.savePreferences();
@@ -166,7 +169,9 @@ public class EventBean implements Serializable {
      */
     public void modify() {
         FacesContext context = FacesContext.getCurrentInstance();
-
+        if(context == null){
+            context = c;
+        }
         try {
             this.updateEvent();
         } catch (OverlappingException | InvalidDateException e) {
@@ -183,6 +188,9 @@ public class EventBean implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", e.getMessage()));
         }
         RequestContext request = RequestContext.getCurrentInstance();
+        if(request == null){
+            request = r;
+        }
         request.update("formcentral:schedule");
         this.resetBean();
 
