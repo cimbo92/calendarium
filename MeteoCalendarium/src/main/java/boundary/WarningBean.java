@@ -39,7 +39,7 @@ public class WarningBean {
      * ******************************************************************
      */
     @EJB
-    private BadWeatherNotificationManagerInterface bwnm;
+    BadWeatherNotificationManagerInterface bwnm;
     @EJB
     UserManagerInterface um;
     @EJB
@@ -143,6 +143,14 @@ public class WarningBean {
 
         return "";
     }
+    /**
+     * This function modifies a event setting a new start and a new end Date due to bad weather warning.
+     * @param event
+     * @param solut
+     * @param eb
+     * @throws OverlappingException
+     * @throws InvalidDateException 
+     */
     public void modify(Event event, Timestamp solut, EventBean eb) throws OverlappingException, InvalidDateException{
 
         List<String> preferenceEvent = new ArrayList<>();

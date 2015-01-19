@@ -25,7 +25,7 @@ public class SetCalendarBean {
      *******************************************************************
      */
     @EJB
-    private UserManagerInterface um;
+     UserManagerInterface um;
 
     /*
      * ******************************************************************
