@@ -34,9 +34,9 @@ public class ScheduleViewPublic implements Serializable {
      *******************************************************************
      */
     @EJB
-    private EventManagerInterface em;
+     EventManagerInterface em;
     @EJB
-    private UserManagerInterface um;
+     UserManagerInterface um;
 
     /*
      * ******************************************************************

@@ -104,7 +104,6 @@ public class EventBean implements Serializable {
 
     private EventCreation tempEvent;
 
-
     //context used for messges
     /*
     *******************************************************************
@@ -267,8 +266,12 @@ public class EventBean implements Serializable {
 
         this.resetBean();
         DefaultScheduleEvent selectedEvent = (DefaultScheduleEvent) selectEvent.getObject();
-        Event event = new Event();
-        event = em.loadSpecificEvent(selectedEvent.getDescription());
+       loadFromEventSelect(selectedEvent);
+    }
+
+    public void loadFromEventSelect(DefaultScheduleEvent selectedEvent){
+
+        Event event = em.loadSpecificEvent(selectedEvent.getDescription());
         beanEvent.loadEvent(event);
         this.isOwnEvent = em.isCreator(event, um.getLoggedUser());
         this.creating=false;
@@ -288,6 +291,10 @@ public class EventBean implements Serializable {
     public void onDateSelect(SelectEvent selectEvent) {
 
         DefaultScheduleEvent selectedEvent = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
+        this.loadFromDateSelect(selectedEvent);
+    }
+
+    public void loadFromDateSelect(DefaultScheduleEvent selectedEvent){
         this.resetBean();
         creating = true;
         isOwnEvent = true;
