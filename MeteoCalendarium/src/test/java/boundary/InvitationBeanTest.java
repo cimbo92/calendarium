@@ -10,6 +10,7 @@ import control.EventManagerInterface;
 import control.UserEventManagerInterface;
 import control.UserManagerInterface;
 import entity.Event;
+import entity.IDEvent;
 import entity.Place;
 import entity.User;
 import entity.UserEvent;
@@ -133,16 +134,6 @@ public class InvitationBeanTest {
         
        UserEvent userEvent = new UserEvent();
         
-        EventCreation eventC = new EventCreation();
-        eventC.setCreator(userTest);
-        eventC.setDescription("description");
-        eventC.setPlace("milan");
-        eventC.setTitle("title");
-        eventC.setEndDate(new Timestamp(10000));
-        eventC.setStartDate(new Timestamp(9999));
-        eventC.setPublicEvent(true);
-        eventC.setOutdoor(true);
-        
         List<Event> list2 = new ArrayList<>();
         Event eventtemp1 = this.initEvent("prova1");
         Event eventtemp2 = this.initEvent("prova2");
@@ -160,7 +151,7 @@ public class InvitationBeanTest {
      
         when(em.findInvitatedEvent(userTest)).thenReturn(list2);
          when(um.getLoggedUser()).thenReturn(userTest);
-         when(em.searchOverlapping(eventtemp1, userTest)).thenReturn(false);
+         when(em.searchOverlapping(eventtemp1, um.getLoggedUser())).thenReturn(false);
          when(uem.getUserEventofUser(eventtemp1, um.getLoggedUser())).thenReturn(userEvent);
       
 
@@ -169,12 +160,14 @@ public class InvitationBeanTest {
         ib.uem=uem;
         ib.setInvites(new ArrayList<EventCreation>());
         ib.loadInvites();
-        ib.acceptInvite(e1);
+        String ret;
+        ret=ib.acceptInvite(e1);
         
         //dovrebbe essere temp.size()==1 e il titolo uguale a e2.getTitle()
         List<EventCreation> temp = ib.getInvites();
         assertTrue(temp.get(0).getTitle().equals(e1.getTitle()));
         assertTrue(temp.size()==2);
+        assertTrue(ret.equalsIgnoreCase("calendar?faces-redirect=true"));
     }
         
         
