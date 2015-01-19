@@ -94,7 +94,8 @@ public class InvitationBean implements Serializable {
     /**
      * User Accept Invitation
      *
-     * @param event related @Event
+     * @param eventC
+     * @return
      */
     public String acceptInvite(EventCreation eventC) {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -117,7 +118,8 @@ public class InvitationBean implements Serializable {
     /**
      * User Decline Invitation ( will be never seen )
      *
-     * @param event
+     * @param eventC
+     * @return
      */
     public String declineInvite(EventCreation eventC) {
         Event event = new Event();
