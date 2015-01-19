@@ -6,6 +6,7 @@
 package boundary;
 
 import HelpClasses.EventCreation;
+import HelpClasses.OverlappingException;
 import control.EventManager;
 import control.EventManagerInterface;
 import control.IDEventManagerInterface;
@@ -19,6 +20,7 @@ import entity.Place;
 import entity.User;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -41,92 +43,106 @@ import org.primefaces.context.RequestContext;
 public class EventBeanTest {
     
     private User u = new User();
-    private Timestamp sd = new Timestamp(new java.util.Date().getTime()+100*(24*60*60*1000));
-    private Timestamp ed = new Timestamp(new java.util.Date().getTime()+101*(24*60*60*1000));
-    
+    private Long now = new Long(String.valueOf(new java.util.Date().getTime()+100000000));
+    private Long now2 = new Long(String.valueOf(now+111111111));
+    private Timestamp sd = new Timestamp(now);
+    private Timestamp ed = new Timestamp(now2);
     private EventManager em;
     private EntityManager entityManager;
-    
     private String t = "Test";
     private Place p = new Place();
-    private Event e = new Event();
     private EventCreation beanEvent = new EventCreation();
     private EventBean eb = new EventBean();
     
+    
+    
     @Test
-    public void createEventTest(){
+    public void deleteEventTest(){
         
-        List<Event> list = new ArrayList<Event>();
+        EventBean eb = new EventBean();
+        eb.setBeanEvent(new EventCreation());
         
-        em = new EventManager();
-        entityManager = mock(EntityManager.class);
-        IDEventManagerInterface idm = mock(IDEventManagerInterface.class);
-        UserManagerInterface um = mock(UserManagerInterface.class);
+        List<Event> listEvent = new ArrayList<Event>();
+        
+        Event e1 = new Event();
+        Event e2 = new Event();
+        
+        listEvent.add(e1);
+        listEvent.add(e2);
+        
+        
+        FacesContext fc = mock(FacesContext.class);
+        RequestContext rc = mock(RequestContext.class);
+        EventManagerInterface eM = mock(EventManagerInterface.class);
+        
+        
+        eb.c = fc;
+        eb.r = rc;
+        eb.setEm(eM);
+        
+        eb.cancel();
+               
+    }
+    
+    @Test
+    public void createEventTest() throws OverlappingException{
+        
+        EventBean eb = new EventBean();
+        EventCreation beanEvent = new EventCreation();
+        
+        initB(beanEvent);
+        
+        List<Event> listEvent = new ArrayList<Event>();
+        
+        Event e1 = new Event();
+        
+        FacesContext fc = mock(FacesContext.class);
+        RequestContext rc = mock(RequestContext.class);
         EventManagerInterface eM = mock(EventManagerInterface.class);
         PreferenceManagerInterface pm = mock(PreferenceManagerInterface.class);
-        UserEventManagerInterface uem = mock(UserEventManagerInterface.class);
-        MailSenderManagerInterface mailSender = mock(MailSenderManagerInterface.class);
-        FacesContext fc = mock(FacesContext.class);
         
+        IDEventManagerInterface idm = mock(IDEventManagerInterface.class);
+        when(idm.findFirstFreeID()).thenReturn(new Long(-1));
+        
+        UserManagerInterface um = mock(UserManagerInterface.class);
+        when(um.getLoggedUser()).thenReturn(u);
+        when(um.findByMail(t)).thenReturn(u);
+        
+        MailSenderManagerInterface mailSender = mock(MailSenderManagerInterface.class);
+        
+        UserEventManagerInterface uem = mock(UserEventManagerInterface.class);
+        
+        
+        eb.setIdm(idm);
+        eb.c = fc;
+        eb.r = rc;
+        eb.setBeanEvent(beanEvent);
+        eb.setUm(um);
+        eb.setStartDate(new Date(beanEvent.getStartDate().getTime()));
+        eb.setEndDate(new Date(beanEvent.getEndDate().getTime()));
         eb.setEm(eM);
         eb.setPm(pm);
-        eb.setUem(uem);
         eb.setMailSender(mailSender);
-        eb.setContext(fc);
+        eb.setUem(uem);
         
-        when(um.getLoggedUser()).thenReturn(u);
-        eb.setUm(um);
-        
-        when(idm.findFirstFreeID()).thenReturn(new Long(-1));
-        eb.setIdm(idm);
-        
-        Query query = mock(Query.class);
-        when(entityManager.createNamedQuery("Select e From Event e Where e.creator.email= :mail")).thenReturn(query);
-        when(query.setParameter(Matchers.anyString(), Matchers.anyObject())).thenReturn(query);
-        when(query.getResultList()).thenReturn(list);
-        em.setEm(entityManager);
-        
-        e = init(e);
-        eb = init(eb);
-        beanEvent = initB(beanEvent);
-        eb.setBeanEvent(beanEvent);
-        
-        assertNotNull(em);
-        
-        list = em.getEventsCreated(u);
-        
+        //Creazione semplice
         eb.create();
-        list.add(e);
         
-        list = em.getEventsCreated(u);
+        List<String> p = new ArrayList();
+        p.add("Clear");
+        List<String> u = new ArrayList();
+        u.add("pippo");
         
+          
+        eb.setSelectedPreferences(p);
+        eb.setSelectedUsers(u);
         
-        assertEquals(e,list.get(0));
+        //Creazione con preferenze ed invitati
+        eb.create();
+      
         
     }
     
-    private Event init(Event e){
-        
-        u.setEmail("test@test.test");
-        u.setGroupName("USER");
-        u.setPassword("test");
-        u.setPublicCalendar(true);
-        
-        p.setCity("Test");
-        
-        e.setCreator(u);
-        e.setDescription("Test");
-        e.setEndDate(ed);
-        e.setIdEvent(new IDEvent("-1"));
-        e.setOutdoor(false);
-        e.setPlace(p);
-        e.setPublicEvent(true);
-        e.setStartDate(sd);
-        e.setTitle(t);
-        
-        
-        return e;
-    }
     
     private EventBean init(EventBean eb) {
         
@@ -158,46 +174,4 @@ public class EventBeanTest {
         
         return beanEvent;
     }
-    
-    
-    
-    @Test
-    public void deleteEventTest(){
-        
-        EventBean eb = new EventBean();
-        eb.setBeanEvent(new EventCreation());
-        
-        List<Event> listEvent = new ArrayList<Event>();
-        
-        Event e1 = new Event();
-        Event e2 = new Event();
-        
-        listEvent.add(e1);
-        listEvent.add(e2);
-        
-        
-        FacesContext fc = mock(FacesContext.class);
-        RequestContext rc = mock(RequestContext.class);
-        EventManagerInterface eM = mock(EventManagerInterface.class);
-        
-        try{
-        Mockito.doThrow(new Exception()).when(eM).removeEvent((Event) Matchers.anyObject());
-        }catch(Exception e){
-            ;
-        }
-        
-        eb.c = fc;
-        eb.r = rc;
-        
-        try{
-        eb.cancel();
-        }catch (Exception e){
-           listEvent.remove(e2);
-        }
-        
-        assertTrue(listEvent.get(0).equals(e1));
-        
-        
-    }
-    
 }
