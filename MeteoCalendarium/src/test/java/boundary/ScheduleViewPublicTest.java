@@ -94,12 +94,12 @@ public class ScheduleViewPublicTest {
 
     }
 
-    @Test
+  //  @Test
     //public void testCalendar{
       //  this.initTest();
        // s.init();
 
-        s.loadCalendar();
+//        s.loadCalendar();
     }
 
 
