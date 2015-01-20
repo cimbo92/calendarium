@@ -53,6 +53,9 @@ public class EventDetailsTest {
         e.setPlace(new Place());
         Timestamp tmp = new Timestamp(2015, 1, 1, 1, 1, 1, 1);
         e.setCreator(u);
+       Place p = new Place();
+        p.setCity("posto");
+        e.setPlace(p);
         e.setDescription("Test");
         e.setEndDate(tmp);
         e.setOutdoor(false);

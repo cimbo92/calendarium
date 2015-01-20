@@ -215,7 +215,7 @@ public class EventBeanTest {
         id.setId(l);
         beanEvent.setIdEvent(id);
         beanEvent.setOutdoor(false);
-        beanEvent.setPlace(p.getCity());
+        beanEvent.setPlace("posto");
         beanEvent.setPublicEvent(true);
         beanEvent.setStartDate(sd);
         beanEvent.setTitle(t);
