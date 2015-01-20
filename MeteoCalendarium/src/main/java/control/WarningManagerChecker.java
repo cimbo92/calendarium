@@ -31,10 +31,6 @@ public class WarningManagerChecker implements WarningManagerCheckerInterface {
      * 
      */
     @EJB
-    private UserManagerInterface um;
-    @EJB
-    private EventManagerInterface em;
-    @EJB
     private BadWeatherNotificationManagerInterface bm;
     @EJB
     private MailSenderManagerInterface ms;
