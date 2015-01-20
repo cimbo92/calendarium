@@ -5,6 +5,7 @@
  */
 package control;
 
+import entity.Place;
 import forecastService.WeatherForecastResponse;
 import forecastService.WeatherStatusResponse;
 import java.io.IOException;
@@ -23,4 +24,6 @@ public interface OwmClientInterface {
     public WeatherStatusResponse currentWeatherAtCity(String cityName) throws IOException, JSONException;
 
     public WeatherForecastResponse tenForecastWeatherAtCity(String cityName) throws JSONException, IOException;
+    
+    public void checkWeather(Place p);
 }

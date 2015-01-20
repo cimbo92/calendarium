@@ -414,6 +414,41 @@ public class OwmClient implements OwmClientInterface {
         System.out.println("Check Weather Completed!");
 
     }
+    
+    @Override
+    public void checkWeather(Place p) {
+        
+        
+        try {
+                WeatherForecastResponse risposta;
+                risposta = this.tenForecastWeatherAtCity(p.getCity());
+                List<ForecastWeatherData> list = risposta.getForecasts();
+                for (ForecastWeatherData fwd : list) {
+                    if (!alreadyIn(fwd, p.getCity())) {
+                        Timestamp t = new Timestamp(fwd.getCalcDateTime());
+                        System.out.println("Sto aggiungendo/aggiornando il forecast : " + p.getCity() + " " + t);
+                        Forecast f = new Forecast();
+                        //Recupero nel database la main condition associata
+                        MainCondition mc = new MainCondition();
+                        mc.setCondition(fwd.getWeatherConditions().get(0).getMain());
+                        entityManager.merge(mc);
+
+                        //Ho preparato tutti i parametri necessari
+                        f.setPlace(p);
+                        f.setMainCondition(mc);
+                        f.setDate(new Timestamp(fwd.getCalcDateTime()));
+
+                        entityManager.persist(f);
+                    }
+
+                }
+            } catch (JSONException ex) {
+                Logger.getLogger(EventBean.class.getName()).log(Level.WARNING, null, "Too much requests to the ForecastServer");
+            } catch (IOException ex) {
+                Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+    }
 
     private boolean alreadyIn(ForecastWeatherData fwd, String city) {
 
