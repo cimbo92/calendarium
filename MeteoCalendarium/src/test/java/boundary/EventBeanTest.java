@@ -22,13 +22,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.mockito.Matchers;
 import static org.mockito.Mockito.mock;
@@ -165,7 +160,7 @@ public class EventBeanTest {
         initB(beanEvent);
         eb.setBeanEvent(beanEvent);
 
-        //With Preference 
+        //With Preference
         eb.modify();
 
     }

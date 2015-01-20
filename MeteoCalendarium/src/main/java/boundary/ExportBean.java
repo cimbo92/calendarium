@@ -161,15 +161,15 @@ public class ExportBean {
                 event.appendChild(publicEvent);
 
                 preferences = pm.getPreferenceOfEvent(events.get(i));
-                for (int j = 0; j < preferences.size(); j++) {
+                for (String preference : preferences) {
                     Element pref = doc.createElement("preference");
-                    pref.appendChild(doc.createTextNode(preferences.get(j)));
+                    pref.appendChild(doc.createTextNode(preference));
                     event.appendChild(pref);
                 }
                 userInvited = uem.invitedUsersOfEvent(events.get(i));
-                for (int z = 0; z < userInvited.size(); z++) {
+                for (String userInvited1 : userInvited) {
                     Element invit = doc.createElement("invitated");
-                    invit.appendChild(doc.createTextNode(userInvited.get(z)));
+                    invit.appendChild(doc.createTextNode(userInvited1));
                     event.appendChild(invit);
                 }
 

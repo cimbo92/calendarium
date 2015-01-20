@@ -33,7 +33,7 @@ public class MailSenderManager implements MailSenderManagerInterface {
     private final String password = "alessandro3";//change accordingly
     private final String username = "meteocalendarium@gmail.com";//change accordingly
     private String host = "smtp.gmail.com";
-    private List<Mail> queue = new ArrayList<Mail>();
+    private List<Mail> queue = new ArrayList<>();
 
     public void sendMail(String to, String subject, String body) {
         synchronized (queue) {

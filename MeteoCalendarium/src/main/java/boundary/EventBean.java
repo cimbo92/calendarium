@@ -179,9 +179,7 @@ public class EventBean implements Serializable {
             this.setEndDate(tempEvent.getEndDate());
             try {
                 this.reCreate();
-            } catch (OverlappingException ex) {
-                Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InvalidDateException ex) {
+            } catch (OverlappingException | InvalidDateException ex) {
                 Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
             }
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", e.getMessage()));
@@ -358,11 +356,7 @@ public class EventBean implements Serializable {
         this.beanEvent.convertEndDate(endDate);
         boolean correct;
         //date must be after today and start must be before end date
-        if (beanEvent.getStartDate().after(beanEvent.getEndDate()) || beanEvent.getStartDate().before(now)) {
-            correct = false;
-        } else {
-            correct = true;
-        }
+        correct = !(beanEvent.getStartDate().after(beanEvent.getEndDate()) || beanEvent.getStartDate().before(now));
         return correct;
     }
 

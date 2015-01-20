@@ -30,8 +30,13 @@ import control.IDEventManagerInterface;
 import control.PreferenceManagerInterface;
 import control.UserEventManagerInterface;
 import control.UserManagerInterface;
+import java.io.IOException;
+import java.text.ParseException;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * class for importing file xml
@@ -166,7 +171,7 @@ public class ImportBean {
                     userEvent = new UserEvent(event, um.getLoggedUser(), true);
                     uem.addUserEvent(userEvent);
                     for (int j = 0; j < invites.getLength(); j++) {
-                        user = new User();
+
                         user = um.findByMail(invites.item(j).getTextContent());
                         if (user != null) {
                             userEvent = new UserEvent(event, user, false);
@@ -180,7 +185,7 @@ public class ImportBean {
                 }
 
             }
-        } catch (Exception e) {
+        } catch (ParserConfigurationException | SAXException | IOException | DOMException | ParseException e) {
             System.out.println("File not opened");
 
         }
