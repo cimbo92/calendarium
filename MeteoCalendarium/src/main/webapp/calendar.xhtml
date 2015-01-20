@@ -70,7 +70,7 @@
                     <p:dialog header="Warnings" widgetVar="dlg-warnings" showEffect="fade" hideEffect="fade"  id="inv-dialogW" width="800px" height="300px" resizable="false">
                         <p:carousel value="#{warningBean.warnings}" var="eventWarning" numVisible="1" itemStyle="height:200px;width:750px;" effect="easeInStrong" headerText="Warning" style="margin-bottom:0;">         
                             <p:tab>
-                                <p:panelGrid columns="2" columnClasses="label,value">
+                                <p:panelGrid columns="2" id="panelW" columnClasses="label,value">
                                     <h:outputText value="Title:" />
                                     <h:outputText value="#{eventWarning.title}"  />
                                     <h:outputText value="It's possible to postpone the event at: " />
@@ -159,10 +159,10 @@
                                 <f:selectItems value="#{eventBean.listUser()}" var="listUser" itemLabel="#{listUser}" itemValue="#{listUser}" />
                             </p:selectManyMenu>
 
-                                      <p:commandButton id="declineButton" value="Decline" action="#{eventBean.decline()}" actionListener="#{scheduleView.loadCalendar()}" rendered="#{eventBean.canDecline}" update="growl" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
-                            <p:commandButton id="modifyButton" value="Modify" actionListener="#{eventBean.modify()}" action="#{scheduleView.loadCalendar()}" rendered="#{!eventBean.creating}" update="growl"  disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"  />
-                            <p:commandButton id="addButton" value="Save" actionListener="#{eventBean.create()}" action="#{scheduleView.loadCalendar()}"  rendered="#{eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />  
-                            <p:commandButton id="deleteButton" value="Delete" actionListener="#{eventBean.cancel()}" action="#{scheduleView.loadCalendar()}" rendered="#{!eventBean.creating}" update="growl" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />  
+                                      <p:commandButton id="declineButton" value="Decline" action="#{eventBean.decline()}" actionListener="#{scheduleView.loadCalendar()}" rendered="#{eventBean.canDecline}" update="growl,:formcentral:inv-dialogW" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+                            <p:commandButton id="modifyButton" value="Modify" actionListener="#{eventBean.modify()}" action="#{scheduleView.loadCalendar()}" rendered="#{!eventBean.creating}" update="growl,:formcentral:inv-dialogW"  disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"  />
+                            <p:commandButton id="addButton" value="Save" actionListener="#{eventBean.create()}" action="#{scheduleView.loadCalendar()}"  rendered="#{eventBean.creating}" update="growl,:formcentral:inv-dialogW" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />  
+                            <p:commandButton id="deleteButton" value="Delete" actionListener="#{eventBean.cancel()}" action="#{scheduleView.loadCalendar()}" rendered="#{!eventBean.creating}" update="growl,:formcentral:inv-dialogW" disabled="#{!eventBean.isOwnEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />  
 
                         </h:panelGrid>
      
