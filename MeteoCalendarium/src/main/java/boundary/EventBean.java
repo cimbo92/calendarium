@@ -375,7 +375,7 @@ public class EventBean implements Serializable {
             event.loadEvent(beanEvent);
 
             em.addEvent(event, um.getLoggedUser());
-            weather.checkWeather(event.getPlace());
+            weather.push(event.getPlace());
         } else {
             throw new InvalidDateException();
         }

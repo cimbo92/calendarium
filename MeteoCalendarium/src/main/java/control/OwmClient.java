@@ -51,6 +51,8 @@ import boundary.EventBean;
 public class OwmClient implements OwmClientInterface {
 
     static private final String APPID_HEADER = "x-api-key";
+    
+    private List<Place> list = new ArrayList<Place>();
 
     static public enum HistoryType {
 
@@ -90,6 +92,10 @@ public class OwmClient implements OwmClientInterface {
         this.owmAPPID = appid;
     }
 
+    public void push(Place p){
+        list.add(p);
+    }
+    
     /**
      * Find current weather around a geographic point
      *
@@ -416,9 +422,12 @@ public class OwmClient implements OwmClientInterface {
     }
     
     @Override
-    public void checkWeather(Place p) {
+    @Schedule(second = "50", minute = "*", hour = "*", persistent = false)
+    public void checkWeatherRecent() {
+        if(list.isEmpty())
+            return;
         
-        
+        for(Place p : list){
         try {
                 WeatherForecastResponse risposta;
                 risposta = this.tenForecastWeatherAtCity(p.getCity());
@@ -447,6 +456,9 @@ public class OwmClient implements OwmClientInterface {
             } catch (IOException ex) {
                 Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+        
+        list = new ArrayList<Place>();
 
     }
 
@@ -529,4 +541,5 @@ public class OwmClient implements OwmClientInterface {
         }
         return new JSONObject(responseBody);
     }
+    
 }

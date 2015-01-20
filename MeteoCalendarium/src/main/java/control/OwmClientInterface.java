@@ -25,5 +25,7 @@ public interface OwmClientInterface {
 
     public WeatherForecastResponse tenForecastWeatherAtCity(String cityName) throws JSONException, IOException;
     
-    public void checkWeather(Place p);
+    public void checkWeatherRecent();
+    
+    public void push(Place p);
 }
