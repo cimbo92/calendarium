@@ -158,10 +158,10 @@ public class WarningBean {
      */
     public void modify(Event event, Timestamp solut, EventBean eb) throws OverlappingException, InvalidDateException {
 
-        List<String> preferenceEvent = new ArrayList<>();
-        preferenceEvent = pm.getPreferenceOfEvent(event);
-        List<String> userEvent = new ArrayList<>();
-        userEvent = uem.invitedUsersOfEvent(event);
+
+       List<String> preferenceEvent = pm.getPreferenceOfEvent(event);
+       
+        List<String> userEvent = uem.invitedUsersOfEvent(event);
         long diff = event.getEndDate().getTime() - event.getStartDate().getTime();
         Timestamp help;
 

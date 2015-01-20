@@ -90,10 +90,7 @@ public class Forecast implements Serializable {
             return false;
         }
         Forecast forecast = (Forecast) obj;
-        if (id == forecast.getId()) {
-            return true;
-        }
-        return false;
+        return id == forecast.getId();
     }
 
     @Override

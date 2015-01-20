@@ -58,6 +58,19 @@ public class EventCreation {
         endDate = new java.sql.Timestamp(date.getTime());
     }
 
+     public void loadEvent(Event e) {
+        this.title = e.getTitle();
+        this.creator = e.getCreator();
+        this.description = e.getDescription();
+        this.idEvent = e.getIdEvent();
+        this.outdoor = e.isOutdoor();
+        this.place = e.getPlace().getCity();
+        this.publicEvent = e.isPublicEvent();
+        this.startDate = e.getStartDate();
+        this.endDate = e.getEndDate();
+    }
+
+
     /*
      *******************************************************************
      * GETTERS AND SETTERS
@@ -137,16 +150,5 @@ public class EventCreation {
         this.outdoor = outdoor;
     }
 
-    public void loadEvent(Event e) {
-        this.title = e.getTitle();
-        this.creator = e.getCreator();
-        this.description = e.getDescription();
-        this.idEvent = e.getIdEvent();
-        this.outdoor = e.isOutdoor();
-        this.place = e.getPlace().getCity();
-        this.publicEvent = e.isPublicEvent();
-        this.startDate = e.getStartDate();
-        this.endDate = e.getEndDate();
-    }
 
 }

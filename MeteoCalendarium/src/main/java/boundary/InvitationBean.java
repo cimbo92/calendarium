@@ -75,9 +75,9 @@ public class InvitationBean implements Serializable {
      */
     public void loadInvites() {
         List<Event> events = em.findInvitatedEvent(um.getLoggedUser());
-        for (int i = 0; i < events.size(); i++) {
+        for (Event event : events) {
             EventCreation temp = new EventCreation();
-            temp.loadEvent(events.get(i));
+            temp.loadEvent(event);
             invites.add(temp);
         }
         enableInvitation = true;

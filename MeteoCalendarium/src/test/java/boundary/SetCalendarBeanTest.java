@@ -5,16 +5,10 @@
  */
 package boundary;
 
-import control.EventManagerInterface;
 import control.UserManagerInterface;
 import entity.User;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.mockito.Matchers;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
