@@ -47,6 +47,6 @@ public class Place implements Serializable {
     }
 
     public Place(String city) {
-        this.city = city;
+        this.city = city.toLowerCase();
     }
 }
