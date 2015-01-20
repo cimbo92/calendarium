@@ -20,6 +20,9 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+//https://www.google.com/accounts/UnlockCaptcha
+//Sbloccare account e mandare una mail a mano cosi è ripartito
+
 /**
  *
  * @author home
