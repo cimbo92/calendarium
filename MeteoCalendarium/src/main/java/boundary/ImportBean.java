@@ -34,13 +34,18 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 /**
- *
+ * class for importing file xml
  * @author alessandro
  */
 @Named
 @RequestScoped
 public class ImportBean {
 
+    /*
+     * ******************************************************************
+     * MANAGERS
+     *******************************************************************
+     */
     @EJB
     private EventManagerInterface em;
     @EJB
@@ -53,6 +58,9 @@ public class ImportBean {
     private UserEventManagerInterface uem;
     public ImportBean(){}
 
+    /**
+     * function that reads the content of a xml file and charges the events in the database 
+     */
      public void imports() {
   FacesContext context = FacesContext.getCurrentInstance();
 
@@ -71,7 +79,7 @@ public class ImportBean {
            String DefaultFolder=new JFileChooser().getFileSystemView().getDefaultDirectory().toString();
            file= new File(DefaultFolder+slash+"calendar.xml");
 
-        Timestamp help;
+        
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 	DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -183,11 +191,12 @@ public class ImportBean {
 
 
     }
+     /**
+      * this function removes all the event of a user
+      */
      public void removeEvents()
      {
-         //prima elimini le preference e le userEvent, poi l'evento e il suo id
          em.removeAllEvent(um.getLoggedUser());
-
      }
     }
 

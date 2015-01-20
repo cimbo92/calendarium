@@ -36,11 +36,19 @@ import javax.faces.context.FacesContext;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
+/**
+ * class for exporting calendar
+ * @author alessandro
+ */
 @Named
 @RequestScoped
 public class ExportBean {
 
+    /*
+     * ******************************************************************
+     * MANAGERS
+     *******************************************************************
+     */
     @EJB
     private EventManagerInterface em;
     @EJB
@@ -62,7 +70,9 @@ public class ExportBean {
         preferences = new ArrayList<>();
         userInvited = new ArrayList<>();
     }
-
+    /**
+     * function that exports the calendar in a xml file
+     */
 	public void export() {
 
                    events = new ArrayList<>();
@@ -184,11 +194,7 @@ public class ExportBean {
 
 
 
-	  } catch (ParserConfigurationException pce) {
-
-                      context.addMessage(null,new FacesMessage("Error", "Error in Exporting"));
-
-	  } catch (TransformerException tfe) {
+	  } catch (ParserConfigurationException | TransformerException pce) {
 
                       context.addMessage(null,new FacesMessage("Error", "Error in Exporting"));
 

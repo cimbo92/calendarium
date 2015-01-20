@@ -10,18 +10,13 @@ import control.EventManagerInterface;
 import control.UserEventManagerInterface;
 import control.UserManagerInterface;
 import entity.Event;
-import entity.IDEvent;
-import entity.Place;
 import entity.User;
 import entity.UserEvent;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.persistence.Query;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
-import org.mockito.Matchers;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -33,10 +28,6 @@ public class InvitationBeanTest {
 
 
     Query query = mock(Query.class);
-    private EventManagerInterface em ;
-    private UserManagerInterface um ;
-    private InvitationBean ib ;
-    private User userTest;
 
     private EventCreation init(String title){
           EventCreation e1 = new EventCreation();
@@ -138,12 +129,8 @@ public class InvitationBeanTest {
         Event eventtemp1 = this.initEvent("prova1");
         Event eventtemp2 = this.initEvent("prova2");
 
-        List<EventCreation> list = new ArrayList<>();
         EventCreation e1 = this.init("prova1");
         EventCreation e2 = this.init("prova2");
-
-        list.add(e1);
-        list.add(e2);
 
         list2.add(eventtemp1);
         list2.add(eventtemp2);

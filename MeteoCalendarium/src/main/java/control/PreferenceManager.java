@@ -18,7 +18,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
+ * manage the entity preference
  * @author Alessandro
  */
 @Stateless
@@ -31,11 +31,20 @@ public class PreferenceManager implements PreferenceManagerInterface {
     @Inject
     Principal principal;
 
+    /**
+     * add a preference in the database
+     * @param preference 
+     */
     @Override
     public void addPreference(Preference preference) {
         em.merge(preference);
     }
 
+    /**
+     * This function query the database to get the preferences of an event
+     * @param event
+     * @return a list of preferences
+     */
     @Override
     public List<String> getPreferenceOfEvent(Event event) {
 
@@ -43,16 +52,6 @@ public class PreferenceManager implements PreferenceManagerInterface {
                     .createQuery("Select pref.main.conditione FROM Preference pref WHERE pref.event.idEvent.id= :event").setParameter("event", event.getIdEvent().getId());
 
     List<String> result = new ArrayList<>(query.getResultList());
-
-
-
-
-
-    return result; }
-
-
-
-
-
-
+    return result; 
+    }
 }

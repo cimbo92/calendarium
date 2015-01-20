@@ -25,6 +25,11 @@ import javax.ejb.Singleton;
 @Remote(WarningManagerCheckerInterface.class)
 public class WarningManagerChecker implements WarningManagerCheckerInterface {
     
+    /**
+     * 
+     * MANAGERS
+     * 
+     */
     @EJB
     private UserManagerInterface um;
     @EJB
@@ -38,14 +43,17 @@ public class WarningManagerChecker implements WarningManagerCheckerInterface {
    
     int count=0;
     
+    /**
+     * this function check every 12 hours if there are some bad weather notifications.
+     * If there are, this function sents email to creators
+     */
     @Schedules({
         @Schedule(second = "0", minute = "0", hour = "0", persistent = false),
         @Schedule(second = "0", minute = "0", hour = "12", persistent = false)
     })
     private void warningEvery12Hours(){
         
-        
-        
+
         System.out.println("Begin warningEvery12Hours "+count);
         count++;
         
@@ -58,11 +66,12 @@ public class WarningManagerChecker implements WarningManagerCheckerInterface {
             for(Event e : eventWarning){
                 ms.sendMail(u.getEmail(),"Warning: "+e.getTitle(),"Message to notify a forecast change(12h). For more info check on your personal page. \nStaff MeteoCalendarium");
             }
-        }
-        
-        
+        }     
     }
-    
+    /**
+     * this function checks if there are warnings for events that start in three days
+     * If there are, this function sents email to creators
+     */
     @Schedule(second = "0", minute = "0", hour = "0", persistent = false)
     private void threeDaysWarning(){
         
@@ -86,22 +95,18 @@ public class WarningManagerChecker implements WarningManagerCheckerInterface {
             for(Event e : eventWarning){
                 
                 long d = e.getStartDate().getTime();
-                System.out.println("Evento con warning: " + e.getTitle());
                 if(d-nowLong >=deltaTwoDay && d-nowLong <= deltaThreeDay)
                 {
-                    System.out.println("entrato");
                     ms.sendMail(u.getEmail(),"Warning: "+e.getTitle(),"Message to notify a three days notification. For more info check on your personal page. \nStaff MeteoCalendarium");
-                    
-                    
                 }
             }
         }
-        
-        
-        
-        System.out.println("Fine check three day warning");
-        
+        System.out.println("Fine check three day warning");      
     }
+    /**
+     * this functions checks if there are some bad weather notification for events strarting in one day.
+     * If there are, the function sents email to invitees
+     */
     @Schedule(second = "0", minute = "0", hour = "0", persistent = false)
     private void oneDayWarning(){
         

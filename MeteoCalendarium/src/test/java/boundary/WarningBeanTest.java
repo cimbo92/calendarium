@@ -42,14 +42,6 @@ public class WarningBeanTest {
           e1.setPlace(new Place(place));
           return e1;
     }
-    
-    private Preference initPreference(Event event, String pref)
-    {
-        Preference p1 = new Preference(event, pref);
-        return p1;
-    }
-
-   
 
     /**
      * Test of loadWarnings method, of class WarningBean.
@@ -76,7 +68,8 @@ public class WarningBeanTest {
         listEvent.add(eventtemp1);
         listEvent.add(eventtemp2);
         
-         when(bwnm.findWarnings((User) (Matchers.anyObject()))).thenReturn(listEvent);
+        when(um.getLoggedUser()).thenReturn(userTest);
+         when(bwnm.findWarnings(um.getLoggedUser())).thenReturn(listEvent);
         
          
          wb.em=em;
@@ -90,7 +83,7 @@ public class WarningBeanTest {
          assertTrue(temp.get(0).getTitle().equals(eventtemp1.getTitle()));
          
          listEvent=new ArrayList<>();
-         when(bwnm.findWarnings((User) (Matchers.anyObject()))).thenReturn(listEvent);
+         when(bwnm.findWarnings(um.getLoggedUser())).thenReturn(listEvent);
          wb.setWarnings(new ArrayList<Event>());
          wb.loadWarnings();
         
@@ -115,6 +108,10 @@ public class WarningBeanTest {
         UserManagerInterface um = mock(UserManagerInterface.class);
         BadWeatherNotificationManagerInterface bwnm = mock(BadWeatherNotificationManagerInterface.class);
         
+        User userTest = new User();
+        userTest.setEmail("gigi@mail.it");
+        userTest.setGroupName("USERS");
+        userTest.setPassword("pippo");
         
         List<Event> listEvent = new ArrayList<>();
         Event eventtemp1 = this.initEvent("prova1", "Milan");
@@ -130,8 +127,9 @@ public class WarningBeanTest {
         listDate.add(temp1);
         listDate.add(temp2);
         
+        when(um.getLoggedUser()).thenReturn(userTest);
          when(bwnm.findSolution(listEvent)).thenReturn(listDate);
-         when(bwnm.findWarnings((User) (Matchers.anyObject()))).thenReturn(listEvent);
+         when(bwnm.findWarnings(um.getLoggedUser())).thenReturn(listEvent);
               
          wb.em=em;
          wb.um=um;
@@ -139,7 +137,6 @@ public class WarningBeanTest {
          wb.setSolutions(new ArrayList<Timestamp>());
          wb.loadWarnings();
          
-       
          List<Timestamp> sol = wb.getSolutions();
          
          assertEquals( sol.get(0).getTime() , temp1.getTime() );

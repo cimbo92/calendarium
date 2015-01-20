@@ -18,7 +18,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
+ * manager of entity UserEvent
  * @author alessandro
  */
 @Stateless
@@ -27,13 +27,7 @@ public class UserEventManager implements UserEventManagerInterface {
     @PersistenceContext
     private EntityManager em;
 
-    public EntityManager getEm() {
-        return em;
-    }
-
-    public void setEm(EntityManager em) {
-        this.em = em;
-    }
+    
 
     @Inject
     Principal principal;
@@ -43,6 +37,11 @@ public class UserEventManager implements UserEventManagerInterface {
         em.merge(userEvent);
     }
 
+    /**
+     * this funtion searches who is the creator of an event
+     * @param event
+     * @return the creator
+     */
     @Override
     public User findEventCreator(Event event) {
       Query query;
@@ -52,6 +51,12 @@ public class UserEventManager implements UserEventManagerInterface {
 
     }
 
+    /**
+     * this funtion return the tuple in UserEvent entity that match with the passed parametes
+     * @param event
+     * @param user
+     * @return 
+     */
     @Override
     public UserEvent getUserEventofUser(Event event,User user) {
         Query query;
@@ -60,7 +65,12 @@ public class UserEventManager implements UserEventManagerInterface {
     return result.get(0);
     }
 
-
+    /**
+     * this funtion modifies a tuple in UserEvent setting new values
+     * @param userEvent
+     * @param decision
+     * @param view 
+     */
     @Override
     public void modifyUserEvent(UserEvent userEvent,boolean decision,boolean view) {
 
@@ -73,6 +83,11 @@ public class UserEventManager implements UserEventManagerInterface {
             query.executeUpdate();
     }
 
+    /**
+     * this function searches for invitation of an event
+     * @param event
+     * @return a list of emails corresponding to invitees
+     */
     @Override
     public List<String> invitedUsersOfEvent(Event event) {
       Query query;
@@ -83,12 +98,20 @@ public class UserEventManager implements UserEventManagerInterface {
             return result;
     }
 
+    /**
+     * this funcion deletes all tuples that have as event the passed parameter
+     * @param event 
+     */
     @Override
     public void deleteUserEvent(Event event) {
         Query query2 = em.createQuery("Delete From UserEvent ue Where ue.event= :event").setParameter(("event"), event);
         query2.executeUpdate();
      }
 
+    /**
+     * 
+     * @return all users that have created at least an event 
+     */
     @Override
     public List<User> getUsersCreator() {
 
@@ -97,6 +120,11 @@ public class UserEventManager implements UserEventManagerInterface {
 
     }
 
+    /**
+     * 
+     * @param event
+     * @return a list of users that have accepted the invitation for the passed event  
+     */
     @Override
     public List<User> getInvitedWhoAccepted(Event event) {
 
@@ -105,4 +133,11 @@ public class UserEventManager implements UserEventManagerInterface {
 
     }
 
+    public EntityManager getEm() {
+        return em;
+    }
+
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
 }

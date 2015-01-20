@@ -40,7 +40,11 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
     private EventManagerInterface emi;
 
 
-
+    /**
+     * This funtion controls if an event has bad weather warning
+     * @param event
+     * @return true if there is no match between preferences and forecasts
+     */
      @Override
     public boolean isWarned(Event event) {
          Query query1 = em.createQuery("Select distinct e From Event e, UserEvent ue, Preference p, Forecast f Where ue.event= :event and e.outdoor=1 and p.event= :event and f.place=e.place and CAST(f.date AS DATE) between CAST(e.startDate AS DATE) and CAST(e.endDate AS DATE) and f.mainCondition not in (Select pr.main From Preference pr where pr.event= :event) ").setParameter("event", event);
@@ -48,19 +52,25 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
          return !eventWarning.isEmpty();
      }
 
+    /**
+     * this function search from the database all the events of a user that get overlapping
+     * @param creator
+     * @return list of events with warning
+     */
     @Override
     public List<Event> findWarnings(User creator) {
 
         Query query1 = em.createQuery("Select distinct e From Event e, UserEvent ue, Preference p, Forecast f Where ue.event=e and ue.creator=1 and e.outdoor=1 and e.creator.email= :mail and p.event=e and f.place=e.place and CAST(f.date AS DATE) between  CAST(e.startDate AS DATE) and  CAST(e.endDate AS DATE) and f.mainCondition not in (Select pr.main From Preference pr where pr.event=e) ").setParameter("mail", creator.getEmail());
     List<Event> eventWarning=query1.getResultList();
 
-    if(!eventWarning.isEmpty())
-        System.out.println("Primo evento con warning: " + eventWarning.get(0).getTitle());
-    else
-        System.out.println("No warn");
     return eventWarning;
        }
 
+    /**
+     * This function search for each event a possible new schedule that respects the preference
+     * @param eventWarning
+     * @return list of new dates
+     */
     @Override
     public List<Timestamp> findSolution(List<Event> eventWarning) {
 
@@ -74,27 +84,20 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
         for(int i=0;i<eventWarning.size();i++)
         {
             dayy=eventWarning.get(i).getEndDate().getTime()-eventWarning.get(i).getStartDate().getTime();
-            System.out.println("Event: " + eventWarning.get(i).getTitle() + " is long " + dayy);
             if(dayy/(1000*60*60*24)<1)
             {
                 day=1;
-                System.out.println("Less than 1 day");
             } else
             {
-
                 day=(int)(dayy/(1000*60*60*24));
-                System.out.println("More than 1 day: " + day);
-
             }
 
             queryForecast = em.createQuery("Select  distinct f From Forecast f where f.place= :place and CAST(f.date AS DATE) > CAST(:startDate AS DATE)").setParameter(("place"), eventWarning.get(i).getPlace()).setParameter("startDate", eventWarning.get(i).getStartDate());
             forecast = queryForecast.getResultList();
-            System.out.println("Forecast : " + forecast.size() + " type: " + forecast.get(0).getMainCondition().getCondition());
-
+            
             queryMain = em.createQuery("Select distinct p.main From Preference p where p.event.idEvent = :id").setParameter(("id"), eventWarning.get(i).getIdEvent());
             condition=queryMain.getResultList();
-            System.out.println("condition : " + condition.get(0).getCondition());
-            if(forecast.isEmpty())
+             if(forecast.isEmpty())
             {
                 daySuggest.add(null);
             }
@@ -109,7 +112,6 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
 
                            if(!checkOverlapping(forecast.get(j).getDate(), dayy, eventWarning.get(i).getStartDate(), eventWarning.get(i).getEndDate(), eventWarning.get(i).getCreator()))
                            {
-                               System.out.println("no overlapping");
                                help=forecast.get(j).getDate();
                                help.setHours(eventWarning.get(i).getStartDate().getHours());
                                help.setMinutes(eventWarning.get(i).getStartDate().getMinutes());
@@ -120,13 +122,9 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
                            else
                            {
                                daySuggest.add(i, null);
-                               System.out.println("Suggest gets overlapping");
                                daysOk=-1;
                            }
-                            System.out.println("Evento: "+ i);
-
-
-                       }
+                        }
                        daysOk++;
                    }
                    else
@@ -141,6 +139,15 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
         return daySuggest;
 
     }
+    /**
+     * this function check if an event, with new start and end Date, gets overlapping
+     * @param start
+     * @param day
+     * @param oldStart
+     * @param oldEnd
+     * @param creator
+     * @return true if gets overlapping
+     */
     public boolean checkOverlapping(Timestamp start, long day, Timestamp oldStart, Timestamp oldEnd, User creator)
     {
         Event event = new Event();
@@ -149,11 +156,8 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
         start.setSeconds(oldStart.getSeconds());
         event.setStartDate(start);
         Timestamp end;
-        System.out.println(start.toString());
         end=new Timestamp(0);
-        System.out.println("End = start");
         end.setTime(start.getTime()+day);
-        System.out.println(end.toString());
         event.setEndDate(end);
         event.setCreator(creator);
         return emi.searchOverlapping(event,event.getCreator());
