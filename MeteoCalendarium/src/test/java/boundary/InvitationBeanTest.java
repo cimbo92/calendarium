@@ -10,6 +10,7 @@ import control.EventManagerInterface;
 import control.UserEventManagerInterface;
 import control.UserManagerInterface;
 import entity.Event;
+import entity.Place;
 import entity.User;
 import entity.UserEvent;
 import java.util.ArrayList;
@@ -29,13 +30,18 @@ public class InvitationBeanTest {
     Query query = mock(Query.class);
 
     private EventCreation init(String title) {
+
         EventCreation e1 = new EventCreation();
         e1.setTitle(title);
+        e1.setPlace("posto");
         return e1;
     }
 
     private Event initEvent(String title) {
+         Place p = new Place();
+        p.setCity("posto");
         Event e1 = new Event();
+        e1.setPlace(p);
         e1.setTitle(title);
         return e1;
     }
@@ -121,8 +127,12 @@ public class InvitationBeanTest {
         UserEvent userEvent = new UserEvent();
 
         List<Event> list2 = new ArrayList<>();
+
+
+
         Event eventtemp1 = this.initEvent("prova1");
         Event eventtemp2 = this.initEvent("prova2");
+
 
         EventCreation e1 = this.init("prova1");
         EventCreation e2 = this.init("prova2");

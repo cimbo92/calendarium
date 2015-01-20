@@ -55,7 +55,9 @@ public class ButtonsTest {
     private void initEvent() {
         e = new Event();
         e.setIdEvent(new IDEvent("1"));
-        e.setPlace(new Place());
+        Place p = new Place();
+        p.setCity("posto");
+        e.setPlace(p);
         Timestamp tmp = new Timestamp(2015, 1, 1, 1, 1, 1, 1);
         e.setCreator(u);
         e.setDescription("Test");
