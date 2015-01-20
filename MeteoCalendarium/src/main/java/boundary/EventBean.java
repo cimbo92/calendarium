@@ -26,6 +26,7 @@ import javax.inject.Named;
 import control.EventManagerInterface;
 import control.IDEventManagerInterface;
 import control.MailSenderManagerInterface;
+import control.OwmClientInterface;
 import control.PreferenceManagerInterface;
 import control.UserEventManagerInterface;
 import control.UserManagerInterface;
@@ -60,6 +61,9 @@ public class EventBean implements Serializable {
     private IDEventManagerInterface idm;
     @EJB
     private MailSenderManagerInterface mailSender;
+    
+    @EJB
+    private OwmClientInterface weather;
 
     FacesContext c;
 
@@ -371,6 +375,7 @@ public class EventBean implements Serializable {
             event.loadEvent(beanEvent);
 
             em.addEvent(event, um.getLoggedUser());
+            weather.checkWeather(event.getPlace());
         } else {
             throw new InvalidDateException();
         }
@@ -582,4 +587,29 @@ public class EventBean implements Serializable {
         this.c = context;
     }
 
+    public OwmClientInterface getWeather() {
+        return weather;
+    }
+
+    public void setWeather(OwmClientInterface weather) {
+        this.weather = weather;
+    }
+
+    public FacesContext getC() {
+        return c;
+    }
+
+    public void setC(FacesContext c) {
+        this.c = c;
+    }
+
+    public RequestContext getR() {
+        return r;
+    }
+
+    public void setR(RequestContext r) {
+        this.r = r;
+    }
+
+    
 }

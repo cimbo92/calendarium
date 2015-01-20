@@ -11,6 +11,7 @@ import control.EventManager;
 import control.EventManagerInterface;
 import control.IDEventManagerInterface;
 import control.MailSenderManagerInterface;
+import control.OwmClientInterface;
 import control.PreferenceManagerInterface;
 import control.UserEventManagerInterface;
 import control.UserManagerInterface;
@@ -53,6 +54,7 @@ public class EventBeanTest {
 
         EventBean eb = new EventBean();
         EventCreation beanEvent = new EventCreation();
+        beanEvent.setPlace("Ciao");
 
         initB(beanEvent);
 
@@ -60,6 +62,9 @@ public class EventBeanTest {
 
         Event e1 = new Event();
 
+        OwmClientInterface weather = mock(OwmClientInterface.class);
+        eb.setWeather(weather);
+        
         FacesContext fc = mock(FacesContext.class);
         RequestContext rc = mock(RequestContext.class);
         EventManagerInterface eM = mock(EventManagerInterface.class);
@@ -99,6 +104,9 @@ public class EventBeanTest {
         eb.setSelectedPreferences(p);
         eb.setSelectedUsers(u);
 
+        EventCreation beanEvent2 = new EventCreation();
+        beanEvent2.setPlace("Ciao");
+        eb.setBeanEvent(beanEvent2);
         //Creazione con preferenze ed invitati
         eb.create();
 
@@ -110,6 +118,8 @@ public class EventBeanTest {
         EventBean eb = new EventBean();
         EventCreation beanEvent = new EventCreation();
         EventCreation tempEvent = new EventCreation();
+        beanEvent.setPlace("Ciao");
+        tempEvent.setPlace("Ciao");
 
         initB(beanEvent);
 
@@ -117,6 +127,9 @@ public class EventBeanTest {
 
         Event e1 = new Event();
 
+        OwmClientInterface weather = mock(OwmClientInterface.class);
+        eb.setWeather(weather);
+        
         FacesContext fc = mock(FacesContext.class);
         RequestContext rc = mock(RequestContext.class);
 
@@ -169,7 +182,9 @@ public class EventBeanTest {
     public void deleteEventTest() {
 
         EventBean eb = new EventBean();
-        eb.setBeanEvent(new EventCreation());
+        EventCreation e =new EventCreation();
+        e.setPlace("Ciao");
+        eb.setBeanEvent(e);
 
         List<Event> listEvent = new ArrayList<Event>();
 
@@ -179,6 +194,10 @@ public class EventBeanTest {
         listEvent.add(e1);
         listEvent.add(e2);
 
+        OwmClientInterface weather = mock(OwmClientInterface.class);
+        eb.setWeather(weather);
+        
+        
         FacesContext fc = mock(FacesContext.class);
         RequestContext rc = mock(RequestContext.class);
         EventManagerInterface eM = mock(EventManagerInterface.class);
@@ -193,6 +212,7 @@ public class EventBeanTest {
 
     private EventBean init(EventBean eb) {
 
+        
         eb.setEndDate(ed);
         eb.setStartDate(sd);
         eb.setIsOwnEvent(true);
