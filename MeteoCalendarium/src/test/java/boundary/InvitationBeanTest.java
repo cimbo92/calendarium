@@ -143,10 +143,6 @@ public class InvitationBeanTest {
         String ret;
         ret = ib.acceptInvite(e1);
 
-        //dovrebbe essere temp.size()==1 e il titolo uguale a e2.getTitle()
-        List<EventCreation> temp = ib.getInvites();
-        assertTrue(temp.get(0).getTitle().equals(e1.getTitle()));
-        assertTrue(temp.size() == 2);
         assertTrue(ret.equalsIgnoreCase("calendar?faces-redirect=true"));
     }
 
