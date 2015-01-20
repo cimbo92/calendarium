@@ -24,17 +24,16 @@ import static org.mockito.Mockito.when;
  */
 public class ScheduleViewPublicTest {
 
-
-      private ScheduleViewPublic s = new ScheduleViewPublic();
-        User loggedUser = new User();
-        User publicUser1 = new User();
-        User publicUser2 = new User();
-        User privateUser3 = new User();
-        List<String> allUsers = new ArrayList<>();
-        List<String> publicUsers = new ArrayList<>();
-        Event eventToSee = new Event();
-        Event eventPrivate = new Event();
-        List<Event> listToSee = new ArrayList<>();
+    private ScheduleViewPublic s = new ScheduleViewPublic();
+    User loggedUser = new User();
+    User publicUser1 = new User();
+    User publicUser2 = new User();
+    User privateUser3 = new User();
+    List<String> allUsers = new ArrayList<>();
+    List<String> publicUsers = new ArrayList<>();
+    Event eventToSee = new Event();
+    Event eventPrivate = new Event();
+    List<Event> listToSee = new ArrayList<>();
 
     private User initUser(String name) {
         User u = new User();
@@ -45,32 +44,30 @@ public class ScheduleViewPublicTest {
         return u;
     }
 
-    public void initUsersList(){
+    public void initUsersList() {
         loggedUser = this.initUser("pippo");
         publicUser1 = this.initUser("paperino");
         publicUser2 = this.initUser("pluto");
         privateUser3 = this.initUser("minny");
         privateUser3.setPublicCalendar(false);
 
-
         allUsers.add(loggedUser.getEmail());
         allUsers.add(publicUser1.getEmail());
         allUsers.add(publicUser2.getEmail());
         allUsers.add(privateUser3.getEmail());
-
 
         publicUsers.add(publicUser1.getEmail());
         publicUsers.add(publicUser2.getEmail());
 
     }
 
-    private void initEvents(){
-       eventToSee.setCreator(loggedUser);
-       eventPrivate.setCreator(loggedUser);
-       eventToSee.setTitle("prova1");
-       eventPrivate.setTitle("prova2");
+    private void initEvents() {
+        eventToSee.setCreator(loggedUser);
+        eventPrivate.setCreator(loggedUser);
+        eventToSee.setTitle("prova1");
+        eventPrivate.setTitle("prova2");
 
-       listToSee.add(eventToSee);
+        listToSee.add(eventToSee);
 
         eventToSee.setCreator(publicUser1);
         eventToSee.setDescription("");
@@ -83,15 +80,13 @@ public class ScheduleViewPublicTest {
         eventToSee.setPlace(new Place());
         eventToSee.setPublicEvent(true);
 
-
     }
 
-
-    private void setQueries(){
+    private void setQueries() {
         UserManagerInterface um = mock(UserManagerInterface.class);
         EventManagerInterface em = mock(EventManagerInterface.class);
-        s.em=em;
-        s.um=um;
+        s.em = em;
+        s.um = um;
         s.init();
 
         when(um.getLoggedUser()).thenReturn(loggedUser);
@@ -100,31 +95,30 @@ public class ScheduleViewPublicTest {
         when(em.loadPublicCalendar(s.getUsername())).thenReturn(listToSee);
     }
 
-
-    private void initTest(){
+    private void initTest() {
         this.initUsersList();
         this.setQueries();
     }
 
     @Test
     public void initSchedule() {
-    this.initTest();
-    s.init();
-    assertTrue(s.getUsers().contains(publicUser1.getEmail()));
-    assertTrue(!s.getUsers().contains(privateUser3.getEmail()));
+        this.initTest();
+        s.init();
+        assertTrue(s.getUsers().contains(publicUser1.getEmail()));
+        assertTrue(!s.getUsers().contains(privateUser3.getEmail()));
 
     }
 
     @Test
-    public void testCalendar(){
+    public void testCalendar() {
         this.initTest();
-         s.init();
-         this.initEvents();
+        s.init();
+        this.initEvents();
         s.loadCalendar();
 
         assertTrue(s.getEventModel().getEvents().get(0).getTitle().equals(eventToSee.getTitle()));
-     //   assertTrue(!s.getEventModel().getEvents().get(0).getTitle().equals(eventToSee.getTitle()));
+        //   assertTrue(!s.getEventModel().getEvents().get(0).getTitle().equals(eventToSee.getTitle()));
 
-}
+    }
 
 }

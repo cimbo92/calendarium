@@ -23,29 +23,29 @@ import static org.mockito.Mockito.when;
  * @author alessandro
  */
 public class SetCalendarBeanTest {
-    
+
     /**
      * Test of isStatus method, of class SetCalendarBean.
      */
     @Test
     public void testIsStatus() {
-      
+
         UserManagerInterface um = mock(UserManagerInterface.class);
-        
+
         SetCalendarBean sc = new SetCalendarBean();
-        
+
         User userTest = new User();
         userTest.setEmail("gigi@mail.it");
         userTest.setGroupName("USERS");
         userTest.setPassword("pippo");
         userTest.setPublicCalendar(true);
-        
-          when(um.getLoggedUser()).thenReturn(userTest);
-          
-          sc.um=um;
-          
-          assertEquals( sc.isStatus() , userTest.isPublicCalendar() );
-      
+
+        when(um.getLoggedUser()).thenReturn(userTest);
+
+        sc.um = um;
+
+        assertEquals(sc.isStatus(), userTest.isPublicCalendar());
+
     }
-    
+
 }

@@ -16,7 +16,8 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
 public class UserManagerTest {
-     private UserManager cut;
+
+    private UserManager cut;
 
     @Before
     public void setUp() {
@@ -35,6 +36,6 @@ public class UserManagerTest {
         cut.save(newUser);
         assertThat(newUser.getGroupName(), is(Group.USER));
 
-        verify(cut.getEm(),times(1)).persist(newUser);
+        verify(cut.getEm(), times(1)).persist(newUser);
     }
 }

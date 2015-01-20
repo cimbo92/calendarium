@@ -199,6 +199,4 @@ public class ButtonsTest {
         assertTrue(!wb.isEnableModify());
 
     }
-   }
-
-
+}

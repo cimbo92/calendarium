@@ -29,16 +29,15 @@ import static org.mockito.Mockito.when;
  */
 public class ScheduleViewTest {
 
-        Event eventCreated = new Event();
-        Event notCreatedAccepted = new Event();
-        Event notCreatedNotAccepted = new Event();
+    Event eventCreated = new Event();
+    Event notCreatedAccepted = new Event();
+    Event notCreatedNotAccepted = new Event();
 
-        User loggedUser = new User();
-        ScheduleView s = new ScheduleView();
-        List<Event> listToSee = new ArrayList<>();
+    User loggedUser = new User();
+    ScheduleView s = new ScheduleView();
+    List<Event> listToSee = new ArrayList<>();
 
-
-            private void initEvent() {
+    private void initEvent() {
         loggedUser.setEmail("ale@a.it");
 
         eventCreated.setIdEvent(new IDEvent("2"));
@@ -58,7 +57,7 @@ public class ScheduleViewTest {
         listToSee.add(notCreatedAccepted);
     }
 
-            private void setQueries(){
+    private void setQueries() {
         UserManagerInterface um = mock(UserManagerInterface.class);
         EventManagerInterface em = mock(EventManagerInterface.class);
         ForecastManagerInterface fm = mock(ForecastManagerInterface.class);
@@ -68,10 +67,10 @@ public class ScheduleViewTest {
         forecast.setMainCondition(new MainCondition());
         forecast.getMainCondition().setCondition("Rain");
         List<Forecast> listForecast = new ArrayList<>();
-        s.em=em;
-        s.um=um;
-        s.fm=fm;
-        s.bwm=bm;
+        s.em = em;
+        s.um = um;
+        s.fm = fm;
+        s.bwm = bm;
         s.init();
 
         when(um.getLoggedUser()).thenReturn(loggedUser);
@@ -80,25 +79,22 @@ public class ScheduleViewTest {
         when(fm.getForecastOfEvent(notCreatedAccepted)).thenReturn(listForecast);
         when(bm.isWarned(eventCreated)).thenReturn(Boolean.TRUE);
         when(bm.isWarned(eventCreated)).thenReturn(Boolean.FALSE);
-            }
+    }
 
-
-    private void initTest(){
+    private void initTest() {
         this.initEvent();
         this.setQueries();
     }
 
-        @Test
-        public void loadCalendar(){
-            this.initTest();
-            s.loadCalendar();
+    @Test
+    public void loadCalendar() {
+        this.initTest();
+        s.loadCalendar();
 
-            assertTrue(s.getEventModel().getEvents().get(0).getTitle().equals(eventCreated.getTitle()));
-            assertTrue(s.getEventModel().getEvents().get(1).getTitle().equals(notCreatedAccepted.getTitle()));
-            assertTrue(!s.getEventModel().getEvents().get(0).getTitle().equals(notCreatedNotAccepted.getTitle()));
+        assertTrue(s.getEventModel().getEvents().get(0).getTitle().equals(eventCreated.getTitle()));
+        assertTrue(s.getEventModel().getEvents().get(1).getTitle().equals(notCreatedAccepted.getTitle()));
+        assertTrue(!s.getEventModel().getEvents().get(0).getTitle().equals(notCreatedNotAccepted.getTitle()));
 
-        }
-
-
+    }
 
 }
