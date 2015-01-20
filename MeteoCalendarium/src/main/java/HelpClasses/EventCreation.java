@@ -17,9 +17,9 @@ import java.util.Date;
  */
 public class EventCreation {
 
-   private IDEvent idEvent=new IDEvent();
+    private IDEvent idEvent = new IDEvent();
 
-    private User creator= new User();
+    private User creator = new User();
 
     private String title;
 
@@ -42,20 +42,20 @@ public class EventCreation {
      */
     /**
      * convert date in Timestamp
+     *
      * @param date
      */
-        public void convertStartDate(Date date)
-    {
-     startDate = new java.sql.Timestamp(date.getTime());
+    public void convertStartDate(Date date) {
+        startDate = new java.sql.Timestamp(date.getTime());
     }
 
-        /**
-         * convert date in Timestamp
-         * @param date
-         */
-    public void convertEndDate(Date date)
-    {
-       endDate = new java.sql.Timestamp(date.getTime());
+    /**
+     * convert date in Timestamp
+     *
+     * @param date
+     */
+    public void convertEndDate(Date date) {
+        endDate = new java.sql.Timestamp(date.getTime());
     }
 
     /*
@@ -63,7 +63,6 @@ public class EventCreation {
      * GETTERS AND SETTERS
      *******************************************************************
      */
-
     public boolean isPublicEvent() {
         return publicEvent;
     }
@@ -71,7 +70,6 @@ public class EventCreation {
     public void setPublicEvent(boolean publicEvent) {
         this.publicEvent = publicEvent;
     }
-
 
     public User getCreator() {
         return creator;
@@ -107,7 +105,7 @@ public class EventCreation {
 
     public String getTitle() {
         {
-        return title;
+            return title;
         }
     }
 
@@ -139,7 +137,7 @@ public class EventCreation {
         this.outdoor = outdoor;
     }
 
-    public void loadEvent(Event e){
+    public void loadEvent(Event e) {
         this.title = e.getTitle();
         this.creator = e.getCreator();
         this.description = e.getDescription();

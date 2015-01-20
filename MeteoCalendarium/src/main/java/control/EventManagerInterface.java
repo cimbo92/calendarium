@@ -1,8 +1,8 @@
 /*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package control;
 
 import HelpClasses.OverlappingException;
@@ -19,7 +19,6 @@ import javax.persistence.EntityManager;
 @Remote
 public interface EventManagerInterface {
 
-
     public void removeEvent(Event event);
 
     public void removeEventByID(Event event);
@@ -28,7 +27,9 @@ public interface EventManagerInterface {
 
     public boolean isIndoor(Event event);
 
-    public void addEvent(Event event, User user) throws OverlappingException;;
+    public void addEvent(Event event, User user) throws OverlappingException;
+
+    ;
 
     public List<Event> findInvitatedEvent(User user);
 
@@ -40,11 +41,11 @@ public interface EventManagerInterface {
 
     public List<Event> getEventsCreated(User user);
 
-    public boolean isCreator(Event event,User user);
+    public boolean isCreator(Event event, User user);
 
-    public boolean searchOverlapping(Event event,User user);
+    public boolean searchOverlapping(Event event, User user);
 
-      public EntityManager getEm();
+    public EntityManager getEm();
 
     public void setEm(EntityManager em);
 }

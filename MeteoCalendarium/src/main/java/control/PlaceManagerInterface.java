@@ -17,5 +17,5 @@ import javax.ejb.Remote;
 public interface PlaceManagerInterface {
 
     public List<Place> getAllPlaces();
-    
+
 }

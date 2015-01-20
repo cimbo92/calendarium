@@ -47,7 +47,6 @@ public class Preference implements Serializable {
      * PUBLIC FUNCTIONS
      *******************************************************************
      */
-
     public Preference(Event ev, String pref) {
         main.setCondition(pref);
         this.setEvent(ev);

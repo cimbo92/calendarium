@@ -1,8 +1,8 @@
 /*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package control;
 
 import entity.Event;
@@ -20,15 +20,14 @@ import javax.ejb.Singleton;
  *
  * @author alessandro
  */
-
 @Singleton
 @Remote(WarningManagerCheckerInterface.class)
 public class WarningManagerChecker implements WarningManagerCheckerInterface {
-    
+
     /**
-     * 
+     *
      * MANAGERS
-     * 
+     *
      */
     @EJB
     private BadWeatherNotificationManagerInterface bm;
@@ -36,98 +35,98 @@ public class WarningManagerChecker implements WarningManagerCheckerInterface {
     private MailSenderManagerInterface ms;
     @EJB
     private UserEventManagerInterface uem;
-   
-    int count=0;
-    
+
+    int count = 0;
+
     /**
-     * this function check every 12 hours if there are some bad weather notifications.
-     * If there are, this function sents email to creators
+     * this function check every 12 hours if there are some bad weather
+     * notifications. If there are, this function sents email to creators
      */
     @Schedules({
         @Schedule(second = "0", minute = "0", hour = "0", persistent = false),
         @Schedule(second = "0", minute = "0", hour = "12", persistent = false)
     })
-    private void warningEvery12Hours(){
-        
+    private void warningEvery12Hours() {
 
-        System.out.println("Begin warningEvery12Hours "+count);
+        System.out.println("Begin warningEvery12Hours " + count);
         count++;
-        
+
         List<User> users = uem.getUsersCreator();
         Iterator<User> ite = users.iterator();
-        while(ite.hasNext()){
+        while (ite.hasNext()) {
             User u = ite.next();
             List<Event> eventWarning = bm.findWarnings(u);
-            
-            for(Event e : eventWarning){
-                ms.sendMail(u.getEmail(),"Warning: "+e.getTitle(),"Message to notify a forecast change(12h). For more info check on your personal page. \nStaff MeteoCalendarium");
+
+            for (Event e : eventWarning) {
+                ms.sendMail(u.getEmail(), "Warning: " + e.getTitle(), "Message to notify a forecast change(12h). For more info check on your personal page. \nStaff MeteoCalendarium");
             }
-        }     
+        }
     }
+
     /**
-     * this function checks if there are warnings for events that start in three days
-     * If there are, this function sents email to creators
+     * this function checks if there are warnings for events that start in three
+     * days If there are, this function sents email to creators
      */
     @Schedule(second = "0", minute = "0", hour = "0", persistent = false)
-    private void threeDaysWarning(){
-        
-        
+    private void threeDaysWarning() {
+
         System.out.println("Inizio check three day warning");
         Timestamp now = new Timestamp(new java.util.Date().getTime());
-        
-        long deltaThreeDay = 3*(24*60*60*1000);
-        
-        long deltaTwoDay= 2*(24*60*60*1000);
+
+        long deltaThreeDay = 3 * (24 * 60 * 60 * 1000);
+
+        long deltaTwoDay = 2 * (24 * 60 * 60 * 1000);
         long nowLong = now.getTime();
-        
+
         //Get all users
         List<User> users = uem.getUsersCreator();
         //Get all warnings
         Iterator<User> ite = users.iterator();
-        while(ite.hasNext()){
+        while (ite.hasNext()) {
             User u = ite.next();
             List<Event> eventWarning = bm.findWarnings(u);
-            
-            for(Event e : eventWarning){
-                
+
+            for (Event e : eventWarning) {
+
                 long d = e.getStartDate().getTime();
-                if(d-nowLong >=deltaTwoDay && d-nowLong <= deltaThreeDay)
-                {
-                    ms.sendMail(u.getEmail(),"Warning: "+e.getTitle(),"Message to notify a three days notification. For more info check on your personal page. \nStaff MeteoCalendarium");
+                if (d - nowLong >= deltaTwoDay && d - nowLong <= deltaThreeDay) {
+                    ms.sendMail(u.getEmail(), "Warning: " + e.getTitle(), "Message to notify a three days notification. For more info check on your personal page. \nStaff MeteoCalendarium");
                 }
             }
         }
-        System.out.println("Fine check three day warning");      
+        System.out.println("Fine check three day warning");
     }
+
     /**
-     * this functions checks if there are some bad weather notification for events strarting in one day.
-     * If there are, the function sents email to invitees
+     * this functions checks if there are some bad weather notification for
+     * events strarting in one day. If there are, the function sents email to
+     * invitees
      */
     @Schedule(second = "0", minute = "0", hour = "0", persistent = false)
-    private void oneDayWarning(){
-        
+    private void oneDayWarning() {
+
         System.out.println("Inizio check one day warning");
         Timestamp now = new Timestamp(new java.util.Date().getTime());
-        
-        long deltaOneDay = (24*60*60*1000);
-        
+
+        long deltaOneDay = (24 * 60 * 60 * 1000);
+
         long nowLong = now.getTime();
-        
+
         List<User> users = uem.getUsersCreator();
         //Get all warnings
         Iterator<User> ite = users.iterator();
-        while(ite.hasNext()){
+        while (ite.hasNext()) {
             User u = ite.next();
             List<Event> eventWarning = bm.findWarnings(u);
-            
-            for(Event e : eventWarning){
-                
+
+            for (Event e : eventWarning) {
+
                 long d = e.getStartDate().getTime();
-                
-                if(d-nowLong >=0 && d-nowLong <= deltaOneDay){
+
+                if (d - nowLong >= 0 && d - nowLong <= deltaOneDay) {
                     List<User> invited = uem.getInvitedWhoAccepted(e);
-                    for(User i : invited){
-                        ms.sendMail(i.getEmail(),"Warning: "+e.getTitle(),"Message to notify a one days notification for an event in which you are invited. For more info check on your personal page. \nStaff MeteoCalendarium");
+                    for (User i : invited) {
+                        ms.sendMail(i.getEmail(), "Warning: " + e.getTitle(), "Message to notify a one days notification for an event in which you are invited. For more info check on your personal page. \nStaff MeteoCalendarium");
                     }
                 }
             }

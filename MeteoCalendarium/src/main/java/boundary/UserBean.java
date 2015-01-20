@@ -12,6 +12,7 @@ import javax.enterprise.context.RequestScoped;
 
 /**
  * manager of logged user
+ *
  * @author Alessandro De Angelis
  */
 @Named

@@ -17,20 +17,20 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface UserEventManagerInterface {
-    
+
     public void addUserEvent(UserEvent userEvent);
-    
+
     public User findEventCreator(Event event);
-    
-    public UserEvent getUserEventofUser(Event event,User user);
-    
-    public void modifyUserEvent(UserEvent userEvent,boolean decision,boolean view);
-    
+
+    public UserEvent getUserEventofUser(Event event, User user);
+
+    public void modifyUserEvent(UserEvent userEvent, boolean decision, boolean view);
+
     public List<String> invitedUsersOfEvent(Event event);
 
     public void deleteUserEvent(Event event);
-    
+
     public List<User> getUsersCreator();
-    
+
     public List<User> getInvitedWhoAccepted(Event event);
 }

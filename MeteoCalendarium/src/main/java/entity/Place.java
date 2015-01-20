@@ -41,11 +41,12 @@ public class Place implements Serializable {
     public void setCity(String city) {
         this.city = city.toLowerCase();
     }
-    public Place(){
+
+    public Place() {
 
     }
-    public Place(String city)
-    {
-        this.city=city;
+
+    public Place(String city) {
+        this.city = city;
     }
 }

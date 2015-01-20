@@ -13,7 +13,7 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface MailSenderManagerInterface {
-    
+
     public void sendMail(String to, String subject, String body);
-    
+
 }

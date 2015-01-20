@@ -14,14 +14,15 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 /**
- *Bean That Manage Registrations
+ * Bean That Manage Registrations
+ *
  * @author Alessandro De Angelis
  */
 @Named
 @RequestScoped
 public class RegistrationBean {
 
-/*
+    /*
      * ******************************************************************
      * MANAGERS
      *******************************************************************
@@ -41,29 +42,27 @@ public class RegistrationBean {
      * PUBLIC FUNCTIONS
      *******************************************************************
      */
-
     /**
-    * Save new User
+     * Save new User
+     *
      * @return
-    */
+     */
     public String register() {
-        try{
-        um.save(user);
-        return "registrationAuthentication.xhtml?faces-redirect=true";
-        }catch(Exception e)
-        {
-               FacesContext context = FacesContext.getCurrentInstance();
-    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "Username Already USED"));
-   return "";
+        try {
+            um.save(user);
+            return "registrationAuthentication.xhtml?faces-redirect=true";
+        } catch (Exception e) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "Username Already USED"));
+            return "";
         }
 
-        }
+    }
     /*
      * ******************************************************************
      * GETTERS AND SETTER
      *******************************************************************
      */
-
 
     public User getUser() {
         if (user == null) {
@@ -75,6 +74,5 @@ public class RegistrationBean {
     public void setUser(User user) {
         this.user = user;
     }
-
 
 }

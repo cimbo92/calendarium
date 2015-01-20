@@ -5,7 +5,6 @@
  */
 package control;
 
-import entity.IDEvent;
 import javax.ejb.Remote;
 
 /**
@@ -14,7 +13,7 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface IDEventManagerInterface {
+
     public Long findFirstFreeID();
 
-   
 }

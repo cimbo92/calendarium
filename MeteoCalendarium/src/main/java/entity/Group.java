@@ -7,8 +7,10 @@ package entity;
 
 /**
  * entity for login
+ *
  * @author home
  */
 public class Group {
-     public static final String USER = "USER";
+
+    public static final String USER = "USER";
 }

@@ -28,6 +28,7 @@ import org.primefaces.model.ScheduleModel;
 
 /**
  * Event Manager on View
+ *
  * @author Alessandro De Angelis
  */
 @ViewScoped
@@ -43,9 +44,9 @@ public class ScheduleView implements Serializable {
     @EJB
     EventManagerInterface em;
     @EJB
-     UserManagerInterface um;
+    UserManagerInterface um;
     @EJB
-     BadWeatherNotificationManagerInterface bwm;
+    BadWeatherNotificationManagerInterface bwm;
     @EJB
     ForecastManagerInterface fm;
 

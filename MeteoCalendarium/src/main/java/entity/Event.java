@@ -19,8 +19,10 @@ import javax.persistence.OneToOne;
 
 /**
  * entity representing an Event with his
+ *
  * @author home
- */@Entity
+ */
+@Entity
 public class Event implements Serializable {
 
 
@@ -29,12 +31,11 @@ public class Event implements Serializable {
      * FIELDS
      *******************************************************************
      */
-
     private static final long serialVersionUID = 1L;
 
     @Id
     @OneToOne
-   private IDEvent idEvent;
+    private IDEvent idEvent;
 
     @NotNull(message = "May not be empty1")
     @ManyToOne(targetEntity = User.class, optional = false)
@@ -53,7 +54,7 @@ public class Event implements Serializable {
     private String description;
 
     @NotNull(message = "May not be empty6")
-    @ManyToOne(targetEntity = Place.class, optional = false, cascade={CascadeType.MERGE},fetch=FetchType.EAGER)
+    @ManyToOne(targetEntity = Place.class, optional = false, cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
     private Place place = new Place();
 
     @NotNull(message = "May not be empty7")
@@ -63,8 +64,6 @@ public class Event implements Serializable {
     @NotNull(message = "May not be empty8")
     private boolean publicEvent;
 
-
-
     /*
      *******************************************************************
      * PUBLIC FUNCTIONS
@@ -72,23 +71,23 @@ public class Event implements Serializable {
      */
     /**
      * convert date in Timestamp
+     *
      * @param date
      */
-        public void convertStartDate(Date date)
-    {
-     startDate = new java.sql.Timestamp(date.getTime());
+    public void convertStartDate(Date date) {
+        startDate = new java.sql.Timestamp(date.getTime());
     }
 
-        /**
-         * convert date in Timestamp
-         * @param date
-         */
-    public void convertEndDate(Date date)
-    {
-       endDate = new java.sql.Timestamp(date.getTime());
+    /**
+     * convert date in Timestamp
+     *
+     * @param date
+     */
+    public void convertEndDate(Date date) {
+        endDate = new java.sql.Timestamp(date.getTime());
     }
 
-    public void loadEvent(EventCreation e){
+    public void loadEvent(EventCreation e) {
         this.title = e.getTitle();
         this.creator = e.getCreator();
         this.description = e.getDescription();
@@ -105,7 +104,6 @@ public class Event implements Serializable {
      * GETTERS AND SETTERS
      *******************************************************************
      */
-
     public boolean isPublicEvent() {
         return publicEvent;
     }
@@ -113,7 +111,6 @@ public class Event implements Serializable {
     public void setPublicEvent(boolean publicEvent) {
         this.publicEvent = publicEvent;
     }
-
 
     public User getCreator() {
         return creator;
@@ -149,7 +146,7 @@ public class Event implements Serializable {
 
     public String getTitle() {
         {
-        return title;
+            return title;
         }
     }
 
@@ -182,8 +179,8 @@ public class Event implements Serializable {
     }
 
     @Override
-    public String toString(){
-        return title + "\n" + "Creator: "+creator+"\n"+"Title: "+title+"\n"+"Description: "+description+"\n"+"Place: "+place.getCity()+"\n"+"Starting from: "+startDate+"\n"+"To: "+endDate+"\n"+"OutDoor: "+outdoor+"\n";
+    public String toString() {
+        return title + "\n" + "Creator: " + creator + "\n" + "Title: " + title + "\n" + "Description: " + description + "\n" + "Place: " + place.getCity() + "\n" + "Starting from: " + startDate + "\n" + "To: " + endDate + "\n" + "OutDoor: " + outdoor + "\n";
     }
 
 }

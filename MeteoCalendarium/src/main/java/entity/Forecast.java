@@ -16,17 +16,17 @@ import javax.validation.constraints.NotNull;
 
 /**
  * entity that rapresent a forecast
+ *
  * @author home
  */
 @Entity
 public class Forecast implements Serializable {
 
-     /*
+    /*
      *******************************************************************
      * FIELDS
      *******************************************************************
      */
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -42,13 +42,11 @@ public class Forecast implements Serializable {
     @NotNull(message = "May not be empty4")
     private Timestamp date;
 
-     /*
+    /*
      *******************************************************************
      * GETTERS AND SETTERS
      *******************************************************************
      */
-
-
     public int getId() {
         return id;
     }
@@ -86,14 +84,13 @@ public class Forecast implements Serializable {
         this.date = date;
     }
 
-
     @Override
-    public boolean equals(Object obj){
-        if(!(obj instanceof Forecast)){
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Forecast)) {
             return false;
         }
         Forecast forecast = (Forecast) obj;
-        if(id == forecast.getId()){
+        if (id == forecast.getId()) {
             return true;
         }
         return false;

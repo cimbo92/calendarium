@@ -22,33 +22,34 @@ import javax.persistence.Query;
 @Remote(PlaceManagerInterface.class)
 public class PlaceManager implements PlaceManagerInterface {
 
-     @PersistenceContext
+    @PersistenceContext
     private EntityManager em;
 
     /**
      * return All Places in DB
+     *
      * @return
      */
     @Override
-    public List<Place> getAllPlaces(){
+    public List<Place> getAllPlaces() {
 
-        try{
-        Query query = em.createNativeQuery("SELECT * FROM Place");
+        try {
+            Query query = em.createNativeQuery("SELECT * FROM Place");
 
-        List<String> list = (List<String>) query.getResultList();
+            List<String> list = (List<String>) query.getResultList();
 
-        List<Place> listPlace = new ArrayList<>();
+            List<Place> listPlace = new ArrayList<>();
 
-        for(String s : list){
-            listPlace.add(em.find(Place.class,s));
+            for (String s : list) {
+                listPlace.add(em.find(Place.class, s));
+            }
+
+            return listPlace;
+
+        } catch (Exception e) {
+            System.out.println("Errore nella query getAllPlaces");
+            System.out.println(e);
         }
-
-        return listPlace;
-
-        }catch (Exception e){
-        System.out.println("Errore nella query getAllPlaces");
-        System.out.println(e);
-    }
-         return null;
+        return null;
     }
 }

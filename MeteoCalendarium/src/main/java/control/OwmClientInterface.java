@@ -17,10 +17,10 @@ import org.json.JSONException;
  */
 @Remote
 public interface OwmClientInterface {
-    
-    public WeatherForecastResponse forecastWeatherAtCity (String cityName) throws JSONException, IOException;
-    
-    public WeatherStatusResponse currentWeatherAtCity (String cityName) throws IOException, JSONException;
-    
-    public WeatherForecastResponse tenForecastWeatherAtCity (String cityName)throws JSONException, IOException;
+
+    public WeatherForecastResponse forecastWeatherAtCity(String cityName) throws JSONException, IOException;
+
+    public WeatherStatusResponse currentWeatherAtCity(String cityName) throws IOException, JSONException;
+
+    public WeatherForecastResponse tenForecastWeatherAtCity(String cityName) throws JSONException, IOException;
 }

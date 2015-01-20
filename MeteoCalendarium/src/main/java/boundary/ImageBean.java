@@ -1,4 +1,3 @@
-
 package boundary;
 
 import javax.enterprise.context.RequestScoped;
@@ -17,17 +16,15 @@ public class ImageBean {
 
     /**
      * get url of demoImage from repository
+     *
      * @return
      */
-    public String getUDemoImage()
-    {
+    public String getUDemoImage() {
         return "http://i.huffpost.com/gen/1166671/thumbs/o-PROFILO-FACEBOOK-facebook.jpg";
     }
 
-    public String getUDemoImageBig()
-    {
+    public String getUDemoImageBig() {
         return "https://calendarium.googlecode.com/git/MeteoCalendarium/src/main/resources/images/logoBig.png";
     }
-
 
 }

@@ -15,7 +15,7 @@ public class Mail {
     private String subject;
     private String body;
 
-    public Mail(String to,String subject,String body){
+    public Mail(String to, String subject, String body) {
         this.to = to;
         this.subject = subject;
         this.body = body;
@@ -44,6 +44,5 @@ public class Mail {
     public void setBody(String body) {
         this.body = body;
     }
-
 
 }

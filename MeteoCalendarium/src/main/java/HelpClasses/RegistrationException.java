@@ -9,8 +9,9 @@ package HelpClasses;
  *
  * @author Alessandro
  */
-public class RegistrationException extends Exception{
-public RegistrationException(){
+public class RegistrationException extends Exception {
+
+    public RegistrationException() {
         super("Username Already Present");
     }
 }

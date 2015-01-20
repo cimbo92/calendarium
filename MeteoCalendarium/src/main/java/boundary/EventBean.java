@@ -1,8 +1,8 @@
 /*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package boundary;
 
 import HelpClasses.EventCreation;
@@ -44,10 +44,10 @@ import org.primefaces.model.DefaultScheduleEvent;
 public class EventBean implements Serializable {
 
     /*
-    * ******************************************************************
-    * EJB MANAGERS
-    * ******************************************************************
-    */
+     * ******************************************************************
+     * EJB MANAGERS
+     * ******************************************************************
+     */
     @EJB
     private PreferenceManagerInterface pm;
     @EJB
@@ -66,10 +66,10 @@ public class EventBean implements Serializable {
     RequestContext r;
 
     /*
-    *******************************************************************
-    * FIELDS
-    *******************************************************************
-    */
+     *******************************************************************
+     * FIELDS
+     *******************************************************************
+     */
     /**
      * list of preferences selected by creator user
      */
@@ -89,7 +89,7 @@ public class EventBean implements Serializable {
     //booleans used to enable/disable buttons in dialog
     private boolean isOwnEvent;
     private boolean creating;
-    private boolean required=true;
+    private boolean required = true;
 
     public boolean isRequired() {
         return required;
@@ -106,19 +106,19 @@ public class EventBean implements Serializable {
 
     //context used for messges
     /*
-    *******************************************************************
-    PUBLIC FUNCTIONS
-    *******************************************************************
-    */
+     *******************************************************************
+     PUBLIC FUNCTIONS
+     *******************************************************************
+     */
     /**
      * Function that create An Event ( and all consequent invitations and
      * preferences ) in database using fields inserted by user
      */
     public void create() {
-           FacesContext context = FacesContext.getCurrentInstance();
-           if(context == null){
-               context = c;
-           }
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context == null) {
+            context = c;
+        }
         try {
             this.addEvent();
             this.savePreferences();
@@ -133,8 +133,8 @@ public class EventBean implements Serializable {
 
     }
 
-    public void unload(){
-        this.required=false;
+    public void unload() {
+        this.required = false;
     }
 
     public void reCreate() throws OverlappingException, InvalidDateException {
@@ -150,7 +150,7 @@ public class EventBean implements Serializable {
 
     public void createFromModify() throws OverlappingException, InvalidDateException {
         FacesContext context = FacesContext.getCurrentInstance();
-        if(context == null){
+        if (context == null) {
             context = c;
         }
 
@@ -168,7 +168,7 @@ public class EventBean implements Serializable {
      */
     public void modify() {
         FacesContext context = FacesContext.getCurrentInstance();
-        if(context == null){
+        if (context == null) {
             context = c;
         }
         try {
@@ -187,7 +187,7 @@ public class EventBean implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", e.getMessage()));
         }
         RequestContext request = RequestContext.getCurrentInstance();
-        if(request == null){
+        if (request == null) {
             request = r;
         }
         request.update("formcentral:schedule");
@@ -195,27 +195,25 @@ public class EventBean implements Serializable {
 
     }
 
-
     /**
      * Function that cancel ( and all consequent invitations and preferences )
      * the event selected in database using fields modified by user
      */
     public void cancel() {
         FacesContext context = FacesContext.getCurrentInstance();
-        if(context == null){
+        if (context == null) {
             context = c;
         }
         Event event = new Event();
         event.loadEvent(beanEvent);
         em.removeEvent(event);
         RequestContext request = RequestContext.getCurrentInstance();
-        if(request == null){
+        if (request == null) {
             request = r;
         }
         request.update("formcentral:schedule");
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "Event delete completed"));
     }
-
 
     /**
      * After accepting an invitation , The function revert decision of the user
@@ -248,8 +246,8 @@ public class EventBean implements Serializable {
         this.selectedUsers = userEvent;
         this.selectedPreferences = pref;
         this.beanEvent.loadEvent(event);
-        this.startDate=beanEvent.getStartDate();
-        this.endDate=beanEvent.getStartDate();
+        this.startDate = beanEvent.getStartDate();
+        this.endDate = beanEvent.getStartDate();
         this.addEvent();
         this.savePreferences();
         this.addUserEvent();
@@ -266,15 +264,15 @@ public class EventBean implements Serializable {
 
         this.resetBean();
         DefaultScheduleEvent selectedEvent = (DefaultScheduleEvent) selectEvent.getObject();
-       loadFromEventSelect(selectedEvent);
+        loadFromEventSelect(selectedEvent);
     }
 
-    public void loadFromEventSelect(DefaultScheduleEvent selectedEvent){
+    public void loadFromEventSelect(DefaultScheduleEvent selectedEvent) {
 
         Event event = em.loadSpecificEvent(selectedEvent.getDescription());
         beanEvent.loadEvent(event);
         this.isOwnEvent = em.isCreator(event, um.getLoggedUser());
-        this.creating=false;
+        this.creating = false;
         beanEvent.getIdEvent().setId(Long.parseLong(selectedEvent.getDescription()));
         this.startDate = selectedEvent.getStartDate();
         this.endDate = selectedEvent.getEndDate();
@@ -294,7 +292,7 @@ public class EventBean implements Serializable {
         this.loadFromDateSelect(selectedEvent);
     }
 
-    public void loadFromDateSelect(DefaultScheduleEvent selectedEvent){
+    public void loadFromDateSelect(DefaultScheduleEvent selectedEvent) {
         this.resetBean();
         creating = true;
         isOwnEvent = true;
@@ -323,17 +321,17 @@ public class EventBean implements Serializable {
     }
 
     /*
-    * ******************************************************************
-    PRIVATE UTILITY FUNCTIONS
-    *******************************************************************
-    */
+     * ******************************************************************
+     PRIVATE UTILITY FUNCTIONS
+     *******************************************************************
+     */
     public void resetBean() {
         beanEvent = new EventCreation();
         selectedPreferences = new ArrayList<>();
         selectedUsers = new ArrayList<>();
         toSavePreferences = new ArrayList<>();
         tempEvent = new EventCreation();
-        required=true;
+        required = true;
     }
 
     private void loadPreferences() {
@@ -363,12 +361,10 @@ public class EventBean implements Serializable {
         if (beanEvent.getStartDate().after(beanEvent.getEndDate()) || beanEvent.getStartDate().before(now)) {
             correct = false;
         } else {
-            correct= true;
+            correct = true;
         }
         return correct;
     }
-
-
 
     private void addEvent() throws OverlappingException, InvalidDateException {
 
@@ -378,7 +374,7 @@ public class EventBean implements Serializable {
             beanEvent.setCreator(um.getLoggedUser());
             Event event = new Event();
 
-                event.loadEvent(beanEvent);
+            event.loadEvent(beanEvent);
 
             em.addEvent(event, um.getLoggedUser());
         } else {
@@ -429,10 +425,10 @@ public class EventBean implements Serializable {
     }
 
     /*
-    * ******************************************************************
-    * GETTERS AND SETTERS
-    *******************************************************************
-    */
+     * ******************************************************************
+     * GETTERS AND SETTERS
+     *******************************************************************
+     */
     public boolean isCanSelectPreferences() {
         return this.beanEvent.isOutdoor() & this.isOwnEvent;
     }
@@ -591,7 +587,5 @@ public class EventBean implements Serializable {
     public void setContext(FacesContext context) {
         this.c = context;
     }
-
-
 
 }

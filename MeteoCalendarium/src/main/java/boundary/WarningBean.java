@@ -60,7 +60,8 @@ public class WarningBean {
      */
     private List<Event> warnings;
     /**
-     * list of timestamps containing the solution(if available) for the events with warning
+     * list of timestamps containing the solution(if available) for the events
+     * with warning
      */
     private List<Timestamp> solutions;
     /**
@@ -87,6 +88,7 @@ public class WarningBean {
     public void searchSolution() {
         solutions = bwnm.findSolution(warnings);
     }
+
     /**
      * call the method findWarnings that returns a list of event with warning
      */
@@ -104,8 +106,10 @@ public class WarningBean {
             warnings.add(noWarning);
         }
     }
+
     /**
      * modify the event setting as a start day the date suggested
+     *
      * @param event
      * @param eb
      * @return
@@ -113,45 +117,46 @@ public class WarningBean {
      * @throws InvalidDateException
      */
     public String modifyButton(Event event, EventBean eb) throws OverlappingException, InvalidDateException {
-            FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = FacesContext.getCurrentInstance();
 
-
-        if(event.getIdEvent().getId()!=-1)
-        {
-        /*long diff = event.getEndDate().getTime() - event.getStartDate().getTime();
-        Timestamp help;*/
-        boolean ok = false;
-        for (int i = 0; i < warnings.size() && !ok; i++) {
-            if (Objects.equals(warnings.get(i).getIdEvent().getId(), event.getIdEvent().getId())) {
-                if (solutions.get(i) != null) {
-                    /*event.setStartDate(solutions.get(i));
-                    help = new Timestamp(0);
-                    help.setTime(solutions.get(i).getTime() + diff);
-                    event.setEndDate(help);
-                    eb.modifyFromWarning(event, preferenceEvent, userEvent);*/
-                    modify(event, solutions.get(i), eb);
-                    ok = true;
-                    warnings.remove(i);
+        if (event.getIdEvent().getId() != -1) {
+            /*long diff = event.getEndDate().getTime() - event.getStartDate().getTime();
+             Timestamp help;*/
+            boolean ok = false;
+            for (int i = 0; i < warnings.size() && !ok; i++) {
+                if (Objects.equals(warnings.get(i).getIdEvent().getId(), event.getIdEvent().getId())) {
+                    if (solutions.get(i) != null) {
+                        /*event.setStartDate(solutions.get(i));
+                         help = new Timestamp(0);
+                         help.setTime(solutions.get(i).getTime() + diff);
+                         event.setEndDate(help);
+                         eb.modifyFromWarning(event, preferenceEvent, userEvent);*/
+                        modify(event, solutions.get(i), eb);
+                        ok = true;
+                        warnings.remove(i);
+                    }
                 }
             }
-        }
-        return "calendar?faces-redirect=true";
+            return "calendar?faces-redirect=true";
         }
         {
-             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!","No Event To Modify"));
-    }
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "No Event To Modify"));
+        }
 
         return "";
     }
+
     /**
-     * This function modifies a event setting a new start and a new end Date due to bad weather warning.
+     * This function modifies a event setting a new start and a new end Date due
+     * to bad weather warning.
+     *
      * @param event
      * @param solut
      * @param eb
      * @throws OverlappingException
-     * @throws InvalidDateException 
+     * @throws InvalidDateException
      */
-    public void modify(Event event, Timestamp solut, EventBean eb) throws OverlappingException, InvalidDateException{
+    public void modify(Event event, Timestamp solut, EventBean eb) throws OverlappingException, InvalidDateException {
 
         List<String> preferenceEvent = new ArrayList<>();
         preferenceEvent = pm.getPreferenceOfEvent(event);
@@ -166,6 +171,7 @@ public class WarningBean {
         event.setEndDate(help);
         eb.modifyFromWarning(event, preferenceEvent, userEvent);
     }
+
     /**
      *
      * @param id: it's the id of the event

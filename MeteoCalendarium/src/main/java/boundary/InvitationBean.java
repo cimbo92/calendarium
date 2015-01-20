@@ -23,6 +23,7 @@ import control.UserManagerInterface;
 
 /**
  * Bean that manage Invitations
+ *
  * @author Alessandro
  */
 @RequestScoped
@@ -47,7 +48,6 @@ public class InvitationBean implements Serializable {
      * FIELDS
      *******************************************************************
      */
-
     /**
      * Event which user is invited
      */
@@ -61,7 +61,6 @@ public class InvitationBean implements Serializable {
      * PUBLIC FUNCTIONS
      *******************************************************************
      */
-
     /**
      * Initialization
      */
@@ -76,8 +75,7 @@ public class InvitationBean implements Serializable {
      */
     public void loadInvites() {
         List<Event> events = em.findInvitatedEvent(um.getLoggedUser());
-        for(int i=0;i<events.size();i++)
-        {
+        for (int i = 0; i < events.size(); i++) {
             EventCreation temp = new EventCreation();
             temp.loadEvent(events.get(i));
             invites.add(temp);
@@ -107,11 +105,11 @@ public class InvitationBean implements Serializable {
         if (!em.searchOverlapping(event, um.getLoggedUser())) {
             uem.modifyUserEvent(ue, true, true);
             invites.remove(eventC);
-          return "calendar?faces-redirect=true";
+            return "calendar?faces-redirect=true";
 
         } else {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Found Overlapping , Impossible to Accept", null));
-            return"";
+            return "";
         }
     }
 
@@ -129,11 +127,11 @@ public class InvitationBean implements Serializable {
         invites.remove(eventC);
         if (invites.isEmpty()) {
             enableInvitation = false;
-             EventCreation noInvitation = new EventCreation();
+            EventCreation noInvitation = new EventCreation();
             noInvitation.setTitle("No Invitation");
             invites.add(noInvitation);
         }
-return "calendar?faces-redirect=true";
+        return "calendar?faces-redirect=true";
     }
 
     /*

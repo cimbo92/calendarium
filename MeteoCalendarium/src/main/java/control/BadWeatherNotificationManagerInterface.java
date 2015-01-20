@@ -5,7 +5,6 @@
  */
 package control;
 
-
 import entity.Event;
 import entity.User;
 import java.sql.Timestamp;
@@ -16,11 +15,11 @@ import java.util.List;
  * @author home
  */
 public interface BadWeatherNotificationManagerInterface {
-     
-     public List<Event> findWarnings(User creator);
-     
-     public List<Timestamp> findSolution(List<Event> eventWarning);
-      
-     public boolean isWarned(Event event);
-     
+
+    public List<Event> findWarnings(User creator);
+
+    public List<Timestamp> findSolution(List<Event> eventWarning);
+
+    public boolean isWarned(Event event);
+
 }

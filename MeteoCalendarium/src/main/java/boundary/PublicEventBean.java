@@ -5,7 +5,6 @@
  */
 package boundary;
 
-
 import entity.Event;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,10 +22,8 @@ import org.primefaces.model.DefaultScheduleEvent;
 
 /**
  *
- * @author Alessandro De Angelis
- * Bean that manage Public Events
+ * @author Alessandro De Angelis Bean that manage Public Events
  */
-
 @Named
 @RequestScoped
 
@@ -47,7 +44,7 @@ public class PublicEventBean {
     @EJB
     private UserManagerInterface um;
 
-/*
+    /*
      * ******************************************************************
      * FIELDS
      *******************************************************************
@@ -56,13 +53,13 @@ public class PublicEventBean {
      * Preferences of Selected Public Event
      */
     private List<String> preferences = new ArrayList<>();
-   /**
-    * Invitated Users of public Event
-    */
+    /**
+     * Invitated Users of public Event
+     */
     private List<String> invitated = new ArrayList<>();
-   /**
-    * Seleted Public Event
-    */
+    /**
+     * Seleted Public Event
+     */
     private Event event;
 
     /*
@@ -70,77 +67,74 @@ public class PublicEventBean {
      *PUBLIC FUNCTIONS
      *******************************************************************
      */
-
     @PostConstruct
-    public void init()
-    {
-        event=new Event();
+    public void init() {
+        event = new Event();
     }
-/**
- * Function called by PrimeFace's schedule in caso of selection of event
-     * that load informations about the selected @Event
 
- * @param selectEvent
- */
-     public void onEventSelect(SelectEvent selectEvent) {
-         DefaultScheduleEvent selectedEvent = (DefaultScheduleEvent) selectEvent.getObject();
-         event=em.loadSpecificEvent(selectedEvent.getDescription());
-         List<String> preferenzeEvento = pm.getPreferenceOfEvent(event);
+    /**
+     * Function called by PrimeFace's schedule in caso of selection of event
+     * that load informations about the selected @Event
+     *
+     * @param selectEvent
+     */
+    public void onEventSelect(SelectEvent selectEvent) {
+        DefaultScheduleEvent selectedEvent = (DefaultScheduleEvent) selectEvent.getObject();
+        event = em.loadSpecificEvent(selectedEvent.getDescription());
+        List<String> preferenzeEvento = pm.getPreferenceOfEvent(event);
 
         for (String preferenza : preferenzeEvento) {
             this.preferences.add(preferenza);
         }
-         List<String> invitedUsers = uem.invitedUsersOfEvent(event);
+        List<String> invitedUsers = uem.invitedUsersOfEvent(event);
         for (String invitedUser : invitedUsers) {
             this.invitated.add(invitedUser);
         }
 
-     }
+    }
 
-/*
+    /*
      * ******************************************************************
      * GETTERS AND SETTERS
      *******************************************************************
      */
-
-
-         public String getPublicEvent() {
-        if(event.isPublicEvent())
+    public String getPublicEvent() {
+        if (event.isPublicEvent()) {
             return "public";
-                    else
+        } else {
             return "private";
+        }
     }
 
-
     public String getOutdoor() {
-        if(event.isOutdoor())
+        if (event.isOutdoor()) {
             return "outdoor";
-        else
+        } else {
             return "indoor";
+        }
 
     }
 
     public Date getStartDate() {
-        if(event.getStartDate()!=null)
-        {
-        Date temp = new Date(event.getStartDate().getTime());
-        return temp;
-        }
-        else
+        if (event.getStartDate() != null) {
+            Date temp = new Date(event.getStartDate().getTime());
+            return temp;
+        } else {
             return null;
+        }
     }
 
     public Date getEndDate() {
-           if(event.getStartDate()!=null)
-        {
-        Date temp = new Date(event.getEndDate().getTime());
-        return temp;
-        }else
+        if (event.getStartDate() != null) {
+            Date temp = new Date(event.getEndDate().getTime());
+            return temp;
+        } else {
             return null;
+        }
     }
 
-    public Event getEvent(){
-         if (event == null) {
+    public Event getEvent() {
+        if (event == null) {
             event = new Event();
         }
 
@@ -154,7 +148,6 @@ public class PublicEventBean {
     public void setPreferences(List<String> selectedPref) {
         this.preferences = selectedPref;
     }
-
 
     public List<String> getInvitated() {
         return invitated;

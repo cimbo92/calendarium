@@ -1,8 +1,8 @@
 /*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package control;
 
 import entity.Group;
@@ -26,75 +26,79 @@ public class UserManager implements UserManagerInterface {
     private EntityManager em;
 
     @Inject
-            Principal principal;
+    Principal principal;
 
-    
     /**
-     * 
-     * @return a list with all registered users 
+     *
+     * @return a list with all registered users
      */
     @Override
-    public List<String> getListUsers()
-    {
+    public List<String> getListUsers() {
         Query query;
-        query = em.createQuery("SELECT e.email FROM User e WHERE e.email!= :usermail" ).setParameter("usermail", principal.getName());
+        query = em.createQuery("SELECT e.email FROM User e WHERE e.email!= :usermail").setParameter("usermail", principal.getName());
         List<String> user;
         user = query.getResultList();
         return user;
     }
 
     /**
-     * this function search in the database if there is a user with the email passed from parameters
+     * this function search in the database if there is a user with the email
+     * passed from parameters
+     *
      * @param mail
-     * @return the user  
+     * @return the user
      */
     @Override
     public User findByMail(String mail) {
 
         Query query;
-        query =em.createQuery( "SELECT u FROM User u WHERE u.email= :mail " ).setParameter("mail", mail);
+        query = em.createQuery("SELECT u FROM User u WHERE u.email= :mail ").setParameter("mail", mail);
 
-        List<User> user =query.getResultList();
-        if(!user.isEmpty())
+        List<User> user = query.getResultList();
+        if (!user.isEmpty()) {
             return user.get(0);
+        }
         return null;
 
     }
 
     /**
-     * This function sets the calendar of the user passed from parameters as the value status
+     * This function sets the calendar of the user passed from parameters as the
+     * value status
+     *
      * @param status
-     * @param user 
+     * @param user
      */
     @Override
     public void setCalendar(boolean status, User user) {
 
-         try {
+        try {
 
-             Query query = em.createQuery("UPDATE User SET publicCalendar= :status where email= :user");
-             query.setParameter("status", status);
-             query.setParameter("user", user.getEmail());
-                     query.executeUpdate();
+            Query query = em.createQuery("UPDATE User SET publicCalendar= :status where email= :user");
+            query.setParameter("status", status);
+            query.setParameter("user", user.getEmail());
+            query.executeUpdate();
 
-         }catch (Exception e){
-             System.out.println("Errore nella query setCalendar");
-         }
+        } catch (Exception e) {
+            System.out.println("Errore nella query setCalendar");
+        }
     }
 
     /**
-     * 
-     * @return a list of emails that contains all users with calendar sets as public
+     *
+     * @return a list of emails that contains all users with calendar sets as
+     * public
      */
     @Override
     public List<String> getListUsersPublic() {
 
         Query query;
-        query = em.createQuery("SELECT e.email FROM User e WHERE e.email!= :usermail and e.publicCalendar=1" ).setParameter("usermail", principal.getName());
+        query = em.createQuery("SELECT e.email FROM User e WHERE e.email!= :usermail and e.publicCalendar=1").setParameter("usermail", principal.getName());
         List<String> user;
         user = query.getResultList();
-        return user; 
+        return user;
     }
-    
+
     public EntityManager getEm() {
         return em;
     }
@@ -102,12 +106,12 @@ public class UserManager implements UserManagerInterface {
     public void setEm(EntityManager em) {
         this.em = em;
     }
-    
-    @Override
-    public void save(User user) throws Exception  {
 
-            user.setGroupName(Group.USER);
-                em.persist(user);
+    @Override
+    public void save(User user) throws Exception {
+
+        user.setGroupName(Group.USER);
+        em.persist(user);
 
     }
 

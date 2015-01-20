@@ -12,51 +12,45 @@ import javax.persistence.OneToOne;
 
 /**
  * Entity with ID of Events
+ *
  * @author Alessandro
  */
 @Entity
 public class IDEvent implements Serializable {
 
-     /*
+    /*
      *******************************************************************
      * FIELDS
      *******************************************************************
      */
-
     private static final long serialVersionUID = 1L;
 
     @Id
-   private Long id;
+    private Long id;
     @OneToOne(mappedBy = "idEvent")
     private Event event;
 
-     /*
+    /*
      *******************************************************************
      * PUBLIC FUNCTIONS
      *******************************************************************
      */
-
-     public IDEvent(Long id)
-    {
-        this.id=id;
+    public IDEvent(Long id) {
+        this.id = id;
     }
 
-    public IDEvent(String id)
-    {
-        this.id=Long.parseLong(id);
+    public IDEvent(String id) {
+        this.id = Long.parseLong(id);
     }
 
-        public IDEvent(){
+    public IDEvent() {
     }
 
-     /*
+    /*
      *******************************************************************
      * GETTERS AND SETTERS
      *******************************************************************
      */
-
-
-
     public Event getEvent() {
         return event;
     }
@@ -97,6 +91,5 @@ public class IDEvent implements Serializable {
     public String toString() {
         return "entities.iDEvent[ id=" + id + " ]";
     }
-
 
 }

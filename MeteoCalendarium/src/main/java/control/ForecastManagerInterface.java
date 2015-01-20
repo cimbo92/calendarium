@@ -17,8 +17,8 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface ForecastManagerInterface {
- 
+
     public List<Forecast> getForecastInPlace(Place place);
-    
+
     public List<Forecast> getForecastOfEvent(Event event);
 }
