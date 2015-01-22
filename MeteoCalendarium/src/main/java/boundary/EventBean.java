@@ -61,7 +61,7 @@ public class EventBean implements Serializable {
     private IDEventManagerInterface idm;
     @EJB
     private MailSenderManagerInterface mailSender;
-    
+
     @EJB
     private OwmClientInterface weather;
 
@@ -272,6 +272,8 @@ public class EventBean implements Serializable {
     public void loadFromEventSelect(DefaultScheduleEvent selectedEvent) {
 
         Event event = em.loadSpecificEvent(selectedEvent.getDescription());
+        if(event!=null)
+        {
         beanEvent.loadEvent(event);
         this.isOwnEvent = em.isCreator(event, um.getLoggedUser());
         this.creating = false;
@@ -280,7 +282,13 @@ public class EventBean implements Serializable {
         this.endDate = selectedEvent.getEndDate();
         this.loadInvitations();
         this.loadPreferences();
-    }
+        }else{
+             FacesContext context = FacesContext.getCurrentInstance();
+             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "Problems with event loading"));
+
+        }
+
+        }
 
     /**
      * Function called by PrimeFace's schedule in caso of selection of a day
@@ -611,5 +619,5 @@ public class EventBean implements Serializable {
         this.r = r;
     }
 
-    
+
 }
