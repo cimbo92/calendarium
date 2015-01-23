@@ -6,7 +6,7 @@
 package control;
 
 import entity.Group;
-import entity.User;
+import entity.Users;
 import java.security.Principal;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -35,7 +35,7 @@ public class UserManager implements UserManagerInterface {
     @Override
     public List<String> getListUsers() {
         Query query;
-        query = em.createQuery("SELECT e.email FROM User e WHERE e.email!= :usermail").setParameter("usermail", principal.getName());
+        query = em.createQuery("SELECT e.email FROM Users e WHERE e.email!= :usermail").setParameter("usermail", principal.getName());
         List<String> user;
         user = query.getResultList();
         return user;
@@ -49,12 +49,12 @@ public class UserManager implements UserManagerInterface {
      * @return the user
      */
     @Override
-    public User findByMail(String mail) {
+    public Users findByMail(String mail) {
 
         Query query;
-        query = em.createQuery("SELECT u FROM User u WHERE u.email= :mail ").setParameter("mail", mail);
+        query = em.createQuery("SELECT u FROM Users u WHERE u.email= :mail ").setParameter("mail", mail);
 
-        List<User> user = query.getResultList();
+        List<Users> user = query.getResultList();
         if (!user.isEmpty()) {
             return user.get(0);
         }
@@ -70,11 +70,11 @@ public class UserManager implements UserManagerInterface {
      * @param user
      */
     @Override
-    public void setCalendar(boolean status, User user) {
+    public void setCalendar(boolean status, Users user) {
 
         try {
 
-            Query query = em.createQuery("UPDATE User SET publicCalendar= :status where email= :user");
+            Query query = em.createQuery("UPDATE Users SET publicCalendar= :status where email= :user");
             query.setParameter("status", status);
             query.setParameter("user", user.getEmail());
             query.executeUpdate();
@@ -93,7 +93,7 @@ public class UserManager implements UserManagerInterface {
     public List<String> getListUsersPublic() {
 
         Query query;
-        query = em.createQuery("SELECT e.email FROM User e WHERE e.email!= :usermail and e.publicCalendar=1").setParameter("usermail", principal.getName());
+        query = em.createQuery("SELECT e.email FROM Users e WHERE e.email!= :usermail and e.publicCalendar=1").setParameter("usermail", principal.getName());
         List<String> user;
         user = query.getResultList();
         return user;
@@ -110,7 +110,7 @@ public class UserManager implements UserManagerInterface {
     }
 
     @Override
-    public void save(User user) throws Exception {
+    public void save(Users user) throws Exception {
 
         user.setGroupName(Group.USER);
         em.persist(user);
@@ -123,8 +123,8 @@ public class UserManager implements UserManagerInterface {
     }
 
     @Override
-    public User getLoggedUser() {
-        return em.find(User.class, principal.getName());
+    public Users getLoggedUser() {
+        return em.find(Users.class, principal.getName());
 
     }
 }

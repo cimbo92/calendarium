@@ -7,7 +7,7 @@ package control;
 
 import HelpClasses.OverlappingException;
 import entity.Event;
-import entity.User;
+import entity.Users;
 import entity.UserEvent;
 import entity.IDEvent;
 import java.security.Principal;
@@ -44,7 +44,7 @@ public class EventManager implements EventManagerInterface {
      * @throws OverlappingException if event already in event date
      */
     @Override
-    public void addEvent(Event event, User user) throws OverlappingException {
+    public void addEvent(Event event, Users user) throws OverlappingException {
 
         if (this.searchOverlapping(event, user)) {
             throw new OverlappingException();
@@ -64,12 +64,12 @@ public class EventManager implements EventManagerInterface {
      * @return
      */
     @Override
-    public boolean searchOverlapping(Event event, User user) {
+    public boolean searchOverlapping(Event event, Users user) {
 
         List<Event> list;
 
-        //  Query query = em.createQuery("SELECT e FROM UserEvent ue JOIN User u JOIN Event e WHERE u.email = :email AND (ue.creator = 1 OR ue.accepted = 1)").setParameter("email", user.getEmail());
-        Query query = em.createQuery("SELECT ue.event FROM UserEvent ue  WHERE (ue.user = :user AND (ue.creator =1 OR ue.accepted = 1))").setParameter("user", user);
+        //  Query query = em.createQuery("SELECT e FROM UserEvent ue JOIN Users u JOIN Event e WHERE u.email = :email AND (ue.creator = 1 OR ue.accepted = 1)").setParameter("email", user.getEmail());
+        Query query = em.createQuery("SELECT ue FROM UserEvent ue  WHERE (ue.user = :user AND (ue.creator =1 OR ue.accepted = 1))").setParameter("user", user);
 
         list = query.getResultList();
 
@@ -89,7 +89,7 @@ public class EventManager implements EventManagerInterface {
      * @return
      */
     @Override
-    public boolean isCreator(Event event, User user) {
+    public boolean isCreator(Event event, Users user) {
         Query query = em.createQuery("SELECT ue FROM UserEvent ue WHERE ue.event= :event and ue.user= :user").setParameter("event", event).setParameter("user", user);
         List<UserEvent> result = new ArrayList<>(query.getResultList());
         return result.get(0).isCreator();
@@ -129,28 +129,28 @@ public class EventManager implements EventManagerInterface {
     }
 
     /**
-     * return Invitations of User
+     * return Invitations of Users
      *
      * @param user
      * @return
      */
     @Override
-    public List<Event> findInvitatedEvent(User user) {
+    public List<Event> findInvitatedEvent(Users user) {
 
-        Query query = em.createQuery("SELECT ue.event FROM UserEvent ue WHERE ue.user = :user AND ue.creator=false and ue.view=false").setParameter(("user"), user);
+        Query query = em.createQuery("SELECT ue.event FROM UserEvent ue WHERE ue.user = :user AND ue.creator=false and ue.viewed=false").setParameter(("user"), user);
         List<Event> tempSet = new ArrayList<>(query.getResultList());
 
         return (List) tempSet;
     }
 
     /**
-     * return User Events ( Created or Accepted)
+     * return Users Events ( Created or Accepted)
      *
      * @param user
      * @return
      */
     @Override
-    public List<Event> loadCalendar(User user) {
+    public List<Event> loadCalendar(Users user) {
 
         Query query = em.createQuery("SELECT ue.event FROM UserEvent ue WHERE (ue.user = :user AND (ue.accepted=true OR ue.creator=true))").setParameter(("user"), user);
         List<Event> tempSet = new ArrayList<>(query.getResultList());
@@ -159,7 +159,7 @@ public class EventManager implements EventManagerInterface {
     }
 
     /**
-     * load Public calendar of the User
+     * load Public calendar of the Users
      *
      * @param username
      * @return
@@ -179,7 +179,7 @@ public class EventManager implements EventManagerInterface {
      * @param user
      */
     @Override
-    public void removeAllEvent(User user) {
+    public void removeAllEvent(Users user) {
         System.out.println("Utente: " + user.getEmail());
         Query query1 = em.createQuery("Delete From Preference p Where p.event in (Select e From Event e Where e.creator.email = :mail)").setParameter(("mail"), user.getEmail());
         query1.executeUpdate();
@@ -191,13 +191,13 @@ public class EventManager implements EventManagerInterface {
     }
 
     /**
-     * return events created by User
+     * return events created by Users
      *
      * @param user
      * @return
      */
     @Override
-    public List<Event> getEventsCreated(User user) {
+    public List<Event> getEventsCreated(Users user) {
 
         Query query = em.createQuery("Select e From Event e Where e.creator.email= :mail").setParameter("mail", user.getEmail());
         return query.getResultList();

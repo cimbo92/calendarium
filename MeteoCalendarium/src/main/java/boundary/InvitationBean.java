@@ -90,7 +90,7 @@ public class InvitationBean implements Serializable {
     }
 
     /**
-     * User Accept Invitation
+     * Users Accept Invitation
      *
      * @param eventC
      * @return
@@ -114,7 +114,7 @@ public class InvitationBean implements Serializable {
     }
 
     /**
-     * User Decline Invitation ( will be never seen )
+     * Users Decline Invitation ( will be never seen )
      *
      * @param eventC
      * @return

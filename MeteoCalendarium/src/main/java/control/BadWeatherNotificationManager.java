@@ -8,7 +8,7 @@ package control;
 import entity.Event;
 import entity.Forecast;
 import entity.MainCondition;
-import entity.User;
+import entity.Users;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
      * @return list of events with warning
      */
     @Override
-    public List<Event> findWarnings(User creator) {
+    public List<Event> findWarnings(Users creator) {
 
         Query query1 = em.createQuery("Select distinct e From Event e, UserEvent ue, Preference p, Forecast f Where ue.event=e and ue.creator=1 and e.outdoor=1 and e.creator.email= :mail and p.event=e and f.place=e.place and CAST(f.date AS DATE) between  CAST(e.startDate AS DATE) and  CAST(e.endDate AS DATE) and f.mainCondition not in (Select pr.main From Preference pr where pr.event=e) ").setParameter("mail", creator.getEmail());
         List<Event> eventWarning = query1.getResultList();
@@ -138,7 +138,7 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
      * @param creator
      * @return true if gets overlapping
      */
-    public boolean checkOverlapping(Timestamp start, long day, Timestamp oldStart, Timestamp oldEnd, User creator) {
+    public boolean checkOverlapping(Timestamp start, long day, Timestamp oldStart, Timestamp oldEnd, Users creator) {
         Event event = new Event();
         start.setHours(oldStart.getHours());
         start.setMinutes(oldStart.getMinutes());

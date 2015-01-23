@@ -11,7 +11,7 @@ import control.UserEventManagerInterface;
 import control.UserManagerInterface;
 import entity.Event;
 import entity.Place;
-import entity.User;
+import entity.Users;
 import entity.UserEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +52,7 @@ public class InvitationBeanTest {
         UserManagerInterface um = mock(UserManagerInterface.class);
         InvitationBean ib = new InvitationBean();
 
-        User userTest = new User();
+        Users userTest = new Users();
         userTest.setEmail("gigi@mail.it");
         userTest.setGroupName("USERS");
         userTest.setPassword("pippo");
@@ -86,7 +86,7 @@ public class InvitationBeanTest {
         UserManagerInterface um = mock(UserManagerInterface.class);
         InvitationBean ib = new InvitationBean();
 
-        User userTest = new User();
+        Users userTest = new Users();
         userTest.setEmail("gigi@mail.it");
         userTest.setGroupName("USERS");
         userTest.setPassword("pippo");
@@ -118,7 +118,7 @@ public class InvitationBeanTest {
         UserEventManagerInterface uem = mock(UserEventManagerInterface.class);
         InvitationBean ib = new InvitationBean();
 
-        User userTest = new User();
+        Users userTest = new Users();
         userTest.setEmail("gigi@mail.it");
         userTest.setGroupName("USERS");
         userTest.setPassword("pippo");

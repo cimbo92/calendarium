@@ -5,7 +5,7 @@
  */
 package boundary;
 
-import entity.User;
+import entity.Users;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -35,7 +35,7 @@ public class RegistrationBean {
      * FIELDS
      *******************************************************************
      */
-    private User user = new User();
+    private Users user = new Users();
 
     /*
      * ******************************************************************
@@ -43,7 +43,7 @@ public class RegistrationBean {
      *******************************************************************
      */
     /**
-     * Save new User
+     * Save new Users
      *
      * @return
      */
@@ -64,14 +64,14 @@ public class RegistrationBean {
      *******************************************************************
      */
 
-    public User getUser() {
+    public Users getUser() {
         if (user == null) {
-            user = new User();
+            user = new Users();
         }
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Users user) {
         this.user = user;
     }
 

@@ -5,7 +5,7 @@
  */
 package control;
 
-import entity.User;
+import entity.Users;
 import java.util.List;
 import javax.ejb.Remote;
 import javax.persistence.EntityManager;
@@ -17,19 +17,19 @@ import javax.persistence.EntityManager;
 @Remote
 public interface UserManagerInterface {
 
-    public void save(User user) throws Exception;
+    public void save(Users user) throws Exception;
 
     public void unregister();
 
-    public User getLoggedUser();
+    public Users getLoggedUser();
 
-    public User findByMail(String mail);
+    public Users findByMail(String mail);
 
     public List<String> getListUsers();
 
     public List<String> getListUsersPublic();
 
-    public void setCalendar(boolean status, User user);
+    public void setCalendar(boolean status, Users user);
 
     public void setEm(EntityManager em);
     

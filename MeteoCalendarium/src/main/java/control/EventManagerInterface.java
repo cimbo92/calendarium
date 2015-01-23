@@ -7,7 +7,7 @@ package control;
 
 import HelpClasses.OverlappingException;
 import entity.Event;
-import entity.User;
+import entity.Users;
 import java.util.List;
 import javax.ejb.Remote;
 import javax.persistence.EntityManager;
@@ -27,23 +27,23 @@ public interface EventManagerInterface {
 
     public boolean isIndoor(Event event);
 
-    public void addEvent(Event event, User user) throws OverlappingException;
+    public void addEvent(Event event, Users user) throws OverlappingException;
 
     ;
 
-    public List<Event> findInvitatedEvent(User user);
+    public List<Event> findInvitatedEvent(Users user);
 
-    public List<Event> loadCalendar(User user);
+    public List<Event> loadCalendar(Users user);
 
     public List<Event> loadPublicCalendar(String username);
 
-    public void removeAllEvent(User user);
+    public void removeAllEvent(Users user);
 
-    public List<Event> getEventsCreated(User user);
+    public List<Event> getEventsCreated(Users user);
 
-    public boolean isCreator(Event event, User user);
+    public boolean isCreator(Event event, Users user);
 
-    public boolean searchOverlapping(Event event, User user);
+    public boolean searchOverlapping(Event event, Users user);
 
     public EntityManager getEm();
 

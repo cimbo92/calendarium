@@ -38,8 +38,8 @@ public class Event implements Serializable {
     private IDEvent idEvent;
 
     @NotNull(message = "May not be empty1")
-    @ManyToOne(targetEntity = User.class, optional = false)
-    private User creator;
+    @ManyToOne(targetEntity = Users.class, optional = false)
+    private Users creator;
 
     @NotNull(message = "May not be empty2")
     private String title;
@@ -112,11 +112,11 @@ public class Event implements Serializable {
         this.publicEvent = publicEvent;
     }
 
-    public User getCreator() {
+    public Users getCreator() {
         return creator;
     }
 
-    public void setCreator(User creator) {
+    public void setCreator(Users creator) {
         this.creator = creator;
     }
 

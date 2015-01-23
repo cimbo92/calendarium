@@ -6,7 +6,7 @@
 package boundary;
 
 import control.UserManagerInterface;
-import entity.User;
+import entity.Users;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -28,7 +28,7 @@ public class SetCalendarBeanTest {
 
         SetCalendarBean sc = new SetCalendarBean();
 
-        User userTest = new User();
+        Users userTest = new Users();
         userTest.setEmail("gigi@mail.it");
         userTest.setGroupName("USERS");
         userTest.setPassword("pippo");

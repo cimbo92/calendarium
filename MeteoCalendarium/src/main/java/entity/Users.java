@@ -23,7 +23,7 @@ import javax.validation.constraints.Pattern;
  * @author home
  */
 @Entity
-public class User implements Serializable {
+public class Users implements Serializable {
 
     /*
      *******************************************************************
@@ -76,7 +76,7 @@ public class User implements Serializable {
             BigInteger bigInt = new BigInteger(1, hash);
             this.password = bigInt.toString(16);
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

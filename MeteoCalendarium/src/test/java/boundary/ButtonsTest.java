@@ -16,7 +16,7 @@ import control.UserManagerInterface;
 import entity.Event;
 import entity.IDEvent;
 import entity.Place;
-import entity.User;
+import entity.Users;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ import org.primefaces.model.DefaultScheduleEvent;
 public class ButtonsTest {
 
     private EventBean eb = new EventBean();
-    private User u = new User();
+    private Users u = new Users();
     private Event e = new Event();
 
     private void init() {
@@ -194,7 +194,7 @@ public class ButtonsTest {
         wb.um = um;
         wb.bwnm = bwnm;
         List<Event> listEvent = new ArrayList<>();
-        when(bwnm.findWarnings((User) (Matchers.anyObject()))).thenReturn(listEvent);
+        when(bwnm.findWarnings((Users) (Matchers.anyObject()))).thenReturn(listEvent);
         wb.setWarnings(new ArrayList<Event>());
         wb.loadWarnings();
 

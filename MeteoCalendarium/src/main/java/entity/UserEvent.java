@@ -29,14 +29,14 @@ public class UserEvent implements Serializable {
     @ManyToOne(targetEntity = Event.class, optional = false, fetch = FetchType.EAGER)
     private Event event;
 
-    @ManyToOne(targetEntity = User.class, optional = false, fetch = FetchType.EAGER)
-    private User user;
+    @ManyToOne(targetEntity = Users.class, optional = false, fetch = FetchType.EAGER)
+    private Users user;
 
     private boolean creator;
 
     private boolean accepted;
 
-    private boolean view;
+    private boolean viewed;
 
     /*
      *******************************************************************
@@ -46,7 +46,7 @@ public class UserEvent implements Serializable {
     public UserEvent() {
     }
 
-    public UserEvent(Event event, User user, boolean creator) {
+    public UserEvent(Event event, Users user, boolean creator) {
         this.event = event;
         this.user = user;
         this.creator = creator;
@@ -73,12 +73,12 @@ public class UserEvent implements Serializable {
         this.accepted = accepted;
     }
 
-    public boolean isView() {
-        return view;
+    public boolean isViewed() {
+        return viewed;
     }
 
-    public void setView(boolean view) {
-        this.view = view;
+    public void setViewed(boolean viewed) {
+        this.viewed = viewed;
     }
 
     public int getIdUserEvent() {
@@ -97,11 +97,11 @@ public class UserEvent implements Serializable {
         this.event = event;
     }
 
-    public User getUser() {
+    public Users getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Users user) {
         this.user = user;
     }
 

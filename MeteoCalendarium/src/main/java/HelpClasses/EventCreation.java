@@ -7,7 +7,7 @@ package HelpClasses;
 
 import entity.Event;
 import entity.IDEvent;
-import entity.User;
+import entity.Users;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -19,7 +19,7 @@ public class EventCreation {
 
     private IDEvent idEvent = new IDEvent();
 
-    private User creator = new User();
+    private Users creator = new Users();
 
     private String title;
 
@@ -84,11 +84,11 @@ public class EventCreation {
         this.publicEvent = publicEvent;
     }
 
-    public User getCreator() {
+    public Users getCreator() {
         return creator;
     }
 
-    public void setCreator(User creator) {
+    public void setCreator(Users creator) {
         this.creator = creator;
     }
 

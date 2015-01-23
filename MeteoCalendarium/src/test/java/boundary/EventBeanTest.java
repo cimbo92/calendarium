@@ -18,7 +18,7 @@ import control.UserManagerInterface;
 import entity.Event;
 import entity.IDEvent;
 import entity.Place;
-import entity.User;
+import entity.Users;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,7 +37,7 @@ import org.primefaces.context.RequestContext;
  */
 public class EventBeanTest {
 
-    private User u = new User();
+    private Users u = new Users();
     private Long now = new Long(String.valueOf(new java.util.Date().getTime() + 100000000));
     private Long now2 = new Long(String.valueOf(now + 111111111));
     private Timestamp sd = new Timestamp(now);

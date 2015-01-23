@@ -10,7 +10,7 @@ import control.EventManagerInterface;
 import control.UserManagerInterface;
 import entity.Event;
 import entity.Place;
-import entity.User;
+import entity.Users;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,7 @@ public class WarningBeanTest {
         UserManagerInterface um = mock(UserManagerInterface.class);
         BadWeatherNotificationManagerInterface bwnm = mock(BadWeatherNotificationManagerInterface.class);
 
-        User userTest = new User();
+        Users userTest = new Users();
         userTest.setEmail("gigi@mail.it");
         userTest.setGroupName("USERS");
         userTest.setPassword("pippo");
@@ -95,7 +95,7 @@ public class WarningBeanTest {
         UserManagerInterface um = mock(UserManagerInterface.class);
         BadWeatherNotificationManagerInterface bwnm = mock(BadWeatherNotificationManagerInterface.class);
 
-        User userTest = new User();
+        Users userTest = new Users();
         userTest.setEmail("gigi@mail.it");
         userTest.setGroupName("USERS");
         userTest.setPassword("pippo");

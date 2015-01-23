@@ -6,7 +6,7 @@
 package control;
 
 import entity.Group;
-import entity.User;
+import entity.Users;
 import java.security.Principal;
 import java.util.List;
 import javax.ejb.EJB;
@@ -49,15 +49,15 @@ public class UserManagerIT {
     @Inject
     Principal principal;
 
-    User user1;
-    User user2;
+    Users user1;
+    Users user2;
 
     @Deployment
     public static WebArchive createArchiveAndDeploy() {
         return ShrinkWrap.create(WebArchive.class)
                 .addClass(UserManagerInterface.class)
                 .addClass(EntityManager.class)
-                .addPackage(User.class.getPackage())
+                .addPackage(Users.class.getPackage())
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
 
@@ -86,7 +86,7 @@ public class UserManagerIT {
      */
     @Test
     public void testSetCalendar() throws Exception {
-        User user = um.findByMail("user1@mail.it");
+        Users user = um.findByMail("user1@mail.it");
         assertEquals(false, user.isPublicCalendar());
         um.setCalendar(true, user);
         assertEquals(true, user.isPublicCalendar());
@@ -107,7 +107,7 @@ public class UserManagerIT {
     @Test
     public void testSave() throws Exception {
 
-        User user1 = new User();
+        Users user1 = new Users();
         user1.setEmail("user1@mail.it");
         user1.setPassword("user1");
         user1.setGroupName(Group.USER);
@@ -123,13 +123,13 @@ public class UserManagerIT {
     }
 
     private void insertData() throws Exception {
-        user1 = new User();
+        user1 = new Users();
         user1.setEmail("user1@mail.it");
         user1.setPassword("user1");
         user1.setGroupName(Group.USER);
         user1.setPublicCalendar(false);
         em.persist(user1);
-        user2 = new User();
+        user2 = new Users();
         user2.setEmail("user2@mail.it");
         user2.setPassword("user2");
         user2.setGroupName(Group.USER);

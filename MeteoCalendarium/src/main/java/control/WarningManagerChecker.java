@@ -6,7 +6,7 @@
 package control;
 
 import entity.Event;
-import entity.User;
+import entity.Users;
 import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
@@ -51,10 +51,10 @@ public class WarningManagerChecker implements WarningManagerCheckerInterface {
         System.out.println("Begin warningEvery12Hours " + count);
         count++;
 
-        List<User> users = uem.getUsersCreator();
-        Iterator<User> ite = users.iterator();
+        List<Users> users = uem.getUsersCreator();
+        Iterator<Users> ite = users.iterator();
         while (ite.hasNext()) {
-            User u = ite.next();
+            Users u = ite.next();
             List<Event> eventWarning = bm.findWarnings(u);
 
             for (Event e : eventWarning) {
@@ -79,11 +79,11 @@ public class WarningManagerChecker implements WarningManagerCheckerInterface {
         long nowLong = now.getTime();
 
         //Get all users
-        List<User> users = uem.getUsersCreator();
+        List<Users> users = uem.getUsersCreator();
         //Get all warnings
-        Iterator<User> ite = users.iterator();
+        Iterator<Users> ite = users.iterator();
         while (ite.hasNext()) {
-            User u = ite.next();
+            Users u = ite.next();
             List<Event> eventWarning = bm.findWarnings(u);
 
             for (Event e : eventWarning) {
@@ -112,11 +112,11 @@ public class WarningManagerChecker implements WarningManagerCheckerInterface {
 
         long nowLong = now.getTime();
 
-        List<User> users = uem.getUsersCreator();
+        List<Users> users = uem.getUsersCreator();
         //Get all warnings
-        Iterator<User> ite = users.iterator();
+        Iterator<Users> ite = users.iterator();
         while (ite.hasNext()) {
-            User u = ite.next();
+            Users u = ite.next();
             List<Event> eventWarning = bm.findWarnings(u);
 
             for (Event e : eventWarning) {
@@ -124,8 +124,8 @@ public class WarningManagerChecker implements WarningManagerCheckerInterface {
                 long d = e.getStartDate().getTime();
 
                 if (d - nowLong >= 0 && d - nowLong <= deltaOneDay) {
-                    List<User> invited = uem.getInvitedWhoAccepted(e);
-                    for (User i : invited) {
+                    List<Users> invited = uem.getInvitedWhoAccepted(e);
+                    for (Users i : invited) {
                         ms.sendMail(i.getEmail(), "Warning: " + e.getTitle(), "Message to notify a one days notification for an event in which you are invited. For more info check on your personal page. \nStaff MeteoCalendarium");
                     }
                 }

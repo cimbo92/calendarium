@@ -10,7 +10,7 @@ import entity.Event;
 import entity.MainCondition;
 import entity.Place;
 import entity.Preference;
-import entity.User;
+import entity.Users;
 import entity.UserEvent;
 import entity.IDEvent;
 import java.io.File;
@@ -142,7 +142,7 @@ public class ImportBean {
                 event.setPlace(place);
 
                 NodeList users = element.getElementsByTagName("creator");
-                User user = new User();
+                Users user = new Users();
 
                 user.setEmail(users.item(0).getTextContent());
 

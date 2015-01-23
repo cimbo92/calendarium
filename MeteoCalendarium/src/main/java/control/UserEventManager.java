@@ -6,7 +6,7 @@
 package control;
 
 import entity.Event;
-import entity.User;
+import entity.Users;
 import entity.UserEvent;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -43,10 +43,10 @@ public class UserEventManager implements UserEventManagerInterface {
      * @return the creator
      */
     @Override
-    public User findEventCreator(Event event) {
+    public Users findEventCreator(Event event) {
         Query query;
         query = em.createQuery("SELECT ue.user From UserEvent ue WHERE ue.event= :event and ue.creator=true").setParameter("event", event);
-        List<User> user = query.getResultList();
+        List<Users> user = query.getResultList();
         return user.get(0);
 
     }
@@ -60,7 +60,7 @@ public class UserEventManager implements UserEventManagerInterface {
      * @return
      */
     @Override
-    public UserEvent getUserEventofUser(Event event, User user) {
+    public UserEvent getUserEventofUser(Event event, Users user) {
         Query query;
         query = em.createQuery("SELECT ue FROM UserEvent ue WHERE ue.event= :event and ue.creator=0 and ue.user = :user  ").setParameter("event", event).setParameter("user", user);
         List<UserEvent> result = query.getResultList();
@@ -78,11 +78,11 @@ public class UserEventManager implements UserEventManagerInterface {
     public void modifyUserEvent(UserEvent userEvent, boolean decision, boolean view) {
 
         Query query = em
-                .createQuery("UPDATE UserEvent ue SET ue.accepted = :decision , ue.view = :view"
+                .createQuery("UPDATE UserEvent ue SET ue.accepted = :decision , ue.viewed = :viewed"
                         + " WHERE ue= :userEvent");
         query.setParameter("userEvent", userEvent);
         query.setParameter("decision", decision);
-        query.setParameter("view", view);
+        query.setParameter("viewed", view);
         query.executeUpdate();
     }
 
@@ -118,7 +118,7 @@ public class UserEventManager implements UserEventManagerInterface {
      * @return all users that have created at least an event
      */
     @Override
-    public List<User> getUsersCreator() {
+    public List<Users> getUsersCreator() {
 
         Query query = em.createQuery("Select distinct ue.user From UserEvent ue Where ue.creator=1");
         return query.getResultList();
@@ -132,7 +132,7 @@ public class UserEventManager implements UserEventManagerInterface {
      * event
      */
     @Override
-    public List<User> getInvitedWhoAccepted(Event event) {
+    public List<Users> getInvitedWhoAccepted(Event event) {
 
         Query query = em.createQuery("Select ue.user From UserEvent ue Where ue.event= :event and ue.accepted=1").setParameter("event", event);
         return query.getResultList();

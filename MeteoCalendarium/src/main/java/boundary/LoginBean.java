@@ -47,7 +47,7 @@ public class LoginBean {
      *******************************************************************
      */
     /**
-     * Return email of logged User
+     * Return email of logged Users
      *
      * @return
      */

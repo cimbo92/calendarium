@@ -14,7 +14,7 @@ import control.UserManagerInterface;
 import entity.Event;
 import entity.IDEvent;
 import entity.Place;
-import entity.User;
+import entity.Users;
 import java.sql.Timestamp;
 import javax.faces.context.FacesContext;
 import static org.junit.Assert.assertTrue;
@@ -30,7 +30,7 @@ import org.primefaces.model.DefaultScheduleEvent;
 public class EventDetailsTest {
 
     private EventBean eb = new EventBean();
-    private User u = new User();
+    private Users u = new Users();
     private Event e = new Event();
 
     private void init() {

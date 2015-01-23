@@ -10,7 +10,7 @@ import control.UserManagerInterface;
 import entity.Event;
 import entity.IDEvent;
 import entity.Place;
-import entity.User;
+import entity.Users;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.assertTrue;
@@ -25,18 +25,18 @@ import static org.mockito.Mockito.when;
 public class ScheduleViewPublicTest {
 
     private ScheduleViewPublic s = new ScheduleViewPublic();
-    User loggedUser = new User();
-    User publicUser1 = new User();
-    User publicUser2 = new User();
-    User privateUser3 = new User();
+    Users loggedUser = new Users();
+    Users publicUser1 = new Users();
+    Users publicUser2 = new Users();
+    Users privateUser3 = new Users();
     List<String> allUsers = new ArrayList<>();
     List<String> publicUsers = new ArrayList<>();
     Event eventToSee = new Event();
     Event eventPrivate = new Event();
     List<Event> listToSee = new ArrayList<>();
 
-    private User initUser(String name) {
-        User u = new User();
+    private Users initUser(String name) {
+        Users u = new Users();
         u.setEmail(name);
         u.setGroupName("USER");
         u.setPassword("test");

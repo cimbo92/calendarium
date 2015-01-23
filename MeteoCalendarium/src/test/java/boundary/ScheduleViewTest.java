@@ -14,7 +14,7 @@ import entity.Forecast;
 import entity.IDEvent;
 import entity.MainCondition;
 import entity.Place;
-import entity.User;
+import entity.Users;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class ScheduleViewTest {
     Event notCreatedAccepted = new Event();
     Event notCreatedNotAccepted = new Event();
 
-    User loggedUser = new User();
+    Users loggedUser = new Users();
     ScheduleView s = new ScheduleView();
     List<Event> listToSee = new ArrayList<>();
 
@@ -52,7 +52,7 @@ public class ScheduleViewTest {
         eventCreated.setTitle("title");
         notCreatedAccepted.setTitle("title2");
         notCreatedAccepted.setIdEvent(new IDEvent("3"));
-        notCreatedAccepted.setCreator(new User());
+        notCreatedAccepted.setCreator(new Users());
         listToSee.add(eventCreated);
         listToSee.add(notCreatedAccepted);
     }
