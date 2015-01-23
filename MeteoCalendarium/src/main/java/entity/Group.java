@@ -12,5 +12,5 @@ package entity;
  */
 public class Group {
 
-    public static final String USER = "USER";
+    public static final String USERS = "USERS";
 }

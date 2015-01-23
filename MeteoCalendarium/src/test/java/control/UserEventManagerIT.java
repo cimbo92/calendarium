@@ -163,19 +163,19 @@ public class UserEventManagerIT {
         user1 = new Users();
         user1.setEmail("user1@mail.it");
         user1.setPassword("user1");
-        user1.setGroupName(Group.USER);
+        user1.setGroupName(Group.USERS);
         user1.setPublicCalendar(false);
         em.persist(user1);
         user2 = new Users();
         user2.setEmail("user2@mail.it");
         user2.setPassword("user2");
-        user2.setGroupName(Group.USER);
+        user2.setGroupName(Group.USERS);
         user2.setPublicCalendar(true);
         em.persist(user2);
         user3 = new Users();
         user3.setEmail("user3@mail.it");
         user3.setPassword("user3");
-        user3.setGroupName(Group.USER);
+        user3.setGroupName(Group.USERS);
         user3.setPublicCalendar(true);
         em.persist(user3);
 

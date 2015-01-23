@@ -112,7 +112,7 @@ public class UserManager {
     
     public void save(Users user) throws Exception {
 
-        user.setGroupName(Group.USER);
+        user.setGroupName(Group.USERS);
         em.persist(user);
 
     }

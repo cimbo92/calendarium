@@ -222,7 +222,7 @@ public class EventBeanTest {
 
     private EventCreation initB(EventCreation beanEvent) {
         u.setEmail("test@test.test");
-        u.setGroupName("USER");
+        u.setGroupName("USERS");
         u.setPassword("test");
         u.setPublicCalendar(true);
         p.setCity("Test");

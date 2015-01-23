@@ -46,7 +46,7 @@ public class ButtonsTest {
 
     private void initUser() {
         u.setEmail("test@test.test");
-        u.setGroupName("USER");
+        u.setGroupName("USERS");
         u.setPassword("test");
         u.setPublicCalendar(true);
 

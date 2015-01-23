@@ -94,7 +94,7 @@ public class EventManagerIT {
         us.setEmail(mail);
         us.setPassword(password);
         us.setPublicCalendar(calPublic);
-        us.setGroupName(Group.USER);
+        us.setGroupName(Group.USERS);
         return us;
     }
 

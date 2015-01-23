@@ -67,7 +67,7 @@ public class EventManager {
         List<Event> list;
 
         //  Query query = em.createQuery("SELECT e FROM UserEvent ue JOIN Users u JOIN Event e WHERE u.email = :email AND (ue.creator = 1 OR ue.accepted = 1)").setParameter("email", user.getEmail());
-        Query query = em.createQuery("SELECT ue FROM UserEvent ue  WHERE (ue.user = :user AND (ue.creator =1 OR ue.accepted = 1))").setParameter("user", user);
+        Query query = em.createQuery("SELECT ue.event FROM UserEvent ue  WHERE (ue.user = :user AND (ue.creator =1 OR ue.accepted = 1))").setParameter("user", user);
 
         list = query.getResultList();
 

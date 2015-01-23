@@ -38,7 +38,7 @@ public class ScheduleViewPublicTest {
     private Users initUser(String name) {
         Users u = new Users();
         u.setEmail(name);
-        u.setGroupName("USER");
+        u.setGroupName("USERS");
         u.setPassword("test");
         u.setPublicCalendar(true);
         return u;
