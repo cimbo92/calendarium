@@ -1,10 +1,10 @@
 ----------------------------------------------------------------
-Fri Jan 23 11:33:06 CET 2015:
-Avvio della versione di Derby The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): istanza a816c00e-014b-165a-37db-0000086c5240
-su directory database C:\Users\alessandro\AppData\Local\Temp\gfembed5910145120927727427tmp\lib\databases\embedded_default  con caricatore classi sun.misc.Launcher$AppClassLoader@56e88e24 
+Fri Jan 23 11:43:00 CET 2015:
+Avvio della versione di Derby The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): istanza a816c00e-014b-1663-4995-00000253a190
+su directory database C:\Users\Alessandro\AppData\Local\Temp\gfembed3301431570443303842tmp\lib\databases\embedded_default  con caricatore classi sun.misc.Launcher$AppClassLoader@723d7c 
 
 java.vendor=Oracle Corporation
-java.runtime.version=1.7.0_71-b14
-user.dir=C:\Users\alessandro\Documents\NetBeansProjects\MeteoCalendarium\MeteoCalendarium
+java.runtime.version=1.7.0_40-b43
+user.dir=C:\Users\Alessandro\Documents\NetBeansProjects\METEOCalendar\MeteoCalendarium
 derby.system.home=null
 Programma di caricamento classe database avviato - derby.database.classpath=''
