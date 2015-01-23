@@ -99,6 +99,7 @@ public class ImportBean {
             for (int i = 0; i < events.getLength(); i++) {
                 Element element = (Element) events.item(i);
                 NodeList titles = element.getElementsByTagName("title");
+                event = new Event();
                 event.setTitle(titles.item(0).getTextContent());
 
                 NodeList descriptions = element.getElementsByTagName("description");
