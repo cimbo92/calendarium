@@ -103,6 +103,7 @@ public class UserManager implements UserManagerInterface {
         return em;
     }
 
+    @Override
     public void setEm(EntityManager em) {
         this.em = em;
     }

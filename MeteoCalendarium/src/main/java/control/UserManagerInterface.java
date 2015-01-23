@@ -8,6 +8,7 @@ package control;
 import entity.User;
 import java.util.List;
 import javax.ejb.Remote;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -29,5 +30,7 @@ public interface UserManagerInterface {
     public List<String> getListUsersPublic();
 
     public void setCalendar(boolean status, User user);
+
+    public void setEm(EntityManager em);
 
 }
