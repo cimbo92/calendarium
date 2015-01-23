@@ -57,10 +57,9 @@
             <type>jar</type>
         </dependency>
         <dependency>
-        <groupId>org.jboss.arquillian.core</groupId>
-        <artifactId>arquillian-core-api</artifactId>
-        <version>1.1.4.Final</version>
-        <scope>test</scope>
+            <groupId>org.jboss.arquillian.core</groupId>
+            <artifactId>arquillian-core-api</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.arquillian.junit</groupId>
