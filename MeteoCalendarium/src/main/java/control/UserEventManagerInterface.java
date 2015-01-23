@@ -10,6 +10,7 @@ import entity.User;
 import entity.UserEvent;
 import java.util.List;
 import javax.ejb.Remote;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -33,4 +34,8 @@ public interface UserEventManagerInterface {
     public List<User> getUsersCreator();
 
     public List<User> getInvitedWhoAccepted(Event event);
+    
+    public void setEm(EntityManager em);
+    
+    public EntityManager getEm();
 }

@@ -32,5 +32,7 @@ public interface UserManagerInterface {
     public void setCalendar(boolean status, User user);
 
     public void setEm(EntityManager em);
+    
+    public EntityManager getEm();
 
 }

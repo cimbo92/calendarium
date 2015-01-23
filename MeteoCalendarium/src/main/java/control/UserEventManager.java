@@ -138,11 +138,11 @@ public class UserEventManager implements UserEventManagerInterface {
         return query.getResultList();
 
     }
-
+    @Override
     public EntityManager getEm() {
         return em;
     }
-
+    @Override
     public void setEm(EntityManager em) {
         this.em = em;
     }

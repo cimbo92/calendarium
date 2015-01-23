@@ -99,6 +99,7 @@ public class UserManager implements UserManagerInterface {
         return user;
     }
 
+    @Override
     public EntityManager getEm() {
         return em;
     }

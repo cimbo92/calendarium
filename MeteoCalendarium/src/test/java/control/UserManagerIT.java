@@ -65,6 +65,8 @@ public class UserManagerIT {
 
     @Before
     public void prepareTests() throws Exception {
+        um = new UserManager();
+        um.setEm(em);
         clearData();
         insertData();
     }
