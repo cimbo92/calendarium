@@ -8,13 +8,12 @@ package boundary;
 import HelpClasses.EventCreation;
 import HelpClasses.OverlappingException;
 import control.EventManager;
-import control.EventManagerInterface;
-import control.IDEventManagerInterface;
-import control.MailSenderManagerInterface;
+import control.IDEventManager;
+import control.MailSenderManager;
 import control.OwmClientInterface;
-import control.PreferenceManagerInterface;
-import control.UserEventManagerInterface;
-import control.UserManagerInterface;
+import control.PreferenceManager;
+import control.UserEventManager;
+import control.UserManager;
 import entity.Event;
 import entity.IDEvent;
 import entity.Place;
@@ -64,22 +63,22 @@ public class EventBeanTest {
 
         OwmClientInterface weather = mock(OwmClientInterface.class);
         eb.setWeather(weather);
-        
+
         FacesContext fc = mock(FacesContext.class);
         RequestContext rc = mock(RequestContext.class);
-        EventManagerInterface eM = mock(EventManagerInterface.class);
-        PreferenceManagerInterface pm = mock(PreferenceManagerInterface.class);
+        EventManager eM = mock(EventManager.class);
+        PreferenceManager pm = mock(PreferenceManager.class);
 
-        IDEventManagerInterface idm = mock(IDEventManagerInterface.class);
+        IDEventManager idm = mock(IDEventManager.class);
         when(idm.findFirstFreeID()).thenReturn(new Long(-1));
 
-        UserManagerInterface um = mock(UserManagerInterface.class);
+        UserManager um = mock(UserManager.class);
         when(um.getLoggedUser()).thenReturn(u);
         when(um.findByMail(t)).thenReturn(u);
 
-        MailSenderManagerInterface mailSender = mock(MailSenderManagerInterface.class);
+        MailSenderManager mailSender = mock(MailSenderManager.class);
 
-        UserEventManagerInterface uem = mock(UserEventManagerInterface.class);
+        UserEventManager uem = mock(UserEventManager.class);
 
         eb.setIdm(idm);
         eb.c = fc;
@@ -129,25 +128,25 @@ public class EventBeanTest {
 
         OwmClientInterface weather = mock(OwmClientInterface.class);
         eb.setWeather(weather);
-        
+
         FacesContext fc = mock(FacesContext.class);
         RequestContext rc = mock(RequestContext.class);
 
-        EventManagerInterface eM = mock(EventManagerInterface.class);
+        EventManager eM = mock(EventManager.class);
         when(eM.loadSpecificEvent((String) Matchers.anyObject())).thenReturn(e1);
 
-        PreferenceManagerInterface pm = mock(PreferenceManagerInterface.class);
+        PreferenceManager pm = mock(PreferenceManager.class);
 
-        IDEventManagerInterface idm = mock(IDEventManagerInterface.class);
+        IDEventManager idm = mock(IDEventManager.class);
         when(idm.findFirstFreeID()).thenReturn(new Long(-1));
 
-        UserManagerInterface um = mock(UserManagerInterface.class);
+        UserManager um = mock(UserManager.class);
         when(um.getLoggedUser()).thenReturn(u);
         when(um.findByMail(t)).thenReturn(u);
 
-        MailSenderManagerInterface mailSender = mock(MailSenderManagerInterface.class);
+        MailSenderManager mailSender = mock(MailSenderManager.class);
 
-        UserEventManagerInterface uem = mock(UserEventManagerInterface.class);
+        UserEventManager uem = mock(UserEventManager.class);
 
         eb.setIdm(idm);
         eb.c = fc;
@@ -196,11 +195,11 @@ public class EventBeanTest {
 
         OwmClientInterface weather = mock(OwmClientInterface.class);
         eb.setWeather(weather);
-        
-        
+
+
         FacesContext fc = mock(FacesContext.class);
         RequestContext rc = mock(RequestContext.class);
-        EventManagerInterface eM = mock(EventManagerInterface.class);
+        EventManager eM = mock(EventManager.class);
 
         eb.c = fc;
         eb.r = rc;
@@ -212,7 +211,7 @@ public class EventBeanTest {
 
     private EventBean init(EventBean eb) {
 
-        
+
         eb.setEndDate(ed);
         eb.setStartDate(sd);
         eb.setIsOwnEvent(true);

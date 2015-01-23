@@ -5,9 +5,9 @@
  */
 package boundary;
 
-import control.BadWeatherNotificationManagerInterface;
-import control.EventManagerInterface;
-import control.UserManagerInterface;
+import control.BadWeatherNotificationManager;
+import control.EventManager;
+import control.UserManager;
 import entity.Event;
 import entity.Place;
 import entity.Users;
@@ -43,9 +43,9 @@ public class WarningBeanTest {
 
         WarningBean wb = new WarningBean();
 
-        EventManagerInterface em = mock(EventManagerInterface.class);
-        UserManagerInterface um = mock(UserManagerInterface.class);
-        BadWeatherNotificationManagerInterface bwnm = mock(BadWeatherNotificationManagerInterface.class);
+        EventManager em = mock(EventManager.class);
+        UserManager um = mock(UserManager.class);
+        BadWeatherNotificationManager bwnm = mock(BadWeatherNotificationManager.class);
 
         Users userTest = new Users();
         userTest.setEmail("gigi@mail.it");
@@ -91,9 +91,9 @@ public class WarningBeanTest {
 
         WarningBean wb = new WarningBean();
 
-        EventManagerInterface em = mock(EventManagerInterface.class);
-        UserManagerInterface um = mock(UserManagerInterface.class);
-        BadWeatherNotificationManagerInterface bwnm = mock(BadWeatherNotificationManagerInterface.class);
+        EventManager em = mock(EventManager.class);
+        UserManager um = mock(UserManager.class);
+        BadWeatherNotificationManager bwnm = mock(BadWeatherNotificationManager.class);
 
         Users userTest = new Users();
         userTest.setEmail("gigi@mail.it");

@@ -17,11 +17,11 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import control.BadWeatherNotificationManagerInterface;
-import control.EventManagerInterface;
-import control.PreferenceManagerInterface;
-import control.UserEventManagerInterface;
-import control.UserManagerInterface;
+import control.BadWeatherNotificationManager;
+import control.EventManager;
+import control.PreferenceManager;
+import control.UserEventManager;
+import control.UserManager;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
@@ -39,15 +39,15 @@ public class WarningBean {
      * ******************************************************************
      */
     @EJB
-    BadWeatherNotificationManagerInterface bwnm;
+    BadWeatherNotificationManager bwnm;
     @EJB
-    UserManagerInterface um;
+    UserManager um;
     @EJB
-    EventManagerInterface em;
+    EventManager em;
     @EJB
-    PreferenceManagerInterface pm;
+    PreferenceManager pm;
     @EJB
-    UserEventManagerInterface uem;
+    UserEventManager uem;
 
 
     /*

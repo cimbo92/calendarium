@@ -25,7 +25,7 @@ import javax.persistence.Query;
  * @author home
  */
 @Stateless
-public class BadWeatherNotificationManager implements BadWeatherNotificationManagerInterface {
+public class BadWeatherNotificationManager  {
 
     @PersistenceContext
     private EntityManager em;
@@ -34,7 +34,7 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
     Principal principal;
 
     @EJB
-    private EventManagerInterface emi;
+    private EventManager emi;
 
     /**
      * This funtion controls if an event has bad weather warning
@@ -42,7 +42,7 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
      * @param event
      * @return true if there is no match between preferences and forecasts
      */
-    @Override
+    
     public boolean isWarned(Event event) {
         Query query1 = em.createQuery("Select distinct e From Event e, UserEvent ue, Preference p, Forecast f Where ue.event= :event and e.outdoor=1 and p.event= :event and f.place=e.place and CAST(f.date AS DATE) between CAST(e.startDate AS DATE) and CAST(e.endDate AS DATE) and f.mainCondition not in (Select pr.main From Preference pr where pr.event= :event) ").setParameter("event", event);
         List<Event> eventWarning = query1.getResultList();
@@ -56,7 +56,7 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
      * @param creator
      * @return list of events with warning
      */
-    @Override
+    
     public List<Event> findWarnings(Users creator) {
 
         Query query1 = em.createQuery("Select distinct e From Event e, UserEvent ue, Preference p, Forecast f Where ue.event=e and ue.creator=1 and e.outdoor=1 and e.creator.email= :mail and p.event=e and f.place=e.place and CAST(f.date AS DATE) between  CAST(e.startDate AS DATE) and  CAST(e.endDate AS DATE) and f.mainCondition not in (Select pr.main From Preference pr where pr.event=e) ").setParameter("mail", creator.getEmail());
@@ -72,7 +72,7 @@ public class BadWeatherNotificationManager implements BadWeatherNotificationMana
      * @param eventWarning
      * @return list of new dates
      */
-    @Override
+    
     public List<Timestamp> findSolution(List<Event> eventWarning) {
 
         int day;

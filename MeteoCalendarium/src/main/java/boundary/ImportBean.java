@@ -25,11 +25,11 @@ import javax.inject.Named;
 import javax.swing.JFileChooser;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import control.EventManagerInterface;
-import control.IDEventManagerInterface;
-import control.PreferenceManagerInterface;
-import control.UserEventManagerInterface;
-import control.UserManagerInterface;
+import control.EventManager;
+import control.IDEventManager;
+import control.PreferenceManager;
+import control.UserEventManager;
+import control.UserManager;
 import java.io.IOException;
 import java.text.ParseException;
 import javax.xml.parsers.ParserConfigurationException;
@@ -53,15 +53,15 @@ public class ImportBean {
      *******************************************************************
      */
     @EJB
-    private EventManagerInterface em;
+    private EventManager em;
     @EJB
-    private UserManagerInterface um;
+    private UserManager um;
     @EJB
-    private IDEventManagerInterface idm;
+    private IDEventManager idm;
     @EJB
-    private PreferenceManagerInterface pm;
+    private PreferenceManager pm;
     @EJB
-    private UserEventManagerInterface uem;
+    private UserEventManager uem;
 
     public ImportBean() {
     }

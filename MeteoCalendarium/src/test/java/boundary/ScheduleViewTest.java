@@ -6,9 +6,9 @@
 package boundary;
 
 import control.BadWeatherNotificationManager;
-import control.EventManagerInterface;
-import control.ForecastManagerInterface;
-import control.UserManagerInterface;
+import control.EventManager;
+import control.ForecastManager;
+import control.UserManager;
 import entity.Event;
 import entity.Forecast;
 import entity.IDEvent;
@@ -58,9 +58,9 @@ public class ScheduleViewTest {
     }
 
     private void setQueries() {
-        UserManagerInterface um = mock(UserManagerInterface.class);
-        EventManagerInterface em = mock(EventManagerInterface.class);
-        ForecastManagerInterface fm = mock(ForecastManagerInterface.class);
+        UserManager um = mock(UserManager.class);
+        EventManager em = mock(EventManager.class);
+        ForecastManager fm = mock(ForecastManager.class);
         BadWeatherNotificationManager bm = mock(BadWeatherNotificationManager.class);
 
         Forecast forecast = new Forecast();

@@ -13,7 +13,7 @@ import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import control.UserManagerInterface;
+import control.UserManager;
 
 @RequestScoped
 @Stateful
@@ -31,7 +31,7 @@ public class LoginBean {
      *******************************************************************
      */
     @EJB
-    UserManagerInterface um;
+    UserManager um;
 
     /*
      * ******************************************************************

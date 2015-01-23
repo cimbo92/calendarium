@@ -18,10 +18,10 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import control.BadWeatherNotificationManagerInterface;
-import control.EventManagerInterface;
-import control.ForecastManagerInterface;
-import control.UserManagerInterface;
+import control.BadWeatherNotificationManager;
+import control.EventManager;
+import control.ForecastManager;
+import control.UserManager;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleModel;
@@ -42,13 +42,13 @@ public class ScheduleView implements Serializable {
      *******************************************************************
      */
     @EJB
-    EventManagerInterface em;
+    EventManager em;
     @EJB
-    UserManagerInterface um;
+    UserManager um;
     @EJB
-    BadWeatherNotificationManagerInterface bwm;
+    BadWeatherNotificationManager bwm;
     @EJB
-    ForecastManagerInterface fm;
+    ForecastManager fm;
 
     /*
      * ******************************************************************

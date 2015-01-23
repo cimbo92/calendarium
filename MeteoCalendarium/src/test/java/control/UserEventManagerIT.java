@@ -39,11 +39,11 @@ public class UserEventManagerIT {
     }
 
     @EJB
-    private UserManagerInterface um;
+    private UserManager um;
     @EJB
-    private EventManagerInterface emi;
+    private EventManager emi;
     @EJB
-    private UserEventManagerInterface uem;
+    private UserEventManager uem;
     @PersistenceContext
     private EntityManager em;
 
@@ -61,9 +61,9 @@ public class UserEventManagerIT {
     @Deployment
     public static WebArchive createArchiveAndDeploy() {
         return ShrinkWrap.create(WebArchive.class)
-                .addClass(UserManagerInterface.class)
-                .addClass(UserEventManagerInterface.class)
-                .addClass(EventManagerInterface.class)
+                .addClass(UserManager.class)
+                .addClass(UserEventManager.class)
+                .addClass(EventManager.class)
                 .addClass(EntityManager.class)
                 .addPackage(Users.class.getPackage())
                 .addPackage(Event.class.getPackage())
@@ -75,7 +75,7 @@ public class UserEventManagerIT {
 
     @Before
     public void prepareTests() throws Exception {
-         emi = new EventManager();
+        emi = new EventManager();
         uem = new UserEventManager();
         um.setEm(em);
         emi.setEm(em);

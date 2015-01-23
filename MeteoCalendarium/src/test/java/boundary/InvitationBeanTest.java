@@ -6,9 +6,9 @@
 package boundary;
 
 import HelpClasses.EventCreation;
-import control.EventManagerInterface;
-import control.UserEventManagerInterface;
-import control.UserManagerInterface;
+import control.EventManager;
+import control.UserEventManager;
+import control.UserManager;
 import entity.Event;
 import entity.Place;
 import entity.Users;
@@ -48,8 +48,8 @@ public class InvitationBeanTest {
 
     @Test
     public void invitationInList() {
-        EventManagerInterface em = mock(EventManagerInterface.class);
-        UserManagerInterface um = mock(UserManagerInterface.class);
+        EventManager em = mock(EventManager.class);
+        UserManager um = mock(UserManager.class);
         InvitationBean ib = new InvitationBean();
 
         Users userTest = new Users();
@@ -82,8 +82,8 @@ public class InvitationBeanTest {
 
     @Test
     public void noInvitationInList() {
-        EventManagerInterface em = mock(EventManagerInterface.class);
-        UserManagerInterface um = mock(UserManagerInterface.class);
+        EventManager em = mock(EventManager.class);
+        UserManager um = mock(UserManager.class);
         InvitationBean ib = new InvitationBean();
 
         Users userTest = new Users();
@@ -113,9 +113,9 @@ public class InvitationBeanTest {
     @Test
     public void testAcceptInvite() {
 
-        EventManagerInterface em = mock(EventManagerInterface.class);
-        UserManagerInterface um = mock(UserManagerInterface.class);
-        UserEventManagerInterface uem = mock(UserEventManagerInterface.class);
+        EventManager em = mock(EventManager.class);
+        UserManager um = mock(UserManager.class);
+        UserEventManager uem = mock(UserEventManager.class);
         InvitationBean ib = new InvitationBean();
 
         Users userTest = new Users();

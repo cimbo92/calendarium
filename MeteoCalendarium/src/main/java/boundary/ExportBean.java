@@ -26,10 +26,10 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import control.EventManagerInterface;
-import control.PreferenceManagerInterface;
-import control.UserEventManagerInterface;
-import control.UserManagerInterface;
+import control.EventManager;
+import control.PreferenceManager;
+import control.UserEventManager;
+import control.UserManager;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
@@ -52,13 +52,13 @@ public class ExportBean {
      *******************************************************************
      */
     @EJB
-    private EventManagerInterface em;
+    private EventManager em;
     @EJB
-    UserManagerInterface um;
+    UserManager um;
     @EJB
-    PreferenceManagerInterface pm;
+    PreferenceManager pm;
     @EJB
-    UserEventManagerInterface uem;
+    UserEventManager uem;
     List<Event> events;
     List<String> preferences;
     List<String> userInvited;

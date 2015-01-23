@@ -9,7 +9,6 @@ import HelpClasses.Mail;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import javax.ejb.Remote;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.mail.Message;
@@ -28,8 +27,7 @@ import javax.mail.internet.MimeMessage;
  * @author home
  */
 @Singleton
-@Remote(MailSenderManagerInterface.class)
-public class MailSenderManager implements MailSenderManagerInterface {
+public class MailSenderManager{
 
     // Sender's email ID needs to be mentioned
     private String from = "meteocalendarium@gmail.com";

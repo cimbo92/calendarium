@@ -8,7 +8,7 @@ package boundary;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import control.UserManagerInterface;
+import control.UserManager;
 
 /**
  * Manager of Public Calendar Settings
@@ -25,7 +25,7 @@ public class SetCalendarBean {
      *******************************************************************
      */
     @EJB
-    UserManagerInterface um;
+    UserManager um;
 
     /*
      * ******************************************************************

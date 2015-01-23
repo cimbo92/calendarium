@@ -8,6 +8,7 @@ package boundary;
 import HelpClasses.EventCreation;
 import HelpClasses.InvalidDateException;
 import HelpClasses.OverlappingException;
+import control.EventManager;
 import entity.Event;
 import entity.IDEvent;
 import entity.MainCondition;
@@ -23,13 +24,12 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import control.EventManagerInterface;
-import control.IDEventManagerInterface;
-import control.MailSenderManagerInterface;
+import control.IDEventManager;
+import control.MailSenderManager;
 import control.OwmClientInterface;
-import control.PreferenceManagerInterface;
-import control.UserEventManagerInterface;
-import control.UserManagerInterface;
+import control.PreferenceManager;
+import control.UserEventManager;
+import control.UserManager;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.primefaces.context.RequestContext;
@@ -50,17 +50,17 @@ public class EventBean implements Serializable {
      * ******************************************************************
      */
     @EJB
-    private PreferenceManagerInterface pm;
+    private PreferenceManager pm;
     @EJB
-    private EventManagerInterface em;
+    private EventManager em;
     @EJB
-    private UserEventManagerInterface uem;
+    private UserEventManager uem;
     @EJB
-    private UserManagerInterface um;
+    private UserManager um;
     @EJB
-    private IDEventManagerInterface idm;
+    private IDEventManager idm;
     @EJB
-    private MailSenderManagerInterface mailSender;
+    private MailSenderManager mailSender;
 
     @EJB
     private OwmClientInterface weather;
@@ -515,51 +515,51 @@ public class EventBean implements Serializable {
         this.selectedPreferences = selectedPreferences;
     }
 
-    public PreferenceManagerInterface getPm() {
+    public PreferenceManager getPm() {
         return pm;
     }
 
-    public void setPm(PreferenceManagerInterface pm) {
+    public void setPm(PreferenceManager pm) {
         this.pm = pm;
     }
 
-    public EventManagerInterface getEm() {
+    public EventManager getEm() {
         return em;
     }
 
-    public void setEm(EventManagerInterface em) {
+    public void setEm(EventManager em) {
         this.em = em;
     }
 
-    public UserEventManagerInterface getUem() {
+    public UserEventManager getUem() {
         return uem;
     }
 
-    public void setUem(UserEventManagerInterface uem) {
+    public void setUem(UserEventManager uem) {
         this.uem = uem;
     }
 
-    public UserManagerInterface getUm() {
+    public UserManager getUm() {
         return um;
     }
 
-    public void setUm(UserManagerInterface um) {
+    public void setUm(UserManager um) {
         this.um = um;
     }
 
-    public IDEventManagerInterface getIdm() {
+    public IDEventManager getIdm() {
         return idm;
     }
 
-    public void setIdm(IDEventManagerInterface idm) {
+    public void setIdm(IDEventManager idm) {
         this.idm = idm;
     }
 
-    public MailSenderManagerInterface getMailSender() {
+    public MailSenderManager getMailSender() {
         return mailSender;
     }
 
-    public void setMailSender(MailSenderManagerInterface mailSender) {
+    public void setMailSender(MailSenderManager mailSender) {
         this.mailSender = mailSender;
     }
 

@@ -6,13 +6,13 @@
 package boundary;
 
 import HelpClasses.EventCreation;
-import control.BadWeatherNotificationManagerInterface;
-import control.EventManagerInterface;
-import control.IDEventManagerInterface;
-import control.MailSenderManagerInterface;
-import control.PreferenceManagerInterface;
-import control.UserEventManagerInterface;
-import control.UserManagerInterface;
+import control.BadWeatherNotificationManager;
+import control.EventManager;
+import control.IDEventManager;
+import control.MailSenderManager;
+import control.PreferenceManager;
+import control.UserEventManager;
+import control.UserManager;
 import entity.Event;
 import entity.IDEvent;
 import entity.Place;
@@ -70,12 +70,12 @@ public class ButtonsTest {
     }
 
     private void initManagers() {
-        IDEventManagerInterface idm = mock(IDEventManagerInterface.class);
-        UserManagerInterface um = mock(UserManagerInterface.class);
-        EventManagerInterface em = mock(EventManagerInterface.class);
-        PreferenceManagerInterface pm = mock(PreferenceManagerInterface.class);
-        UserEventManagerInterface uem = mock(UserEventManagerInterface.class);
-        MailSenderManagerInterface mailSender = mock(MailSenderManagerInterface.class);
+        IDEventManager idm = mock(IDEventManager.class);
+        UserManager um = mock(UserManager.class);
+        EventManager em = mock(EventManager.class);
+        PreferenceManager pm = mock(PreferenceManager.class);
+        UserEventManager uem = mock(UserEventManager.class);
+        MailSenderManager mailSender = mock(MailSenderManager.class);
         FacesContext fc = mock(FacesContext.class);
         eb.setEm(em);
         eb.setPm(pm);
@@ -161,8 +161,8 @@ public class ButtonsTest {
 
     @Test
     public void InvitationButtonDisabled() {
-        EventManagerInterface em = mock(EventManagerInterface.class);
-        UserManagerInterface um = mock(UserManagerInterface.class);
+        EventManager em = mock(EventManager.class);
+        UserManager um = mock(UserManager.class);
         InvitationBean ib = new InvitationBean();
 
         List<Event> list2 = new ArrayList<>();
@@ -186,9 +186,9 @@ public class ButtonsTest {
 
         WarningBean wb = new WarningBean();
 
-        EventManagerInterface em = mock(EventManagerInterface.class);
-        UserManagerInterface um = mock(UserManagerInterface.class);
-        BadWeatherNotificationManagerInterface bwnm = mock(BadWeatherNotificationManagerInterface.class);
+        EventManager em = mock(EventManager.class);
+        UserManager um = mock(UserManager.class);
+        BadWeatherNotificationManager bwnm = mock(BadWeatherNotificationManager.class);
 
         wb.em = em;
         wb.um = um;

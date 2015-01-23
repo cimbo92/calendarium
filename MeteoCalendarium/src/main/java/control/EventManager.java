@@ -14,7 +14,6 @@ import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -27,8 +26,7 @@ import javax.persistence.Query;
  * @author home
  */
 @Stateless
-@Remote(EventManagerInterface.class)
-public class EventManager implements EventManagerInterface {
+public class EventManager {
 
     @PersistenceContext
     private EntityManager em;
@@ -43,7 +41,7 @@ public class EventManager implements EventManagerInterface {
      * @param user Creator
      * @throws OverlappingException if event already in event date
      */
-    @Override
+
     public void addEvent(Event event, Users user) throws OverlappingException {
 
         if (this.searchOverlapping(event, user)) {
@@ -63,7 +61,7 @@ public class EventManager implements EventManagerInterface {
      * @param user user to check
      * @return
      */
-    @Override
+
     public boolean searchOverlapping(Event event, Users user) {
 
         List<Event> list;
@@ -88,7 +86,7 @@ public class EventManager implements EventManagerInterface {
      * @param user
      * @return
      */
-    @Override
+
     public boolean isCreator(Event event, Users user) {
         Query query = em.createQuery("SELECT ue FROM UserEvent ue WHERE ue.event= :event and ue.user= :user").setParameter("event", event).setParameter("user", user);
         List<UserEvent> result = new ArrayList<>(query.getResultList());
@@ -100,7 +98,7 @@ public class EventManager implements EventManagerInterface {
      *
      * @param event
      */
-    @Override
+
     public void removeEvent(Event event) {
 
         Query query1 = em.createQuery("Delete From Preference p Where p.event= :event").setParameter(("event"), event);
@@ -119,7 +117,7 @@ public class EventManager implements EventManagerInterface {
      * @param iDEvent
      * @return
      */
-    @Override
+
     public Event loadSpecificEvent(String iDEvent) {
         IDEvent id = new IDEvent(Long.parseLong(iDEvent));
         Query query = em.createQuery("SELECT e FROM Event e WHERE e.idEvent =:id").setParameter("id", id);
@@ -134,7 +132,7 @@ public class EventManager implements EventManagerInterface {
      * @param user
      * @return
      */
-    @Override
+
     public List<Event> findInvitatedEvent(Users user) {
 
         Query query = em.createQuery("SELECT ue.event FROM UserEvent ue WHERE ue.user = :user AND ue.creator=false and ue.viewed=false").setParameter(("user"), user);
@@ -149,7 +147,7 @@ public class EventManager implements EventManagerInterface {
      * @param user
      * @return
      */
-    @Override
+
     public List<Event> loadCalendar(Users user) {
 
         Query query = em.createQuery("SELECT ue.event FROM UserEvent ue WHERE (ue.user = :user AND (ue.accepted=true OR ue.creator=true))").setParameter(("user"), user);
@@ -164,7 +162,7 @@ public class EventManager implements EventManagerInterface {
      * @param username
      * @return
      */
-    @Override
+
     public List<Event> loadPublicCalendar(String username) {
 
         Query query = em.createQuery("SELECT ue.event FROM UserEvent ue WHERE (ue.user.email = :user AND (ue.accepted=true OR ue.creator=true) AND ue.event.publicEvent=true)").setParameter(("user"), username);
@@ -178,7 +176,7 @@ public class EventManager implements EventManagerInterface {
      *
      * @param user
      */
-    @Override
+
     public void removeAllEvent(Users user) {
         System.out.println("Utente: " + user.getEmail());
         Query query1 = em.createQuery("Delete From Preference p Where p.event in (Select e From Event e Where e.creator.email = :mail)").setParameter(("mail"), user.getEmail());
@@ -196,7 +194,7 @@ public class EventManager implements EventManagerInterface {
      * @param user
      * @return
      */
-    @Override
+
     public List<Event> getEventsCreated(Users user) {
 
         Query query = em.createQuery("Select e From Event e Where e.creator.email= :mail").setParameter("mail", user.getEmail());
@@ -214,19 +212,19 @@ public class EventManager implements EventManagerInterface {
      * @param event
      * @return
      */
-    @Override
+
     public boolean isIndoor(Event event) {
         Query query = em.createQuery("SELECT e FROM Event e WHERE e= :event").setParameter("event", event);
         List<Event> result = new ArrayList<>(query.getResultList());
         return !result.get(0).isOutdoor();
     }
 
-    @Override
+
     public EntityManager getEm() {
         return em;
     }
 
-    @Override
+
     public void setEm(EntityManager em) {
         this.em = em;
     }
@@ -239,7 +237,7 @@ public class EventManager implements EventManagerInterface {
         this.principal = principal;
     }
 
-    @Override
+    
     public void removeEventByID(Event event) {
         Query query1 = em.createQuery("Delete From Preference p Where p.event.idEvent.id= :event").setParameter(("event"), event.getIdEvent().getId());
         query1.executeUpdate();

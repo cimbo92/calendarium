@@ -12,14 +12,21 @@ import entity.Place;
 import entity.Users;
 import java.sql.Timestamp;
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,8 +41,6 @@ public class EventManagerIT {
     public EventManagerIT() {
     }
 
-    @EJB
-    private UserManager um;
     @PersistenceContext
     private EntityManager em;
 
@@ -46,6 +51,8 @@ public class EventManagerIT {
     private Users us1 = new Users();
     private Users us2 = new Users();
 
+   @Inject
+            UserTransaction utx;
 
     @EJB
     private EventManager evm;
@@ -54,8 +61,7 @@ public class EventManagerIT {
     public static WebArchive createArchiveAndDeploy() {
         return ShrinkWrap.create(WebArchive.class)
                 .addClass(EventManager.class)
-                .addClass(UserManager.class)
-                .addClass(EntityManager.class)
+                 .addClass(EntityManager.class)
                 .addPackage(Event.class.getPackage())
                 .addPackage(Place.class.getPackage())
                 .addPackage(IDEvent.class.getPackage())
@@ -117,21 +123,35 @@ public class EventManagerIT {
 
         ev1 = setEvent("titolo4", "4", "posto4", us2, startEv4, endEv4, true, false);
 
-
-
-        evm = new EventManager();
-        um = new UserManager();
-        evm.setEm(em);
-        um.setEm(em);
     }
-
-
 
     /**
      * Test of searchOverlapping method, of class EventManager.
      */
     @Test
-    public void testSearchOverlapping()  {
-        assertTrue(false);
+    public void testSearchOverlapping() throws NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException, Exception  {
+        this.clearData();
+        utx.begin();
+        em.joinTransaction();
+
+
+
+         utx.commit();
+        // clear the persistence context (first-level cache)
+        em.clear();
+        assertNotNull(evm.loadSpecificEvent(ev1.getIdEvent().getId()+""));
+    }
+
+        private void clearData() throws Exception {
+              utx.begin();
+        em.joinTransaction();
+
+        //em.joinTransaction();
+        System.out.println("Dumping old records...");
+        em.createQuery("delete from Users").executeUpdate();
+        em.createQuery("delete from Event").executeUpdate();
+        em.createQuery("delete from UserEvent").executeUpdate();
+        em.createQuery("delete from Place").executeUpdate();
+        utx.commit();
     }
 }

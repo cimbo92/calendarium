@@ -42,7 +42,7 @@ public class UserManagerIT {
     }
 
     @EJB
-    private UserManagerInterface um;
+    private UserManager um;
     @PersistenceContext
     private EntityManager em;
 
@@ -55,7 +55,7 @@ public class UserManagerIT {
     @Deployment
     public static WebArchive createArchiveAndDeploy() {
         return ShrinkWrap.create(WebArchive.class)
-                .addClass(UserManagerInterface.class)
+                .addClass(UserManager.class)
                 .addClass(EntityManager.class)
                 .addPackage(Users.class.getPackage())
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")

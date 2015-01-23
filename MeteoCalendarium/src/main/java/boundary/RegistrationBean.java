@@ -9,7 +9,7 @@ import entity.Users;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
-import control.UserManagerInterface;
+import control.UserManager;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
@@ -28,7 +28,7 @@ public class RegistrationBean {
      *******************************************************************
      */
     @EJB
-    private UserManagerInterface um;
+    private UserManager um;
 
     /*
      * ******************************************************************

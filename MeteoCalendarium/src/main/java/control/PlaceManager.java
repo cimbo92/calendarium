@@ -8,7 +8,6 @@ package control;
 import entity.Place;
 import java.util.ArrayList;
 import java.util.List;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,8 +18,7 @@ import javax.persistence.Query;
  * @author home
  */
 @Stateless
-@Remote(PlaceManagerInterface.class)
-public class PlaceManager implements PlaceManagerInterface {
+public class PlaceManager {
 
     @PersistenceContext
     private EntityManager em;
@@ -30,7 +28,7 @@ public class PlaceManager implements PlaceManagerInterface {
      *
      * @return
      */
-    @Override
+    
     public List<Place> getAllPlaces() {
 
         try {

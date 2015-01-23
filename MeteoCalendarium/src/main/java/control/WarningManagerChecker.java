@@ -11,7 +11,6 @@ import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.Remote;
 import javax.ejb.Schedule;
 import javax.ejb.Schedules;
 import javax.ejb.Singleton;
@@ -21,8 +20,7 @@ import javax.ejb.Singleton;
  * @author alessandro
  */
 @Singleton
-@Remote(WarningManagerCheckerInterface.class)
-public class WarningManagerChecker implements WarningManagerCheckerInterface {
+public class WarningManagerChecker{
 
     /**
      *
@@ -30,11 +28,11 @@ public class WarningManagerChecker implements WarningManagerCheckerInterface {
      *
      */
     @EJB
-    private BadWeatherNotificationManagerInterface bm;
+    private BadWeatherNotificationManager bm;
     @EJB
-    private MailSenderManagerInterface ms;
+    private MailSenderManager ms;
     @EJB
-    private UserEventManagerInterface uem;
+    private UserEventManager uem;
 
     int count = 0;
 

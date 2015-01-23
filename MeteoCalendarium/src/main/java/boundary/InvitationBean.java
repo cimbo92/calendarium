@@ -17,9 +17,9 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import control.EventManagerInterface;
-import control.UserEventManagerInterface;
-import control.UserManagerInterface;
+import control.EventManager;
+import control.UserEventManager;
+import control.UserManager;
 
 /**
  * Bean that manage Invitations
@@ -37,11 +37,11 @@ public class InvitationBean implements Serializable {
      *******************************************************************
      */
     @EJB
-    EventManagerInterface em;
+    EventManager em;
     @EJB
-    UserManagerInterface um;
+    UserManager um;
     @EJB
-    UserEventManagerInterface uem;
+    UserEventManager uem;
 
     /*
      * ******************************************************************

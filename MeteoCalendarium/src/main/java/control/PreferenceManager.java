@@ -10,7 +10,6 @@ import entity.Preference;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -23,8 +22,7 @@ import javax.persistence.Query;
  * @author Alessandro
  */
 @Stateless
-@Remote(PreferenceManagerInterface.class)
-public class PreferenceManager implements PreferenceManagerInterface {
+public class PreferenceManager{
 
     @PersistenceContext
     private EntityManager em;
@@ -37,7 +35,7 @@ public class PreferenceManager implements PreferenceManagerInterface {
      *
      * @param preference
      */
-    @Override
+    
     public void addPreference(Preference preference) {
         em.merge(preference);
     }
@@ -48,7 +46,7 @@ public class PreferenceManager implements PreferenceManagerInterface {
      * @param event
      * @return a list of preferences
      */
-    @Override
+    
     public List<String> getPreferenceOfEvent(Event event) {
 
         Query query = em

@@ -5,7 +5,7 @@
  */
 package boundary;
 
-import control.UserManagerInterface;
+import control.UserManager;
 import entity.Users;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -24,7 +24,7 @@ public class SetCalendarBeanTest {
     @Test
     public void testIsStatus() {
 
-        UserManagerInterface um = mock(UserManagerInterface.class);
+        UserManager um = mock(UserManager.class);
 
         SetCalendarBean sc = new SetCalendarBean();
 

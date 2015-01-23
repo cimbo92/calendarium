@@ -13,8 +13,8 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import control.EventManagerInterface;
-import control.UserManagerInterface;
+import control.EventManager;
+import control.UserManager;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleModel;
@@ -34,9 +34,9 @@ public class ScheduleViewPublic implements Serializable {
      *******************************************************************
      */
     @EJB
-    EventManagerInterface em;
+    EventManager em;
     @EJB
-    UserManagerInterface um;
+    UserManager um;
 
     /*
      * ******************************************************************

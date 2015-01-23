@@ -10,7 +10,6 @@ import entity.Forecast;
 import entity.Place;
 import java.util.ArrayList;
 import java.util.List;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,8 +21,7 @@ import javax.persistence.Query;
  * @author home
  */
 @Stateless
-@Remote(ForecastManagerInterface.class)
-public class ForecastManager implements ForecastManagerInterface {
+public class ForecastManager  {
 
     @PersistenceContext
     private EntityManager em;
@@ -34,7 +32,7 @@ public class ForecastManager implements ForecastManagerInterface {
      * @param place
      * @return
      */
-    @Override
+    
     public List<Forecast> getForecastInPlace(Place place) {
 
         List<Forecast> list;
@@ -59,7 +57,7 @@ public class ForecastManager implements ForecastManagerInterface {
      * @param event
      * @return
      */
-    @Override
+    
     public List<Forecast> getForecastOfEvent(Event event) {
 
         Query query = em.createQuery("SELECT distinct f FROM Forecast f JOIN f.place p WHERE p.city =:city and CAST(f.date AS DATE) between  CAST(:start AS DATE) and  CAST(:end AS DATE)").setParameter("city", event.getPlace().getCity());

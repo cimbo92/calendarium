@@ -69,10 +69,10 @@ public class OwmClient implements OwmClientInterface {
     private EntityManager entityManager;
 
     @EJB
-    private ForecastManagerInterface forecastManager;
+    private ForecastManager forecastManager;
 
     @EJB
-    private PlaceManagerInterface placeManager;
+    private PlaceManager placeManager;
 
     public OwmClient() {
         this.httpClient = new DefaultHttpClient();
@@ -256,7 +256,7 @@ public class OwmClient implements OwmClientInterface {
      * @throws IOException if there's some network error or the OWM server
      * replies with a error.
      */
-    @Override
+    
     public WeatherStatusResponse currentWeatherAtCity(String cityName) throws IOException, JSONException {
         String subUrl = String.format(Locale.ROOT, "find/name?q=%s", cityName);
         JSONObject response = doQuery(subUrl);
@@ -300,14 +300,14 @@ public class OwmClient implements OwmClientInterface {
      * @throws IOException if there's some network error or the OWM server
      * replies with a error.
      */
-    @Override
+    
     public WeatherForecastResponse forecastWeatherAtCity(String cityName) throws JSONException, IOException {
         String subUrl = String.format(Locale.ROOT, "forecast/city?q=%s&type=json&units=metric", cityName);
         JSONObject response = doQuery(subUrl);
         return new WeatherForecastResponse(response);
     }
 
-    @Override
+    
     public WeatherForecastResponse tenForecastWeatherAtCity(String cityName) throws JSONException, IOException {
 
         String subUrl = String.format(Locale.ROOT, "forecast/daily?q=%s&cnt=10&mode=json", cityName);
@@ -421,7 +421,7 @@ public class OwmClient implements OwmClientInterface {
 
     }
     
-    @Override
+    
     @Schedule(second = "50", minute = "*", hour = "*", persistent = false)
     public void checkWeatherRecent() {
         if(list.isEmpty())

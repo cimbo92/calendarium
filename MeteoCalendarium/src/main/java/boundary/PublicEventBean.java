@@ -13,10 +13,10 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import control.EventManagerInterface;
-import control.PreferenceManagerInterface;
-import control.UserEventManagerInterface;
-import control.UserManagerInterface;
+import control.EventManager;
+import control.PreferenceManager;
+import control.UserEventManager;
+import control.UserManager;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 
@@ -36,13 +36,13 @@ public class PublicEventBean {
      *******************************************************************
      */
     @EJB
-    private PreferenceManagerInterface pm;
+    private PreferenceManager pm;
     @EJB
-    private EventManagerInterface em;
+    private EventManager em;
     @EJB
-    private UserEventManagerInterface uem;
+    private UserEventManager uem;
     @EJB
-    private UserManagerInterface um;
+    private UserManager um;
 
     /*
      * ******************************************************************

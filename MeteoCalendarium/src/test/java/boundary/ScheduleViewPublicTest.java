@@ -5,8 +5,8 @@
  */
 package boundary;
 
-import control.EventManagerInterface;
-import control.UserManagerInterface;
+import control.EventManager;
+import control.UserManager;
 import entity.Event;
 import entity.IDEvent;
 import entity.Place;
@@ -83,8 +83,8 @@ public class ScheduleViewPublicTest {
     }
 
     private void setQueries() {
-        UserManagerInterface um = mock(UserManagerInterface.class);
-        EventManagerInterface em = mock(EventManagerInterface.class);
+        UserManager um = mock(UserManager.class);
+        EventManager em = mock(EventManager.class);
         s.em = em;
         s.um = um;
         s.init();

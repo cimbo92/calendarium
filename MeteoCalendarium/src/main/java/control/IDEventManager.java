@@ -7,7 +7,6 @@ package control;
 
 import java.security.Principal;
 import java.util.List;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -20,8 +19,7 @@ import javax.persistence.Query;
  * @author Alessandro
  */
 @Stateless
-@Remote(IDEventManagerInterface.class)
-public class IDEventManager implements IDEventManagerInterface {
+public class IDEventManager {
 
     @PersistenceContext
     private EntityManager em;
@@ -34,7 +32,7 @@ public class IDEventManager implements IDEventManagerInterface {
      *
      * @return
      */
-    @Override
+    
     public Long findFirstFreeID() {
 
         Query query;
