@@ -57,7 +57,6 @@ public class UserEventManagerIT {
 
     int IDCount;
 
-
     @Deployment
     public static WebArchive createArchiveAndDeploy() {
         return ShrinkWrap.create(WebArchive.class)

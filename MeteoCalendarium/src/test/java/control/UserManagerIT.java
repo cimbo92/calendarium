@@ -10,26 +10,18 @@ import entity.Users;
 import java.security.Principal;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.embeddable.EJBContainer;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import static org.hamcrest.CoreMatchers.is;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 /**
  *
@@ -119,7 +111,7 @@ public class UserManagerIT {
     private void clearData() throws Exception {
         //em.joinTransaction();
         System.out.println("Dumping old records...");
-        em.createQuery("delete from User").executeUpdate();
+         em.createQuery("delete from User").executeUpdate();
     }
 
     private void insertData() throws Exception {

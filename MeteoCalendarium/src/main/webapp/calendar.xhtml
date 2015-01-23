@@ -42,7 +42,7 @@
                             <p:selectManyButton style="background-color: transparent">
                                 <p:commandButton value="Export" id="export"  action="#{exportBean.export()}" update="growl" oncomplete="PF('dlg-settings').hide()">     
                                 </p:commandButton>
-                                <p:commandButton value="Import" id="import" action="#{importBean.imports()}" actionListener="#{scheduleView.loadCalendar()}" update="schedule,growl" oncomplete="PF('myschedule').update();PF('dlg-settings').hide()" />
+                                <p:commandButton value="Import" id="import" actionListener="#{importBean.imports()}" action="#{scheduleView.loadCalendar()}" update=":formcentral:schedule,growl" oncomplete="PF('myschedule').update();PF('dlg-settings').hide()" />
                                 <p:inputSwitch onLabel="Public"  offLabel="Private" value="#{setCalendarBean.status}" >
                                     <p:ajax listener="#{setCalendarBean.saveDecision()}" update="panelsetting"  />
                                 </p:inputSwitch>
