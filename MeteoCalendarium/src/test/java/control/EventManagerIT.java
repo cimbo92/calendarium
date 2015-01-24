@@ -45,7 +45,7 @@ public class EventManagerIT {
     @PersistenceContext
     private EntityManager em;
 
-    Users user1,user2;
+    Users user1, user2;
     Event event1, event2;
     UserEvent userEvent1, userEvent2;
 
@@ -71,38 +71,49 @@ public class EventManagerIT {
     public void prepareTests() throws Exception {
         clearData();
         insertData();
-        IDCount=0;
+        IDCount = 0;
     }
 
     @Test
-    public void testAddEvent(){
+    public void testAddEvent() {
 
-        Event ev = emi.loadSpecificEvent(event1.getIdEvent().getId()+"");
-        assertEquals(ev.getIdEvent().getId(),event1.getIdEvent().getId());
+        Event ev = emi.loadSpecificEvent(event1.getIdEvent().getId() + "");
+        assertEquals(ev.getIdEvent().getId(), event1.getIdEvent().getId());
     }
 
-
     @Test
-    public void testGetInvitatedUsers()
-    {
+    public void testGetInvitatedUsers() {
         List<Event> list = emi.findInvitatedEvent(user2);
-        assertEquals(list.get(0).getTitle(),event1.getTitle());
+        assertEquals(list.get(0).getTitle(), event1.getTitle());
     }
 
     @Test
-    public void test(){
+    public void test() {
         List<Event> list = emi.getEventsCreated(user1);
-         assertEquals(list.get(0).getTitle(),event1.getTitle());
+        assertEquals(list.get(0).getTitle(), event1.getTitle());
     }
 
-      public Event setEvent(String title,String Description,String city,Users creator,Timestamp start,Timestamp end,boolean outdoor,boolean publicEvent)
-    {
+    @Test
+    public void testLoadPublicCalendar() {
+        assertEquals((int) 1, emi.loadPublicCalendar("user1@mail.it").size());
+        assertEquals(emi.loadPublicCalendar("user1@mail.it").get(0).getTitle(), event1.getTitle());
+    }
+
+    @Test
+    public void testLoadCalendar() {
+        List<Event> list = emi.getEventsCreated(user1);
+        assertEquals(list.size(), (int) 2);
+        assertEquals(list.get(0).getTitle(), event1.getTitle());
+        assertEquals(list.get(1).getTitle(), event2.getTitle());
+    }
+
+    public Event setEvent(String title, String Description, String city, Users creator, Timestamp start, Timestamp end, boolean outdoor, boolean publicEvent) {
         IDCount++;
-        Event ev= new Event();
+        Event ev = new Event();
         ev.setTitle(title);
         ev.setDescription(Description);
         ev.setPlace(new Place(city));
-        ev.setIdEvent(new IDEvent(IDCount+""));
+        ev.setIdEvent(new IDEvent(IDCount + ""));
         ev.setCreator(creator);
         ev.setOutdoor(outdoor);
         ev.setPublicEvent(publicEvent);
@@ -111,34 +122,34 @@ public class EventManagerIT {
         return ev;
     }
 
-       private void insertData() throws Exception {
+    private void insertData() throws Exception {
         user1 = new Users();
         user1.setEmail("user1@mail.it");
         user1.setPassword("user1");
         user1.setGroupName(Group.USERS);
         user1.setPublicCalendar(false);
         um.save(user1);
-         user2 = new Users();
+        user2 = new Users();
         user2.setEmail("user2@mail.it");
         user2.setPassword("user2");
         user2.setGroupName(Group.USERS);
         user2.setPublicCalendar(false);
         um.save(user2);
-        event1=setEvent("Title", "Description", "Milan", user1, new Timestamp(1111), new Timestamp(11122), true, true);
+        event1 = setEvent("Title", "Description", "Milan", user1, new Timestamp(1111), new Timestamp(11122), true, true);
         emi.addEvent(event1, user1);
+        event2 = setEvent("Title2", "Description", "Milan", user1, new Timestamp(111122), new Timestamp(112222), true, false);
+        emi.addEvent(event2, user1);
 
         userEvent1 = new UserEvent(event1, user1, true);
         uem.addUserEvent(userEvent1);
-        userEvent2 = new UserEvent(event1,user2,false);
+        userEvent2 = new UserEvent(event1, user2, false);
         uem.addUserEvent(userEvent2);
 
-       }
+    }
 
-       private void clearData() throws Exception {
+    private void clearData() throws Exception {
         System.out.println("Dumping old records...");
         dm.deleteAllData();
     }
-
-
 
 }
