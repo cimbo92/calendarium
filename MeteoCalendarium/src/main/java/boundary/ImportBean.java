@@ -82,7 +82,6 @@ public class ImportBean {
             slash = "/";
         }
 
-        System.out.println("afet");
         String DefaultFolder = new JFileChooser().getFileSystemView().getDefaultDirectory().toString();
         file = new File(DefaultFolder + slash + "calendar.xml");
 
@@ -145,9 +144,9 @@ public class ImportBean {
                 NodeList users = element.getElementsByTagName("creator");
                 Users user = new Users();
 
-                user.setEmail(users.item(0).getTextContent());
-
+                user=um.findByMail(users.item(0).getTextContent());
                 event.setCreator(user);
+                
 
                 long id;
                 id = idm.findFirstFreeID();
