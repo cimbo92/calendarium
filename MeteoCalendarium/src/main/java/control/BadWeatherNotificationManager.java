@@ -44,7 +44,9 @@ public class BadWeatherNotificationManager  {
      */
     
     public boolean isWarned(Event event) {
-        Query query1 = em.createQuery("Select distinct e From Event e, UserEvent ue, Preference p, Forecast f Where ue.event= :event and e.outdoor=1 and p.event= :event and f.place=e.place and CAST(f.date AS DATE) between CAST(e.startDate AS DATE) and CAST(e.endDate AS DATE) and f.mainCondition not in (Select pr.main From Preference pr where pr.event= :event) ").setParameter("event", event);
+        Query query1 = em.createQuery("Select distinct ue.event From UserEvent ue, Preference p, Forecast f Where ue.event = :event and ue.event.outdoor=1 and p.event= :event and f.place=ue.event.place and CAST(f.date AS DATE) between CAST(:startDate AS DATE) and CAST(:endDate AS DATE) and f.mainCondition not in (Select pr.main From Preference pr where pr.event= :event) ").setParameter("event", event);
+        query1.setParameter("startDate", event.getStartDate());
+        query1.setParameter("endDate", event.getEndDate());
         List<Event> eventWarning = query1.getResultList();
         return !eventWarning.isEmpty();
     }
