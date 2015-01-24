@@ -178,14 +178,12 @@ public class EventManager {
      */
 
     public void removeAllEvent(Users user) {
-        System.out.println("Utente: " + user.getEmail());
         Query query1 = em.createQuery("Delete From Preference p Where p.event in (Select e From Event e Where e.creator.email = :mail)").setParameter(("mail"), user.getEmail());
         query1.executeUpdate();
         Query query2 = em.createQuery("Delete From UserEvent ue  Where ue.event in (Select e From Event e Where e.creator.email= :mail)").setParameter(("mail"), user.getEmail());
         query2.executeUpdate();
         Query query3 = em.createQuery("Delete From Event e where e.creator.email = :mail").setParameter(("mail"), user.getEmail());
         query3.executeUpdate();
-        System.out.println("Delete completed");
     }
 
     /**
