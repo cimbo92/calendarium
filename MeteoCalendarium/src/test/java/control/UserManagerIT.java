@@ -37,6 +37,8 @@ public class UserManagerIT {
     private UserManager um;
     @PersistenceContext
     private EntityManager em;
+    @EJB
+    private DestroyerManager dm;
 
     @Inject
     Principal principal;
@@ -49,6 +51,7 @@ public class UserManagerIT {
         return ShrinkWrap.create(WebArchive.class)
                 .addClass(UserManager.class)
                 .addClass(EntityManager.class)
+                .addClass(DestroyerManager.class)
                 .addPackage(Users.class.getPackage())
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
@@ -57,8 +60,6 @@ public class UserManagerIT {
 
     @Before
     public void prepareTests() throws Exception {
-        um = new UserManager();
-        um.setEm(em);
         clearData();
         insertData();
     }
@@ -69,8 +70,9 @@ public class UserManagerIT {
     @Test
     public void testGetListUsers() throws Exception {
         List<String> users = um.getListUsersPublic();
-        assertEquals(um.findByMail(users.get(0)), user1);
-        assertEquals(um.findByMail(users.get(1)), user2);
+        assertEquals(um.findByMail(users.get(0)).getEmail(), user2.getEmail());
+        boolean errorpublic = users.contains(user1.getEmail());
+        assertTrue(!errorpublic);
     }
 
     /**
@@ -81,6 +83,7 @@ public class UserManagerIT {
         Users user = um.findByMail("user1@mail.it");
         assertEquals(false, user.isPublicCalendar());
         um.setCalendar(true, user);
+        user = um.findByMail("user1@mail.it");
         assertEquals(true, user.isPublicCalendar());
     }
 
@@ -90,7 +93,7 @@ public class UserManagerIT {
     @Test
     public void testGetListUsersPublic() throws Exception {
         List<String> users = um.getListUsersPublic();
-        assertEquals("user2@mail.it", um.findByMail(users.get(0)));
+        assertEquals("user2@mail.it", um.findByMail(users.get(0)).getEmail());
     }
 
     /**
@@ -98,21 +101,9 @@ public class UserManagerIT {
      */
     @Test
     public void testSave() throws Exception {
-
-        Users user1 = new Users();
-        user1.setEmail("user1@mail.it");
-        user1.setPassword("user1");
-        user1.setGroupName(Group.USERS);
-        user1.setPublicCalendar(true);
-        um.save(user1);
-        assertEquals(user1, um.findByMail(user1.getEmail()));
+        assertEquals(user1.getEmail(), um.findByMail(user1.getEmail()).getEmail());
     }
 
-    private void clearData() throws Exception {
-        //em.joinTransaction();
-        System.out.println("Dumping old records...");
-         em.createQuery("delete from User").executeUpdate();
-    }
 
     private void insertData() throws Exception {
         user1 = new Users();
@@ -120,13 +111,17 @@ public class UserManagerIT {
         user1.setPassword("user1");
         user1.setGroupName(Group.USERS);
         user1.setPublicCalendar(false);
-        em.persist(user1);
+        um.save(user1);
         user2 = new Users();
         user2.setEmail("user2@mail.it");
         user2.setPassword("user2");
-        user2.setGroupName(Group.USERS
-        );
+        user2.setGroupName(Group.USERS );
         user2.setPublicCalendar(true);
-        em.persist(user2);
+        um.save(user2);
+    }
+
+
+    private void clearData(){
+   dm.deleteAllData();
     }
 }

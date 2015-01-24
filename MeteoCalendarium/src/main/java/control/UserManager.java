@@ -32,7 +32,7 @@ public class UserManager {
      *
      * @return a list with all registered users
      */
-    
+
     public List<String> getListUsers() {
         Query query;
         query = em.createQuery("SELECT e.email FROM Users e WHERE e.email!= :usermail").setParameter("usermail", principal.getName());
@@ -48,7 +48,7 @@ public class UserManager {
      * @param mail
      * @return the user
      */
-    
+
     public Users findByMail(String mail) {
 
         Query query;
@@ -69,12 +69,12 @@ public class UserManager {
      * @param status
      * @param user
      */
-    
+
     public void setCalendar(boolean status, Users user) {
 
         try {
 
-            Query query = em.createQuery("UPDATE Users SET publicCalendar= :status where email= :user");
+            Query query = em.createQuery("UPDATE Users  u SET u.publicCalendar= :status Where u.email= :user");
             query.setParameter("status", status);
             query.setParameter("user", user.getEmail());
             query.executeUpdate();
@@ -89,7 +89,7 @@ public class UserManager {
      * @return a list of emails that contains all users with calendar sets as
      * public
      */
-    
+
     public List<String> getListUsersPublic() {
 
         Query query;
@@ -99,17 +99,17 @@ public class UserManager {
         return user;
     }
 
-    
+
     public EntityManager getEm() {
         return em;
     }
 
-    
+
     public void setEm(EntityManager em) {
         this.em = em;
     }
 
-    
+
     public void save(Users user) throws Exception {
 
         user.setGroupName(Group.USERS);
@@ -117,12 +117,12 @@ public class UserManager {
 
     }
 
-    
+
     public void unregister() {
         em.remove(getLoggedUser());
     }
 
-    
+
     public Users getLoggedUser() {
         return em.find(Users.class, principal.getName());
 

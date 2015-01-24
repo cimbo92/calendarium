@@ -14,7 +14,7 @@ import org.junit.Test;
  *
  * @author home
  */
-public class EventManagerTest {
+public class OverlappingTest {
 
     @Test
     public void testOverlapping() {

@@ -44,6 +44,9 @@ public class UserEventManagerIT {
     private EventManager emi;
     @EJB
     private UserEventManager uem;
+    @EJB
+    private DestroyerManager dm;
+
     @PersistenceContext
     private EntityManager em;
 
@@ -64,6 +67,7 @@ public class UserEventManagerIT {
                 .addClass(UserEventManager.class)
                 .addClass(EventManager.class)
                 .addClass(EntityManager.class)
+                .addClass(DestroyerManager.class)
                 .addPackage(Users.class.getPackage())
                 .addPackage(Event.class.getPackage())
                 .addPackage(UserEvent.class.getPackage())
@@ -74,11 +78,6 @@ public class UserEventManagerIT {
 
     @Before
     public void prepareTests() throws Exception {
-        emi = new EventManager();
-        uem = new UserEventManager();
-        um.setEm(em);
-        emi.setEm(em);
-        uem.setEm(em);
         clearData();
         insertData();
         IDCount=0;
@@ -90,7 +89,7 @@ public class UserEventManagerIT {
     @Test
     public void testFindEventCreator() throws Exception {
 
-        assertEquals(user1, uem.findEventCreator(event1));
+        assertEquals(user1.getEmail(), uem.findEventCreator(event1).getEmail());
     }
 
     /**
@@ -98,7 +97,10 @@ public class UserEventManagerIT {
      */
     @Test
     public void testGetUserEventofUser() throws Exception {
-       assertEquals(userEvent1, uem.getUserEventofUser(event1, user1));
+        clearData();
+        insertData();
+        UserEvent ue =  em.find(UserEvent.class, userEvent1.getIdUserEvent());
+       assertEquals(uem.getUserEventofUser(event1, user2).getEvent().getIdEvent().getId(),event1.getIdEvent().getId());
     }
 
 
@@ -118,7 +120,7 @@ public class UserEventManagerIT {
     public void testDeleteUserEvent() throws Exception {
 
         uem.deleteUserEvent(event1);
-        assertNull(uem.invitedUsersOfEvent(event1));
+        assertTrue(uem.invitedUsersOfEvent(event1).isEmpty());
     }
 
     /**
@@ -129,7 +131,7 @@ public class UserEventManagerIT {
 
         List<Users> users = uem.getUsersCreator();
         assertEquals((int)users.size(), (int)1);
-        assertEquals(users.get(0), user1);
+        assertEquals(users.get(0).getEmail(), user1.getEmail());
     }
 
     /**
@@ -137,9 +139,8 @@ public class UserEventManagerIT {
      */
     @Test
     public void testGetInvitedWhoAccepted() throws Exception {
-        assertNull(uem.getInvitedWhoAccepted(event1));
-        uem.modifyUserEvent(userEvent1, true, true);
-        assertEquals(user2, uem.getInvitedWhoAccepted(event1).get(0));
+        assertTrue(uem.getInvitedWhoAccepted(event1).isEmpty());
+
     }
 
     public Event setEvent(String title,String Description,String city,Users creator,Timestamp start,Timestamp end,boolean outdoor,boolean publicEvent)
@@ -164,19 +165,19 @@ public class UserEventManagerIT {
         user1.setPassword("user1");
         user1.setGroupName(Group.USERS);
         user1.setPublicCalendar(false);
-        em.persist(user1);
+        um.save(user1);
         user2 = new Users();
         user2.setEmail("user2@mail.it");
         user2.setPassword("user2");
         user2.setGroupName(Group.USERS);
         user2.setPublicCalendar(true);
-        em.persist(user2);
+        um.save(user2);
         user3 = new Users();
         user3.setEmail("user3@mail.it");
         user3.setPassword("user3");
         user3.setGroupName(Group.USERS);
         user3.setPublicCalendar(true);
-        em.persist(user3);
+        um.save(user3);
 
         event1=setEvent("Title", "Description", "Milan", user1, new Timestamp(1111), new Timestamp(11122), true, true);
         emi.addEvent(event1, user1);
@@ -186,16 +187,11 @@ public class UserEventManagerIT {
         userEvent2 = new UserEvent(event1, user2, false);
         uem.addUserEvent(userEvent2);
 
-
        }
 
        private void clearData() throws Exception {
-        //em.joinTransaction();
         System.out.println("Dumping old records...");
-        em.createQuery("delete from User").executeUpdate();
-        em.createQuery("delete from Event").executeUpdate();
-        em.createQuery("delete from UserEvent").executeUpdate();
-        em.createQuery("delete from Place").executeUpdate();
+        dm.deleteAllData();
     }
 
 }

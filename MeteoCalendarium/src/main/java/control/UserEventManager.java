@@ -61,7 +61,7 @@ public class UserEventManager  {
 
     public UserEvent getUserEventofUser(Event event, Users user) {
         Query query;
-        query = em.createQuery("SELECT ue FROM UserEvent ue WHERE ue.event= :event and ue.creator=0 and ue.user = :user  ").setParameter("event", event).setParameter("user", user);
+        query = em.createQuery("SELECT ue FROM UserEvent ue WHERE ue.event.idEvent.id= :event and ue.creator=0 and ue.user.email = :user  ").setParameter("event", event.getIdEvent().getId()).setParameter("user", user.getEmail());
         List<UserEvent> result = query.getResultList();
         return result.get(0);
     }
@@ -77,9 +77,8 @@ public class UserEventManager  {
     public void modifyUserEvent(UserEvent userEvent, boolean decision, boolean view) {
 
         Query query = em
-                .createQuery("UPDATE UserEvent ue SET ue.accepted = :decision , ue.viewed = :viewed"
-                        + " WHERE ue= :userEvent");
-        query.setParameter("userEvent", userEvent);
+                .createQuery("UPDATE UserEvent ue SET ue.accepted = :decision , ue.viewed = :viewed Where ue.idUserEvent= :userEvent");
+        query.setParameter("userEvent", userEvent.getIdUserEvent());
         query.setParameter("decision", decision);
         query.setParameter("viewed", view);
         query.executeUpdate();
@@ -133,7 +132,7 @@ public class UserEventManager  {
 
     public List<Users> getInvitedWhoAccepted(Event event) {
 
-        Query query = em.createQuery("Select ue.user From UserEvent ue Where ue.event= :event and ue.accepted=1").setParameter("event", event);
+        Query query = em.createQuery("Select ue.user From UserEvent ue Where ue.event.idEvent.id= :event and ue.accepted=1").setParameter("event", event.getIdEvent().getId());
         return query.getResultList();
 
     }
@@ -141,7 +140,7 @@ public class UserEventManager  {
     public EntityManager getEm() {
         return em;
     }
-    
+
     public void setEm(EntityManager em) {
         this.em = em;
     }
