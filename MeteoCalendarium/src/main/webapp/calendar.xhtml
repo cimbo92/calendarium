@@ -30,7 +30,7 @@
 
 
                     <h:panelGrid id="principalgrid" columnClasses="value" style ="margin : 0px auto;width: 100%">
-                        <p:schedule id="schedule" value="#{scheduleView.eventModel}" style="width: 70%;;margin: 0px auto;" widgetVar="myschedule" timeZone="GMT+2">
+                        <p:schedule id="schedule" value="#{scheduleView.eventModel}" style="width: 70%;;margin: 0px auto;" widgetVar="myschedule" timeZone="GMT+1">
                             <p:ajax event="dateSelect"  listener="#{eventBean.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                             <p:ajax event="eventSelect" listener="#{eventBean.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                         </p:schedule>
