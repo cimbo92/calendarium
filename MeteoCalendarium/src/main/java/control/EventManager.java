@@ -135,7 +135,7 @@ public class EventManager {
 
     public List<Event> findInvitatedEvent(Users user) {
 
-        Query query = em.createQuery("SELECT ue.event FROM UserEvent ue WHERE ue.user = :user AND ue.creator=false and ue.viewed=false").setParameter(("user"), user);
+        Query query = em.createQuery("SELECT ue.event FROM UserEvent ue WHERE ue.user.email = :user AND ue.creator=false and ue.viewed=false").setParameter(("user"), user.getEmail());
         List<Event> tempSet = new ArrayList<>(query.getResultList());
 
         return (List) tempSet;
@@ -237,7 +237,7 @@ public class EventManager {
         this.principal = principal;
     }
 
-    
+
     public void removeEventByID(Event event) {
         Query query1 = em.createQuery("Delete From Preference p Where p.event.idEvent.id= :event").setParameter(("event"), event.getIdEvent().getId());
         query1.executeUpdate();

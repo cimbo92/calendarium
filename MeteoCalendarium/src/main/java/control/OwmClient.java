@@ -452,7 +452,7 @@ public class OwmClient implements OwmClientInterface {
 
                 }
             } catch (JSONException ex) {
-                Logger.getLogger(EventBean.class.getName()).log(Level.WARNING, null, "Too much requests to the ForecastServer");
+                Logger.getLogger(EventBean.class.getName()).log(Level.WARNING, null,"Forecast server not available for the indicated place");
             } catch (IOException ex) {
                 Logger.getLogger(EventBean.class.getName()).log(Level.SEVERE, null, ex);
             }

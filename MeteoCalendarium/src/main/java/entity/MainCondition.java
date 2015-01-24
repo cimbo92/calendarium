@@ -27,6 +27,14 @@ public class MainCondition implements Serializable {
     @Id
     String conditione;
 
+    public MainCondition(String Cond) {
+        this.conditione=Cond;
+    }
+
+
+    public MainCondition() {
+        
+    }
     /*
      *******************************************************************
      * GETTERS AND SETTERS
