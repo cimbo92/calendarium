@@ -180,7 +180,12 @@ public class Event implements Serializable {
 
     @Override
     public String toString() {
-        return title + "\n" + "Creator: " + creator + "\n" + "Title: " + title + "\n" + "Description: " + description + "\n" + "Place: " + place.getCity() + "\n" + "Starting from: " + startDate + "\n" + "To: " + endDate + "\n" + "OutDoor: " + outdoor + "\n";
+        if(outdoor){
+        return "Creator: " + creator + "\n" + "Title: " + title + "\n" + "Description: " + description + "\n" + "Place: " + place.getCity() + "\n" + "Starting from: " + startDate + "\n" + "To: " + endDate + "\n" + "The event will be outdoor"+ "\n"+"Thank you"+"\n"+"Meteocal staff";
+        }
+        
+        return "Creator: " + creator + "\n" + "Title: " + title + "\n" + "Description: " + description + "\n" + "Place: " + place.getCity() + "\n" + "Starting from: " + startDate + "\n" + "To: " + endDate + "\n" + "The event will be indoor"+ "\n"+"Thank you"+"\n"+"Meteocal staff";
+ 
     }
 
 }
